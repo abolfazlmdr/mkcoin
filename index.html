@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirDrop Clicker</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to bottom, #2b1e17, #f2b200);
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .coin-count {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .coin-count img {
+            width: 40px;
+            margin-right: 10px;
+        }
+
+        .rank {
+            color: gold;
+            font-size: 18px;
+            margin: 5px 0;
+            font-weight: 800;
+        }
+
+        .main-button {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            padding: 0;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        .main-button:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 1);
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+        }
+
+        .energy-bar {
+            font-size: 18px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .menu {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .menu button,
+        .menu a {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 10px;
+            color: white;
+            font-size: 16px;
+            margin: 5px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .menu button:hover,
+        .menu a:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .menu button:active,
+        .menu a:active {
+            transform: scale(0.95);
+        }
+
+        .progress-bar {
+            width: 100%;
+            background: #ccc;
+            border-radius: 10px;
+            height: 20px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .progress-bar span {
+            display: block;
+            height: 100%;
+            background: #f2b200;
+            border-radius: 10px;
+            width: 0;
+        }
+
+        .next-rank {
+            font-size: 18px;
+            margin-top: 5px;
+            color: #f2b200;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <span id="progressBar"></span>
+        </div>
+        <div class="progress-info">
+            <span id="currentCoins">0</span> <span id="coinsNeeded">0</span>
+        </div>
+        <div class="coin-count">
+            <img src="images/mokhtar.png" alt="Coin">
+            <span id="coinValue">0</span>
+        </div>
+        <p class="rank">🏆 <span id="rankTitle">سرباز</span></p>
+        <button id="clickBtn" class="main-button">
+            <img src="images/mokhtar.png" alt="Profile" class="profile-pic">
+        </button>
+        <div class="energy-bar">
+            ⚡️ <span id="energyValue">1000</span> / 1000
+        </div>
+        <div class="menu">
+            <button>🧸 Frens</button>
+            <button>🟡 Earn</button>
+            <a href="">🚀 Boost</a>
+        </div>
+    </div>
+
+    <script>
+        // استفاده از متغیرها برای ذخیره‌سازی وضعیت انرژی و سکه‌ها
+        let coinValue = parseInt(localStorage.getItem("coins")) || 0;
+        let energyValue = parseInt(localStorage.getItem("energy")) || 1000;
+        let multitapLevel = parseInt(localStorage.getItem("multitapLevel")) || 0;
+        let rechargeSpeedLevel = parseInt(localStorage.getItem("rechargeSpeedLevel")) || 0;
+        let energyLimitLevel = parseInt(localStorage.getItem("energyLimitLevel")) || 0;
+    
+        // قالب‌بندی عدد برای نمایش
+        function formatNumber(number) {
+            return number.toLocaleString('en-US');
+        }
+    
+        // نمایش مقادیر اولیه در صفحه
+        document.getElementById("coinValue").innerText = formatNumber(coinValue);
+        document.getElementById("energyValue").innerText = energyValue;
+    
+        // به‌روزرسانی رتبه کاربر
+        function updateRank() {
+            const rankThresholds = [
+                { threshold: 5000, rank: "سرباز ماهر" },
+                { threshold: 10000, rank: "سرباز جنگجو" },
+                { threshold: 50000, rank: "سرباز با تجربه" },
+                { threshold: 100000, rank: "جنگنده" },
+                { threshold: 500000, rank: "جنگنده ماهر" },
+                { threshold: 1000000, rank: "فرمانده" },
+                { threshold: 5000000, rank: "فرمانده بزرگ" },
+                { threshold: 10000000, rank: "فرمانده ماهر" },
+                { threshold: 50000000, rank: "رهبر" }
+            ];
+
+            const rank = rankThresholds.reverse().find(item => coinValue >= item.threshold)?.rank || "سرباز";
+            document.getElementById("rankTitle").innerText = rank;
+        }
+
+        // به‌روزرسانی نوار پیشرفت
+        function updateProgressBar() {
+            const nextRankThreshold = [5000, 10000, 50000, 100000, 500000, 1000000, 5000000, 10000000, 50000000];
+            const currentRankThreshold = nextRankThreshold.find(t => coinValue < t);
+            const nextRank = currentRankThreshold || 50000000;
+    
+            const progress = Math.min(100, (coinValue / nextRank) * 100);
+            document.getElementById("progressBar").style.width = progress + '%';
+            document.getElementById("coinsNeeded").innerText = formatNumber(nextRank);
+            document.getElementById("currentCoins").innerText = formatNumber(coinValue);
+        }
+    
+        // به‌روزرسانی انرژی
+        function updateEnergy() {
+            if (energyValue < 1000) {
+                energyValue += 1;
+                document.getElementById("energyValue").innerText = energyValue;
+                localStorage.setItem("energy", energyValue); // ذخیره‌سازی پس از تغییر
+            }
+        }
+    
+        // افزایش انرژی در پس‌زمینه (مهم برای حفظ وضعیت حتی وقتی صفحه بسته می‌شود)
+        function autoIncreaseEnergy() {
+            if (energyValue < 1000) {
+                energyValue += 1;
+                document.getElementById("energyValue").innerText = energyValue;
+                localStorage.setItem("energy", energyValue); // ذخیره‌سازی در localStorage
+            }
+        }
+    
+      // مدیریت کلیک و افزایش سکه و انرژی
+document.getElementById("clickBtn").addEventListener("click", function() {
+    if (energyValue > 0) {
+        coinValue += 1;  // افزایش سکه تنها به اندازه 1
+        energyValue -= 1;  // کاهش انرژی به اندازه 1
+        document.getElementById("coinValue").innerText = formatNumber(coinValue);
+        document.getElementById("energyValue").innerText = energyValue;
+
+        // ذخیره‌سازی سکه‌ها و انرژی پس از تغییر
+        localStorage.setItem("coins", coinValue);
+        localStorage.setItem("energy", energyValue);
+
+        updateRank();
+        updateProgressBar();
+    }
+});
+    
+        // به‌روزرسانی خودکار انرژی هنگام بارگذاری صفحه
+        window.addEventListener('load', function() {
+            updateEnergy(); // انرژی را در زمان بارگذاری صفحه به روز می‌کند
+            setInterval(autoIncreaseEnergy, 3000); // انرژی به صورت خودکار هر 3 ثانیه افزایش می‌یابد
+        });
+    
+        // اجرا کردن بروزرسانی‌های اولیه
+        updateRank();
+        updateProgressBar();
+    </script>
+</body>
+</html>
