@@ -131,7 +131,7 @@
       const attackedResource = resources[Math.floor(Math.random() * resources.length)];
       const damage = Math.floor(Math.random() * (3000 - 1500 + 1)) + 1500;
 
-      coins -= damage;
+      coins = Math.max(0, coins - damage);
       saveCoins();
 
       const message = `❗️ دشمن به ${attackedResource} حمله کرد و ${damage} سکه از شما کم شد.`;
