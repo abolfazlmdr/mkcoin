@@ -302,32 +302,32 @@
 <a href="index.html" class="back-btn">بازگشت به بازی</a>
 
 <script>
-  function openTab(tab) {
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-    document.querySelector(`[onclick="openTab('${tab}')"]`).classList.add('active');
-    document.getElementById(tab).classList.add('active');
-  }
+ function openTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+  document.querySelector(`[onclick="openTab('${tab}')"]`).classList.add('active');
+  document.getElementById(tab).classList.add('active');
+}
 
-  function defeatEnemy(requiredPower, id) {
-     let power = parseInt(localStorage.getItem("power")) || 0;
+function defeatEnemy(requiredPower, id) {
+  let power = parseInt(localStorage.getItem("totalPower")) || 0;
   if (power >= requiredPower) {
     power -= requiredPower;
-    localStorage.setItem("power", power);
+    localStorage.setItem("totalPower", power);
     document.getElementById("check-" + id).style.display = "inline";
     alert("🎉 دشمن شکست خورد!");
     updatePower();
   } else {
     alert("❌ قدرت کافی نداری!");
   }
-  }
+}
 
-  function updatePower() {
-    let power = parseInt(localStorage.getItem("power")) || 0;
-    document.getElementById("totalPower").innerText = power;
-  }
+function updatePower() {
+  let power = parseInt(localStorage.getItem("totalPower")) || 0;
+  document.getElementById("totalPower").innerText = power.toLocaleString();
+}
 
-  function loadLevels() {
+function loadLevels() {
   let items = ['wheat', 'wall', 'tower', 'soldier_house', 'kingdom_affairs', 'grain_supplies'];
   let costs = {
     wheat: 350,
@@ -341,46 +341,43 @@
   items.forEach(item => {
     let level = parseInt(localStorage.getItem("level-" + item)) || 1;
     document.getElementById("level-" + item).innerText = level;
-    document.getElementById("cost-" + item).innerText = "قدرت: " + (costs[item] + (level) * 300);
+    document.getElementById("cost-" + item).innerText = "قدرت: " + (costs[item] + (level) * 300).toLocaleString();
   });
 }
 
+function upgradeItem(item) {
+  let power = parseInt(localStorage.getItem("totalPower")) || 0;
+  let key = "level-" + item;
+  let level = parseInt(localStorage.getItem(key)) || 1;
+
+  let costs = {
+    wheat: 350,
+    wall: 400,
+    tower: 550,
+    soldier_house: 600,
+    kingdom_affairs: 1000,
+    grain_supplies: 1200
+  };
+
+  let upgradeCost = costs[item] + (level - 1) * 300;
+
+  if (power >= upgradeCost) {
+    level++;
+    localStorage.setItem(key, level);
+    localStorage.setItem("totalPower", power - upgradeCost);
+    document.getElementById("level-" + item).innerText = level;
+    document.getElementById("cost-" + item).innerText = "قدرت: " + (costs[item] + (level) * 300).toLocaleString();
+    alert(item + " به لول " + level + " رسید!");
+  } else {
+    alert("❌ قدرت کافی نداری!");
+  }
+  updatePower();
+}
+
+// اجرای اولیه
 updatePower();
 loadLevels();
 
-
-
-  function upgradeItem(item) {
-    let power = parseInt(localStorage.getItem("power")) || 0;
-    let key = "level-" + item;
-    let level = parseInt(localStorage.getItem(key)) || 1;
-    
-    // هزینه ارتقا برای هر آیتم خاص
-    let costs = {
-      wheat: 350,
-      wall: 400,
-      tower: 550,
-      soldier_house: 600,
-      kingdom_affairs: 1000,
-      grain_supplies: 1200
-    };
-    
-    let upgradeCost = costs[item] + (level - 1) * 300; // افزایش قیمت به ازای هر سطح
-    
-    if (power >= upgradeCost) {
-      level++;
-      localStorage.setItem(key, level);
-      localStorage.setItem("power", power - upgradeCost); // قدرت کم می‌شود
-      document.getElementById("level-" + item).innerText = level;
-      document.getElementById("cost-" + item).innerText = "قدرت: " + (costs[item] + (level) * 300); // هزینه جدید
-      alert(item + " به لول " + level + " رسید!");
-    } else {
-      alert("❌ قدرت کافی نداری!");
-    }
-    updatePower();
-  }
-
-  updatePower();
 </script>
 
 </body>
