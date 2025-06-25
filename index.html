@@ -195,13 +195,14 @@
     .shake {
       animation: shake 0.5s;
     }
-
-    button:focus,
-    a:focus {
-      outline: none;
-    }
-    img:focus {
+img:focus,
+.profile-pic:focus {
   outline: none;
+  box-shadow: none;
+}
+
+.profile-pic {
+  -webkit-tap-highlight-color: transparent;
 }
   </style>
 </head>
