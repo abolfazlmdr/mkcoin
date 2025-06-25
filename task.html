@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Tasks</title>
+  <style>
+    body {
+      background: #000;
+      color: white;
+      font-family: sans-serif;
+      padding: 20px;
+      direction: rtl;
+      text-align: center;
+    }
+    h2 {
+      color: white;
+      margin-bottom: 20px;
+    }
+    .task {
+      background: #222;
+      border-radius: 10px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+    .task-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: center;
+      flex: 1;
+      cursor: pointer;
+    }
+    .task-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    .task-info p {
+      margin: 0;
+      color: #ffc107;
+      font-size: 16px;
+    }
+    .coins {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .coins img {
+      width: 18px;
+      height: 18px;
+    }
+    .check {
+      font-size: 22px;
+      color: #0f0;
+      display: none;
+      margin-right: 10px;
+    }
+    .timer {
+      font-size: 14px;
+      color: #0f0;
+      margin-top: 5px;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .back-btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 25px;
+      background: #444;
+      border-radius: 8px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+    .back-btn:hover {
+      background: #666;
+    }
+    input[type="text"] {
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      margin-top: 10px;
+      width: 160px;
+      text-align: center;
+    }
+    button {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: none;
+      background: #ffc107;
+      color: #000;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    .daily-code-note {
+      color: #ffc107;
+      font-size: 14px;
+      margin-top: 10px;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { color: #ffc107; transform: scale(1); }
+      50% { color: #fff200; transform: scale(1.05); }
+      100% { color: #ffc107; transform: scale(1); }
+    }
+    .shop-btn {
+      display: inline-block;
+      background: #ffc107;
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 0 10px #ffc107;
+      transition: 0.3s;
+      margin-bottom: 20px;
+    }
+    .shop-btn:hover {
+      background: #e6b800;
+    }
+  </style>
+</head>
+<body>
+
+<!-- دکمه فروشگاه -->
+<a href="shop.html" class="shop-btn">🛒 فروشگاه</a>
+
+<h2>🎯 تسک‌های شبکه‌های اجتماعی</h2>
+
+<div class="task">
+  <a href="https://t.me/mokhtarcommunity" target="_blank" onclick="completeTask('telegram')">
+    <div class="task-info">
+      <img src="images/telegram.png" alt="Telegram">
+      <p>عضویت در کانال تلگرام</p>
+    </div>
+  </a>
+  <div class="coins">
+    <img src="images/telegram.png" alt="coin">
+    <span>10,000</span>
+  </div>
+  <div id="check-telegram" class="check">✔</div>
+</div>
+
+<div class="task">
+  <a href="https://instagram.com/mokhtarcoin" target="_blank" onclick="completeTask('instagram')">
+    <div class="task-info">
+      <img src="images/instagram.png" alt="Instagram">
+      <p>فالو در اینستاگرام</p>
+    </div>
+  </a>
+  <div class="coins">
+    <img src="images/instagram.png" alt="coin">
+    <span>10,000</span>
+  </div>
+  <div id="check-instagram" class="check">✔</div>
+</div>
+
+<h2>🎁 تسک‌های روزانه</h2>
+
+<div class="task">
+  <div class="task-info" onclick="claimDailyReward()">
+    <img src="images/mokhtar.png" alt="Gift">
+    <div>
+      <p>دریافت ۱۰۰۰ سکه روزانه</p>
+      <div id="dailyTimer" class="timer">در حال بارگذاری...</div>
+    </div>
+  </div>
+  <div class="coins">
+    <img src="images/mokhtar.png" alt="coin">
+    <span>1000</span>
+  </div>
+  <div id="check-daily" class="check">✔</div>
+</div>
+
+<div style="margin-top:40px;background:#111;padding:20px;border-radius:10px;">
+  <h2>🔐 وارد کردن کد روزانه</h2>
+  <input type="text" id="dailyCodeInput" placeholder="کد را وارد کن">
+  <button onclick="claimDailyCode()">ثبت کد</button>
+  <div id="dailyCodeTimer" class="timer" style="margin-top:10px;">در حال بارگذاری...</div>
+  <p class="daily-code-note">🎁 با وارد کردن کد روزانه، به صورت تصادفی بین 1000 تا 3000 سکه دریافت می‌کنی!</p>
+</div>
+
+<a href="index.html" class="back-btn">بازگشت به بازی</a>
+
+<script>
+  function completeTask(task) {
+    if (!localStorage.getItem(task)) {
+      let coins = parseInt(localStorage.getItem("coins")) || 0;
+      coins += 10000;
+      localStorage.setItem("coins", coins);
+      localStorage.setItem(task, "done");
+      document.getElementById("check-" + task).style.display = "block";
+    }
+  }
+
+  function claimDailyReward() {
+    const now = Date.now();
+    const nextTime = parseInt(localStorage.getItem("dailyNextTime")) || 0;
+    if (now >= nextTime) {
+      let coins = parseInt(localStorage.getItem("coins")) || 0;
+      coins += 1000;
+      localStorage.setItem("coins", coins);
+      localStorage.setItem("dailyNextTime", now + 24 * 60 * 60 * 1000);
+      document.getElementById("check-daily").style.display = "block";
+      updateDailyTimer();
+      alert("🎉 ۱۰۰۰ سکه دریافت شد!");
+    } else {
+      updateDailyTimer();
+    }
+  }
+
+  function claimDailyCode() {
+    const codeInput = document.getElementById("dailyCodeInput").value.trim();
+    if (!codeInput) {
+      alert("لطفاً کد را وارد کن!");
+      return;
+    }
+    const now = Date.now();
+    const nextTime = parseInt(localStorage.getItem("dailyCodeNextTime")) || 0;
+    if (now < nextTime) {
+      alert("⏳ هنوز وقت دریافت مجدد نشده!");
+      return;
+    }
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
+    const secretKey = "mySecretKey";
+    const hashInput = secretKey + dateStr;
+    crypto.subtle.digest("SHA-256", new TextEncoder().encode(hashInput)).then(hashBuffer => {
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      const todayCode = hashHex.slice(0, 6).toUpperCase();
+      if (codeInput === todayCode) {
+        const reward = Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000;
+        let coins = parseInt(localStorage.getItem("coins")) || 0;
+        coins += reward;
+        localStorage.setItem("coins", coins);
+        localStorage.setItem("dailyCodeNextTime", now + 24 * 60 * 60 * 1000);
+        updateDailyCodeTimer();
+        alert(`🎉 ${reward} سکه دریافت شد!`);
+      } else {
+        alert("❌ کد اشتباه است!");
+      }
+    });
+  }
+
+  function updateDailyTimer() {
+    const now = Date.now();
+    const nextTime = parseInt(localStorage.getItem("dailyNextTime")) || 0;
+    const timerDiv = document.getElementById("dailyTimer");
+    if (now >= nextTime) {
+      timerDiv.innerText = "دریافت جایزه!";
+    } else {
+      const remaining = nextTime - now;
+      const hours = String(Math.floor(remaining / (1000 * 60 * 60))).padStart(2, '0');
+      const minutes = String(Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+      const seconds = String(Math.floor((remaining % (1000 * 60)) / 1000)).padStart(2, '0');
+      timerDiv.innerText = `${hours}:${minutes}:${seconds}`;
+    }
+  }
+
+  function updateDailyCodeTimer() {
+    const now = Date.now();
+    const nextTime = parseInt(localStorage.getItem("dailyCodeNextTime")) || 0;
+    const timerDiv = document.getElementById("dailyCodeTimer");
+    if (now >= nextTime) {
+      timerDiv.innerText = "دریافت کد فعال است!";
+    } else {
+      const remaining = nextTime - now;
+      const hours = String(Math.floor(remaining / (1000 * 60 * 60))).padStart(2, '0');
+      const minutes = String(Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+      const seconds = String(Math.floor((remaining % (1000 * 60)) / 1000)).padStart(2, '0');
+      timerDiv.innerText = `${hours}:${minutes}:${seconds}`;
+    }
+  }
+
+  window.onload = () => {
+    if (localStorage.getItem("telegram") === "done") document.getElementById("check-telegram").style.display = "block";
+    if (localStorage.getItem("instagram") === "done") document.getElementById("check-instagram").style.display = "block";
+    if (Date.now() < (parseInt(localStorage.getItem("dailyNextTime")) || 0)) {
+      document.getElementById("check-daily").style.display = "none";
+    } else if (localStorage.getItem("dailyNextTime")) {
+      document.getElementById("check-daily").style.display = "block";
+    }
+    updateDailyTimer();
+    updateDailyCodeTimer();
+    setInterval(updateDailyTimer, 1000);
+    setInterval(updateDailyCodeTimer, 1000);
+  }
+</script>
+
+</body>
+</html>

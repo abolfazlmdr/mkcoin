@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <title>بوسترها</title>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: sans-serif;
+      padding: 20px;
+      direction: rtl;
+    }
+    h2 {
+      color: #fff;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .coins {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    .coins img {
+      width: 30px;
+      height: 30px;
+    }
+    .booster {
+      background: #222;
+      border-radius: 15px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+    .booster-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .emoji-box {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .booster-info p {
+      margin: 0;
+      font-size: 16px;
+    }
+    .price {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    .price img {
+      width: 26px;
+      height: 26px;
+    }
+    .level {
+      font-size: 13px;
+      color: #ccc;
+      margin-top: 3px;
+    }
+    .upgrade-btn {
+      color: #ccc;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .back-btn {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 10px 18px;
+      background: #333;
+      color: #fff;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>🎛️ بوسترها</h2>
+
+<div class="coins">
+  <img src="images/mokhtar.png" alt="coin">
+  <span id="coins-count">0</span>
+</div>
+
+<div class="booster">
+  <div class="booster-info">
+    <div class="emoji-box">☝️</div>
+    <div>
+      <p>ضربه چندتایی</p>
+      <div class="price">
+        <img src="images/mokhtar.png" alt="coin">
+        <span id="price-multitap">1500</span>
+      </div>
+    </div>
+  </div>
+  <div class="upgrade-btn" onclick="upgrade('multitap')">
+    <span id="level-multitap">0</span>
+    <span>›</span>
+  </div>
+</div>
+
+<div class="booster">
+  <div class="booster-info">
+    <div class="emoji-box">🔋</div>
+    <div>
+      <p>ظرفیت انرژی</p>
+      <div class="price">
+        <img src="images/mokhtar.png" alt="coin">
+        <span id="price-energy">1500</span>
+      </div>
+    </div>
+  </div>
+  <div class="upgrade-btn" onclick="upgrade('energy')">
+    <span id="level-energy">0</span>
+    <span>›</span>
+  </div>
+</div>
+
+<a href="index.html" class="back-btn">بازگشت به صفحه اصلی</a>
+
+<script>
+  let coins = parseInt(localStorage.getItem('coins') || 0);
+  let multitapLevel = parseInt(localStorage.getItem('multitapLevel') || 0);
+  let energyLevel = parseInt(localStorage.getItem('energyLevel') || 0);
+
+  function formatCoins(value) {
+    return value.toLocaleString('en-US');
+  }
+
+  function updatePrices() {
+    document.getElementById('price-multitap').innerText = (multitapLevel + 1) * 1500;
+    document.getElementById('price-energy').innerText = (energyLevel + 1) * 1500;
+  }
+
+  document.getElementById('coins-count').innerText = formatCoins(coins);
+  document.getElementById('level-multitap').innerText = multitapLevel;
+  document.getElementById('level-energy').innerText = energyLevel;
+  updatePrices();
+
+  function upgrade(item) {
+    if (item === 'multitap') {
+      let levelEl = document.getElementById('level-multitap');
+      let level = parseInt(levelEl.innerText);
+      let price = (level + 1) * 1500;
+      if (coins >= price && level < 10) {
+        coins -= price;
+        level++;
+        localStorage.setItem('coins', coins);
+        document.getElementById('coins-count').innerText = formatCoins(coins);
+        levelEl.innerText = level;
+        localStorage.setItem('multitapLevel', level);
+
+        let multitapPower = parseInt(localStorage.getItem('multitapPower') || 1);
+        multitapPower++;
+        localStorage.setItem('multitapPower', multitapPower);
+        multitapLevel = level;
+        updatePrices();
+      }
+    } else if (item === 'energy') {
+      let levelEl = document.getElementById('level-energy');
+      let level = parseInt(levelEl.innerText);
+      let price = (level + 1) * 1500;
+      if (coins >= price && level < 20) {
+        coins -= price;
+        level++;
+        localStorage.setItem('coins', coins);
+        document.getElementById('coins-count').innerText = formatCoins(coins);
+        levelEl.innerText = level;
+        localStorage.setItem('energyLevel', level);
+
+        let storage = parseInt(localStorage.getItem('storage') || 0);
+        storage += 500;
+        localStorage.setItem('storage', storage);
+        energyLevel = level;
+        updatePrices();
+      }
+    }
+  }
+</script>
+
+</body>
+</html>

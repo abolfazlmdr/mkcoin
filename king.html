@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>پادشاهی مختار</title>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: sans-serif;
+      direction: rtl;
+      text-align: center;
+      padding: 20px;
+    }
+    h2 {
+      margin-bottom: 15px;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .tab-btn {
+      padding: 10px 20px;
+      background: #333;
+      margin: 0 5px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .tab-btn.active {
+      background: #ffc107;
+      color: #000;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .item {
+      background: #222;
+      padding: 12px;
+      border-radius: 10px;
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .item img {
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+    }
+     #battles .item img {
+      width: 80px;
+      height: 80px;
+    }
+    .item p {
+      flex: 1;
+      margin: 0 15px;
+      text-align: right;
+    }
+    .btn-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .upgrade-btn, .fight-btn {
+      padding: 6px 12px;
+      background: #ffc107;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .check {
+      color: #0f0;
+      font-size: 18px;
+      display: none;
+      margin-right: 5px;
+    }
+    .back-btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 25px;
+      background: #444;
+      border-radius: 8px;
+      color: #fff;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .back-btn:hover {
+      background: #666;
+    }
+    .power-display {
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: #ffc107;
+    }
+    .level-label {
+      font-size: 14px;
+      background: #333;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    .power-cost {
+      font-size: 14px;
+      color: #ff4d4d;
+    }
+  </style>
+</head>
+<body>
+
+<h2>🏰 پادشاهی مختار</h2>
+
+<div class="power-display">قدرت کل: <span id="totalPower">0</span></div>
+
+<div class="tabs">
+  <div class="tab-btn active" onclick="openTab('upgrades')">ارتقا آیتم‌ها</div>
+  <div class="tab-btn" onclick="openTab('battles')">نبرد و مراحل</div>
+  <div class="tab-btn" onclick="window.location.href='defense.html'">بخش دفاع</div>
+</div>
+
+<div id="upgrades" class="tab-content active">
+  <div class="item">
+    <img src="images/item-1.webp" alt="گندم">
+    <p>انبار گندم</p>
+    <div class="btn-group">
+      <button class="upgrade-btn" onclick="upgradeItem('wheat')">ارتقا</button>
+      <span class="level-label">لول: <span id="level-wheat">1</span></span>
+      <span id="cost-wheat" class="power-cost">قدرت: 350</span>
+    </div>
+  </div>
+  <div class="item">
+    <img src="images/item-2.webp" alt="دیوار">
+    <p>دیوار دفاعی</p>
+    <div class="btn-group">
+      <button class="upgrade-btn" onclick="upgradeItem('wall')">ارتقا</button>
+      <span class="level-label">لول: <span id="level-wall">1</span></span>
+      <span id="cost-wall" class="power-cost">قدرت: 400</span>
+    </div>
+  </div>
+  <div class="item">
+    <img src="images/item-3.webp" alt="برج دیده‌بانی">
+    <p>برج دیده‌بانی</p>
+    <div class="btn-group">
+      <button class="upgrade-btn" onclick="upgradeItem('tower')">ارتقا</button>
+      <span class="level-label">لول: <span id="level-tower">1</span></span>
+      <span id="cost-tower" class="power-cost">قدرت: 550</span>
+    </div>
+  </div>
+  <div class="item">
+    <img src="images/item-4.webp" alt="سرباز خانه">
+    <p>سرباز خانه</p>
+    <div class="btn-group">
+      <button class="upgrade-btn" onclick="upgradeItem('soldier_house')">ارتقا</button>
+      <span class="level-label">لول: <span id="level-soldier_house">1</span></span>
+      <span id="cost-soldier_house" class="power-cost">قدرت: 600</span>
+    </div>
+  </div>
+  <div class="item">
+    <img src="images/item-5.webp" alt="امور پادشاهی">
+    <p>خرج امور پادشاهی</p>
+    <div class="btn-group">
+      <button class="upgrade-btn" onclick="upgradeItem('kingdom_affairs')">ارتقا</button>
+      <span class="level-label">لول: <span id="level-kingdom_affairs">1</span></span>
+      <span id="cost-kingdom_affairs" class="power-cost">قدرت: 1000</span>
+    </div>
+  </div>
+  <div class="item">
+    <img src="images/item-6.webp" alt="تامین غلات">
+    <p>تامین غلات</p>
+    <div class="btn-group">
+      <button class="upgrade-btn" onclick="upgradeItem('grain_supplies')">ارتقا</button>
+      <span class="level-label">لول: <span id="level-grain_supplies">1</span></span>
+      <span id="cost-grain_supplies" class="power-cost">قدرت: 1200</span>
+    </div>
+  </div>
+</div>
+
+<div id="battles" class="tab-content">
+
+  <div class="item">
+    <img src="images/enemy-13.webp" alt="پیمان">
+    <p>پیمان با کیان ( 4000 قدرت)</p>
+    <div class="btn-group">
+      <button class="fight-btn" onclick="defeatEnemy(4000, 'omar')">انجام</button>
+      <span id="check-omar" class="check">✔</span>
+    </div>
+  </div>
+
+   <div class="item">
+    <img src="images/enemy-14.webp" alt="پیمان">
+    <p>بیعت با محمدبن حنیفه ( 6000 قدرت)</p>
+    <div class="btn-group">
+      <button class="fight-btn" onclick="defeatEnemy(6000, 'omar')">انجام</button>
+      <span id="check-omar" class="check">✔</span>
+    </div>
+  </div>
+
+  <div class="item">
+    <img src="images/enemy-1.webp" alt="عمر">
+    <p>شکست عمر ( 8000 قدرت)</p>
+    <div class="btn-group">
+      <button class="fight-btn" onclick="defeatEnemy(8000, 'omar')">حمله!</button>
+      <span id="check-omar" class="check">✔</span>
+    </div>
+  </div>
+  <div class="item">
+    <img src="images/enemy-2.webp" alt="جاسون">
+    <p>شکست جاسوس ها ( 10000 قدرت)</p>
+    <div class="btn-group">
+      <button class="fight-btn" onclick="defeatEnemy(10000, 'jason')">حمله!</button>
+      <span id="check-jason" class="check">✔</span>
+    </div>
+  </div>
+  <div class="item">
+    <img src="images/enemy-3.webp" alt="مناطق مرزی">
+    <p>فتح مناطق مرزی ( 15000 قدرت)</p>
+    <div class="btn-group">
+      <button class="fight-btn" onclick="defeatEnemy(15000, 'borders')">حمله!</button>
+      <span id="check-borders" class="check">✔</span>
+    </div>
+  </div>
+  <div class="item">
+    <img src="images/enemy-4.webp" alt="شمر">
+    <p>شکست شمر ( 20000 قدرت)</p>
+    <div class="btn-group">
+      <button class="fight-btn" onclick="defeatEnemy(20000, 'shemr')">حمله!</button>
+      <span id="check-shemr" class="check">✔</span>
+    </div>
+  </div>
+  <div class="item">
+    <img src="images/enemy-5.webp" alt="حرمله">
+    <p>شکست حرمله ( 35000 قدرت)</p>
+    <div class="btn-group">
+      <button class="fight-btn" onclick="defeatEnemy(35000, 'hormala')">حمله!</button>
+      <span id="check-hormala" class="check">✔</span>
+    </div>
+  </div>
+  <div class="item">
+    <img src="images/enemy-6.webp" alt="کوفه">
+    <p>فتح کوفه ( 45000 قدرت)</p>
+    <div class="btn-group">
+      <button class="fight-btn" onclick="defeatEnemy(45000, 'kufa')">حمله!</button>
+      <span id="check-kufa" class="check">✔</span>
+    </div>
+  </div>
+  <div class="item">
+    <img src="images/enemy-7.webp" alt="معاویه">
+    <p>شکست ابن زیاد ( 50000 قدرت)</p>
+    <div class="btn-group">
+      <button class="fight-btn" onclick="defeatEnemy(50000, 'moavieh')">حمله!</button>
+      <span id="check-moavieh" class="check">✔</span>
+    </div>
+  </div>
+  <div class="item">
+    <img src="images/enemy-8.webp" alt="زبیری‌ها">
+    <p>شکست زبیری‌ها ( 65000 قدرت)</p>
+    <div class="btn-group">
+      <button class="fight-btn" onclick="defeatEnemy(65000, 'zobayri')">حمله!</button>
+      <span id="check-zobayri" class="check">✔</span>
+    </div>
+  </div>
+  <div class="item">
+    <img src="images/enemy-9.webp" alt="مکه">
+    <p>بازپس‌گیری مکه ( 80000 قدرت)</p>
+    <div class="btn-group">
+      <button class="fight-btn" onclick="defeatEnemy(80000, 'mekka')">حمله!</button>
+      <span id="check-mekka" class="check">✔</span>
+    </div>
+  </div>
+  <div class="item">
+    <img src="images/enemy-10.webp" alt="شام">
+    <p>فتح شام ( 100000 قدرت)</p>
+    <div class="btn-group">
+      <button class="fight-btn" onclick="defeatEnemy(100000, 'sham')">حمله!</button>
+      <span id="check-sham" class="check">✔</span>
+    </div>
+  </div>
+
+    <div class="item">
+    <img src="images/enemy-12.webp" alt="شکست ارتش معاویه">
+    <p>شکست ارتش معاویه ( 150000 قدرت)</p>
+    <div class="btn-group">
+      <button class="fight-btn" onclick="defeatEnemy(150000, 'crown')">حمله!</button>
+      <span id="check-crown" class="check">✔</span>
+    </div>
+  </div>
+
+  <div class="item">
+    <img src="images/enemy-11.webp" alt="تاج و تخت">
+    <p>بازپس‌گیری تاج و تخت ( 200000 قدرت)</p>
+    <div class="btn-group">
+      <button class="fight-btn" onclick="defeatEnemy(200000, 'crown')">حمله!</button>
+      <span id="check-crown" class="check">✔</span>
+    </div>
+  </div>
+</div>
+
+<a href="index.html" class="back-btn">بازگشت به بازی</a>
+
+<script>
+  function openTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    document.querySelector(`[onclick="openTab('${tab}')"]`).classList.add('active');
+    document.getElementById(tab).classList.add('active');
+  }
+
+  function defeatEnemy(requiredPower, id) {
+     let power = parseInt(localStorage.getItem("power")) || 0;
+  if (power >= requiredPower) {
+    power -= requiredPower;
+    localStorage.setItem("power", power);
+    document.getElementById("check-" + id).style.display = "inline";
+    alert("🎉 دشمن شکست خورد!");
+    updatePower();
+  } else {
+    alert("❌ قدرت کافی نداری!");
+  }
+  }
+
+  function updatePower() {
+    let power = parseInt(localStorage.getItem("power")) || 0;
+    document.getElementById("totalPower").innerText = power;
+  }
+
+  function loadLevels() {
+  let items = ['wheat', 'wall', 'tower', 'soldier_house', 'kingdom_affairs', 'grain_supplies'];
+  let costs = {
+    wheat: 350,
+    wall: 400,
+    tower: 550,
+    soldier_house: 600,
+    kingdom_affairs: 1000,
+    grain_supplies: 1200
+  };
+
+  items.forEach(item => {
+    let level = parseInt(localStorage.getItem("level-" + item)) || 1;
+    document.getElementById("level-" + item).innerText = level;
+    document.getElementById("cost-" + item).innerText = "قدرت: " + (costs[item] + (level) * 300);
+  });
+}
+
+updatePower();
+loadLevels();
+
+
+
+  function upgradeItem(item) {
+    let power = parseInt(localStorage.getItem("power")) || 0;
+    let key = "level-" + item;
+    let level = parseInt(localStorage.getItem(key)) || 1;
+    
+    // هزینه ارتقا برای هر آیتم خاص
+    let costs = {
+      wheat: 350,
+      wall: 400,
+      tower: 550,
+      soldier_house: 600,
+      kingdom_affairs: 1000,
+      grain_supplies: 1200
+    };
+    
+    let upgradeCost = costs[item] + (level - 1) * 300; // افزایش قیمت به ازای هر سطح
+    
+    if (power >= upgradeCost) {
+      level++;
+      localStorage.setItem(key, level);
+      localStorage.setItem("power", power - upgradeCost); // قدرت کم می‌شود
+      document.getElementById("level-" + item).innerText = level;
+      document.getElementById("cost-" + item).innerText = "قدرت: " + (costs[item] + (level) * 300); // هزینه جدید
+      alert(item + " به لول " + level + " رسید!");
+    } else {
+      alert("❌ قدرت کافی نداری!");
+    }
+    updatePower();
+  }
+
+  updatePower();
+</script>
+
+</body>
+</html>

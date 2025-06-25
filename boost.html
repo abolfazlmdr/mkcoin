@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Boost Cards</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: 'Vazirmatn', sans-serif;
+      margin: 0;
+      padding: 20px;
+      direction: rtl;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      background: linear-gradient(45deg, #f0b90b, #ff9900);
+      border: none;
+      color: #000;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .back-btn:hover {
+      opacity: 0.85;
+    }
+
+    .back-icon {
+      font-size: 16px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    #coin-count {
+      font-size: 16px;
+      color: #f0b90b;
+      margin-bottom: 25px;
+      text-align: center;
+    }
+
+    .boost-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 15px;
+    }
+
+    .card {
+      background: #1c1c1e;
+      border-radius: 20px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      margin: 6px 0;
+      color: #fff;
+    }
+
+    .card .earn {
+      color: #f0b90b;
+      font-size: 14px;
+      font-weight: bold;
+      margin: 5px 0;
+    }
+
+    .level-price {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: #ccc;
+      border-top: 1px solid #333;
+      padding-top: 8px;
+      margin-top: 8px;
+    }
+
+    .upgrade-btn {
+      background: #f0b90b;
+      color: #000;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+      font-size: 13px;
+      transition: 0.3s;
+    }
+
+    .upgrade-btn:hover {
+      background: #ff9900;
+    }
+
+    #total-power {
+      margin-top: 30px;
+      font-size: 18px;
+      text-align: center;
+      color: #f0b90b;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <button class="back-btn" onclick="window.location.href='index.html'">
+      <span class="back-icon">←</span> بازگشت
+    </button>
+  </div>
+
+  <h1>بخش ارتقا</h1>
+  <div id="coin-count">💰 سکه: 0</div>
+
+  <div class="boost-section">
+    <div class="card" data-price="500" data-power="150" data-level="1">
+      <img src="images/boost-1.webp" alt="Boost 1">
+      <h3>کیان ایرانی</h3>
+      <p class="earn">💪 قدرت: 150</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 500</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="1000" data-power="500" data-level="1">
+      <img src="images/boost-2.webp" alt="Boost 2">
+      <h3>BTC Pair</h3>
+      <p class="earn">💪 قدرت: 500</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 1000</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="250" data-power="50" data-level="1">
+      <img src="images/boost-3.webp" alt="Boost 3">
+      <h3>Game Tokens</h3>
+      <p class="earn">💪 قدرت: 50</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 250</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="1200" data-power="500" data-level="1">
+      <img src="images/boost-4.webp" alt="Boost 3">
+      <h3>مختارنامه</h3>
+      <p class="earn">💪 قدرت : 500</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 1200</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="1450" data-power="600" data-level="1">
+      <img src="images/boost-5.webp" alt="Boost 3">
+      <h3>ابراهیم مالک اشتر</h3>
+      <p class="earn">💪 قدرت : 600</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 1450</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+<div class="card" data-price="400" data-power="150" data-level="1">
+      <img src="images/boost-6.webp" alt="Boost 3">
+      <h3>اسب مختار</h3>
+      <p class="earn">💪 قدرت : 150</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 400</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="350" data-power="100" data-level="1">
+      <img src="images/boost-7.webp" alt="Boost 3">
+      <h3>بلاکچین</h3>
+      <p class="earn">💪 قدرت : 150</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 350</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="350" data-power="150" data-level="1">
+      <img src="images/boost-8.webp" alt="Boost 3">
+      <h3>شمشیر ابی</h3>
+      <p class="earn">💪 قدرت : 150</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 350</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+    
+<div class="card" data-price="1500" data-power="600" data-level="1">
+      <img src="images/boost-9.webp" alt="Boost 3">
+      <h3>مسلم ابن عقیل</h3>
+      <p class="earn">💪 قدرت : 600</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 1500</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="300" data-power="100" data-level="1">
+      <img src="images/boost-10.webp" alt="Boost 3">
+      <h3>لایسنس ایران</h3>
+      <p class="earn">💪 قدرت : 100</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 300</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="150" data-power="50" data-level="1">
+      <img src="images/boost-11.webp" alt="Boost 3">
+      <h3>لایسنس عراق</h3>
+       <p class="earn">💪 قدرت : 50</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 150</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="300" data-power="100" data-level="1">
+      <img src="images/boost-12.webp" alt="Boost 3">
+      <h3>web 3</h3>
+      <p class="earn">💪 قدرت : 100</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 300</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+     <div class="card" data-price="900" data-power="350" data-level="1">
+      <img src="images/boost-13.webp" alt="Boost 3">
+      <h3>میم رضا پیشرو</h3>
+      <p class="earn">💪 قدرت : 350</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 900</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+     <div class="card" data-price="1200" data-power="550" data-level="1">
+      <img src="images/boost-14.webp" alt="Boost 3">
+      <h3>میم ابواسحاق</h3>
+      <p class="earn">💪 قدرت : 550</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 1200</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+     <div class="card" data-price="1600" data-power="500" data-level="1">
+      <img src="images/boost-15.webp" alt="Boost 3">
+      <h3>مختار در نبرد</h3>
+      <p class="earn">💪 قدرت : 500</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 1600</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+     <div class="card" data-price="300" data-power="145" data-level="1">
+      <img src="images/boost-16.webp" alt="Boost 3">
+      <h3>عبدالله بن زبیر</h3>
+      <p class="earn">💪 قدرت : 145</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 300</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="250" data-power="160" data-level="1">
+      <img src="images/boost-17.webp" alt="Boost 3">
+      <h3>میم تموم شد؟</h3>
+      <p class="earn">💪 قدرت : 160</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 250</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+ <div class="card" data-price="550" data-power="350" data-level="1">
+      <img src="images/boost-18.webp" alt="Boost 3">
+      <h3>شرک</h3>
+      <p class="earn">💪 قدرت : 350</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 550</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="500" data-power="200" data-level="1">
+      <img src="images/boost-19.webp" alt="Boost 3">
+      <h3>میم عجب سوسیسه</h3>
+      <p class="earn">💪 قدرت : 200</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 500</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+<div class="card" data-price="800" data-power="400" data-level="1">
+      <img src="images/boost-20.webp" alt="Boost 3">
+      <h3>لایسنس شهر کوفه</h3>
+      <p class="earn">💪 قدرت : 400</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 800</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="1000" data-power="500" data-level="1">
+      <img src="images/boost-21.webp" alt="Boost 3">
+      <h3>میثم تمار</h3>
+      <p class="earn">💪 قدرت : 500</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 1000</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="245" data-power="145" data-level="1">
+      <img src="images/boost-22.webp" alt="Boost 3">
+      <h3>tonkeeper</h3>
+      <p class="earn">💪 قدرت : 145</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 245</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="600" data-power="300" data-level="1">
+      <img src="images/boost-23.webp" alt="Boost 3">
+      <h3>pavel durov</h3>
+      <p class="earn">💪 قدرت : 300</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 600</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="4000" data-power="700" data-level="1">
+      <img src="images/boost-24.webp" alt="Boost 3">
+      <h3>لایسنس تخت جمشید</h3>
+      <p class="earn">💪 قدرت : 700</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 4000</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+ <div class="card" data-price="800" data-power="350" data-level="1">
+      <img src="images/boost-25.webp" alt="Boost 3">
+      <h3>لایسنس خلیج فارس</h3>
+      <p class="earn">💪 قدرت : 350</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 800</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="450" data-power="120" data-level="1">
+      <img src="images/boost-26.webp" alt="Boost 3">
+      <h3>TON</h3>
+      <p class="earn">💪 قدرت : 120</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 450</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+     <div class="card" data-price="420" data-power="110" data-level="1">
+      <img src="images/boost-27.webp" alt="Boost 3">
+      <h3>NOTCOIN</h3>
+      <p class="earn">💪 قدرت : 110</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 420</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+ <div class="card" data-price="600" data-power="200" data-level="1">
+      <img src="images/boost-28.webp" alt="Boost 3">
+      <h3>نجم الدین شریعتی</h3>
+      <p class="earn">💪 قدرت : 200</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 600</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+ <div class="card" data-price="1500" data-power="300" data-level="1">
+      <img src="images/boost-29.webp" alt="Boost 3">
+      <h3>لایسنس مکه</h3>
+      <p class="earn">💪 قدرت : 300</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 1500</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+<div class="card" data-price="1700" data-power="350" data-level="1">
+      <img src="images/boost-30.webp" alt="Boost 3">
+      <h3>NFT</h3> 
+      <p class="earn">💪 قدرت : 350</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 1700</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="2500" data-power="800" data-level="1">
+      <img src="images/boost-31.webp" alt="Boost 3">
+      <h3>یاران مختار</h3>
+      <p class="earn">💪 قدرت : 800</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 2500</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+     <div class="card" data-price="350" data-power="145" data-level="1">
+      <img src="images/boost-32.webp" alt="Boost 3">
+      <h3>میم پیرمرد خیاط</h3>
+      <p class="earn">💪 قدرت : 145</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 350</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+ <div class="card" data-price="550" data-power="350" data-level="1">
+      <img src="images/boost-33.webp" alt="Boost 3">
+      <h3>میم اقا رضا</h3>
+      <p class="earn">💪 قدرت : 800</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 550</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+     <div class="card" data-price="600" data-power="245" data-level="1">
+      <img src="images/boost-34.webp" alt="Boost 3">
+      <h3>میم علی پروین فداتشم</h3>
+      <p class="earn">💪 قدرت : 245</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 600</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+     <div class="card" data-price="600" data-power="350" data-level="1">
+      <img src="images/boost-35.webp" alt="Boost 3">
+      <h3>بتمن</h3>
+      <p class="earn">💪 قدرت : 350</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 600</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+     <div class="card" data-price="5500" data-power="1000" data-level="1">
+      <img src="images/boost-36.webp" alt="Boost 3">
+      <h3>نادرشاه</h3>
+      <p class="earn">💪 قدرت : 1000</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 5500</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+     <div class="card" data-price="6000" data-power="1200" data-level="1">
+      <img src="images/boost-37.webp" alt="Boost 3">
+      <h3>شاه عباس</h3>
+      <p class="earn">💪 قدرت : 1200</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 6000</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+     <div class="card" data-price="600" data-power="350" data-level="1">
+      <img src="images/boost-38.webp" alt="Boost 3">
+      <h3>جومونگ</h3>
+      <p class="earn">💪 قدرت : 350</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 600</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+ <div class="card" data-price="300" data-power="150" data-level="1">
+      <img src="images/boost-39.webp" alt="Boost 3">
+      <h3>تسو</h3>
+      <p class="earn">💪 قدرت : 150</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 300</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+ <div class="card" data-price="300" data-power="100" data-level="1">
+      <img src="images/boost-40.webp" alt="Boost 3">
+      <h3>یونگ پو</h3>
+      <p class="earn">💪 قدرت : 245</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 300</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+<div class="card" data-price="350" data-power="200" data-level="1">
+      <img src="images/boost-41.webp" alt="Boost 3">
+      <h3>میم خفه شو بابا</h3>
+      <p class="earn">💪 قدرت : 200</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 350</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="100" data-power="50" data-level="1">
+      <img src="images/boost-42.webp" alt="Boost 3">
+      <h3>محمد رضا گلزار</h3>
+      <p class="earn">💪 قدرت : 50</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 100</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="150" data-power="95" data-level="1">
+      <img src="images/boost-43.webp" alt="Boost 3">
+      <h3>میم جدی میفرمایید</h3>
+      <p class="earn">💪 قدرت : 95</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 150</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+<div class="card" data-price="8000" data-power="2500" data-level="1">
+      <img src="images/boost-44.webp" alt="Boost 3">
+      <h3>کوروش بزرگ</h3>
+      <p class="earn">💪 قدرت : 2500</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 8000</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="600" data-power="300" data-level="1">
+      <img src="images/boost-45.webp" alt="Boost 3">
+      <h3>بالدوین</h3>
+      <p class="earn">💪 قدرت : 300</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 600</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="350" data-power="250" data-level="1">
+      <img src="images/boost-46.webp" alt="Boost 3">
+      <h3>سائب ابن مالک اشتری</h3>
+      <p class="earn">💪 قدرت : 250</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 200</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+<div class="card" data-price="650" data-power="350" data-level="1">
+      <img src="images/boost-47.webp" alt="Boost 3">
+      <h3>پهلوان پوریا</h3>
+      <p class="earn">💪 قدرت : 350</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 650</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="250" data-power="150" data-level="1">
+      <img src="images/boost-48.webp" alt="Boost 3">
+      <h3>ایچیگو کوروساکی</h3>
+      <p class="earn">💪 قدرت : 150</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 250</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+        <div class="card" data-price="250" data-power="95" data-level="1">
+      <img src="images/boost-49.webp" alt="Boost 3">
+      <h3>BANK COIN</h3>
+      <p class="earn">💪 قدرت : 95</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 250</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="450" data-power="200" data-level="1">
+      <img src="images/boost-50.webp" alt="Boost 3">
+      <h3> سی جی</h3>
+      <p class="earn">💪 قدرت : 200</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 450</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="300" data-power="150" data-level="1">
+      <img src="images/boost-51.webp" alt="Boost 3">
+      <h3>شبکه های اجتماعی مختار</h3>
+      <p class="earn">💪 قدرت : 150</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 300</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+<div class="card" data-price="800" data-power="400" data-level="1">
+      <img src="images/boost-52.webp" alt="Boost 3">
+      <h3>دکتر استاپ</h3>
+      <p class="earn">💪 قدرت : 400</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 800</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+<div class="card" data-price="1800" data-power="900" data-level="1">
+      <img src="images/boost-53.webp" alt="Boost 3">
+      <h3>داریوش بزرگ</h3>
+      <p class="earn">💪 قدرت : 900</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 1800</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="500" data-power="310" data-level="1">
+      <img src="images/boost-54.webp" alt="Boost 3">
+      <h3>والتر وایت</h3>
+      <p class="earn">💪 قدرت : 310</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 500</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+<div class="card" data-price="450" data-power="300" data-level="1">
+      <img src="images/boost-55.webp" alt="Boost 3">
+      <h3>better call saul</h3>
+      <p class="earn">💪 قدرت : 300</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 450</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+    <div class="card" data-price="350" data-power="110" data-level="1">
+      <img src="images/boost-56.webp" alt="Boost 3">
+      <h3>یوزارسیف</h3>
+      <p class="earn">💪 قدرت : 110</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 350</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+<div class="card" data-price="500" data-power="150" data-level="1">
+      <img src="images/boost-57.webp" alt="Boost 3">
+      <h3>رونالدو</h3>
+      <p class="earn">💪 قدرت : 150</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 500</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+<div class="card" data-price="500" data-power="150" data-level="1">
+      <img src="images/boost-58.webp" alt="Boost 3">
+      <h3>مسی</h3>
+      <p class="earn">💪 قدرت : 150</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 500</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+<div class="card" data-price="240" data-power="140" data-level="1">
+      <img src="images/boost-59.webp" alt="Boost 3">
+      <h3>میم مشکل برات پیش امده؟</h3>
+      <p class="earn">💪 قدرت : 140</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 240</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+<div class="card" data-price="400" data-power="240" data-level="1">
+      <img src="images/boost-60.webp" alt="Boost 3">
+      <h3>صرافی</h3>
+      <p class="earn">💪 قدرت : 240</p>
+      <div class="level-price">
+        <span>Lvl 1</span>
+        <span>💰 400</span>
+      </div>
+      <button class="upgrade-btn">ارتقا</button>
+    </div>
+
+  </div>
+
+  <p id="total-power">قدرت کل: 0</p>
+
+ <script>
+document.addEventListener('DOMContentLoaded', () => {
+  let coinCount = localStorage.getItem('coins');
+  coinCount = coinCount !== null ? parseInt(coinCount) : 0;
+
+  const coinCountEl = document.getElementById('coin-count');
+  const cards = document.querySelectorAll('.card');
+
+  // اضافه کردن نمایش قدرت کل فقط یکبار
+  let totalPowerEl = document.getElementById('total-power');
+  if (!totalPowerEl) {
+    totalPowerEl = document.createElement('div');
+    totalPowerEl.id = 'total-power';
+    totalPowerEl.style.marginTop = '20px';
+    totalPowerEl.style.fontWeight = 'bold';
+    document.body.appendChild(totalPowerEl);
+  }
+
+  function updateCoinCount() {
+    coinCountEl.textContent = `💰 سکه: ${coinCount.toLocaleString()}`;
+  }
+
+  function updateTotalPower() {
+    let totalPower = 0;
+    cards.forEach(card => {
+      totalPower += Number(card.dataset.power) || 0;
+    });
+    totalPowerEl.textContent = `💪 قدرت کل: ${totalPower.toLocaleString()}`;
+  }
+
+  function updateCardDisplay(card) {
+    const levelSpan = card.querySelector('.level-price span:first-child');
+    const priceSpan = card.querySelector('.level-price span:last-child');
+    const earnP = card.querySelector('.earn');
+
+    const level = Number(card.dataset.level) || 1;
+    const power = Number(card.dataset.power) || 0;
+    const price = Number(card.dataset.price) || 0;
+
+    if(levelSpan) levelSpan.textContent = `Lvl ${level}`;
+    if(priceSpan) priceSpan.textContent = `💰 ${price.toLocaleString()}`;
+    if(earnP) earnP.textContent = `💪 قدرت: ${power.toLocaleString()}`;
+  }
+
+  function upgradeCard(card) {
+    const price = Number(card.dataset.price) || 0;
+    if (coinCount >= price) {
+      coinCount -= price;
+      localStorage.setItem('coins', coinCount); // ذخیره سکه
+
+      card.dataset.level = (Number(card.dataset.level) || 1) + 1;
+      card.dataset.power = Math.floor((Number(card.dataset.power) || 0) * 1.2);
+      card.dataset.price = Math.floor(price * 1.3);
+
+      updateCardDisplay(card);
+      updateCoinCount();
+      updateTotalPower();
+    } else {
+      alert('سکه کافی نیست!');
+    }
+  }
+
+  // اتصال رویداد کلیک برای هر کارت
+  cards.forEach(card => {
+    const btn = card.querySelector('.upgrade-btn');
+    if(btn){
+      btn.addEventListener('click', () => upgradeCard(card));
+      updateCardDisplay(card);
+    }
+  });
+
+  updateCoinCount();
+  updateTotalPower();
+});
+</script>
+
+
+</body>
+</html>

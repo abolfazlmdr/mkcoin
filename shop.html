@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8" />
+<meta name="robots" content="noindex, nofollow">
+<title>شاپ کد فروشی</title>
+<style>
+  body {
+     font-family: Tahoma, sans-serif;
+     direction: rtl;
+     padding: 30px;
+     background-color: #000;
+     color: #eee;
+     text-align: center;
+     min-height: 100vh;
+     position: relative;
+     overflow-x: hidden;
+  }
+
+  /* لایه مشکی مات کل صفحه */
+  .overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* محتوا بالاتر از overlay */
+  .content {
+    position: relative;
+    z-index: 1;
+  }
+
+  h2 {
+    color: #eee;
+    margin-bottom: 10px;
+  }
+
+  .notice-box {
+    background-color: #444444cc; /* خاکستری تیره با شفافیت */
+    color: #ffcc00;
+    border: 1px solid #ffaa00;
+    border-radius: 8px;
+    padding: 12px 20px;
+    margin: 10px auto 25px auto;
+    max-width: 400px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  #backBtn {
+    background-color: #d32f2f;
+    color: #fff;
+    margin-bottom: 25px;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  #backBtn:hover {
+    background-color: #f44336;
+  }
+
+  input[type="text"] {
+    padding: 12px 15px;
+    width: 250px;
+    font-size: 16px;
+    border: 2px solid #666;
+    border-radius: 10px;
+    outline: none;
+    transition: 0.3s;
+    text-align: center;
+    background-color: #222;
+    color: #eee;
+  }
+
+  input[type="text"]:focus {
+    border-color: #2196f3;
+  }
+
+  button {
+    padding: 12px 20px;
+    margin-right: 10px;
+    font-size: 16px;
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background-color: #1976d2;
+  }
+
+  #message {
+    margin-top: 20px;
+    font-size: 15px;
+    color: #66ff66;
+    min-height: 22px;
+  }
+
+  #message.error {
+    color: #ff6666;
+  }
+
+  #coinCount {
+    font-weight: bold;
+    font-size: 20px;
+    color: #eee;
+  }
+
+  .coinBox {
+    margin-top: 30px;
+    font-size: 18px;
+    background: #222;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(255,255,255,0.1);
+  }
+</style>
+</head>
+<body>
+
+  <div class="overlay"></div>
+
+  <div class="content">
+    <button id="backBtn">← بازگشت به تسک</button>
+
+    <h2>کد خریداری شده را وارد کنید</h2>
+    <div class="notice-box">
+      فقط از پشتیبانی رسمی خرید انجام دهید تا اکانت شما دچار بن نشود
+    </div>
+
+    <input type="text" id="promoCodeInput" placeholder="کد را اینجا وارد کنید" autocomplete="off" />
+    <button id="applyPromoCodeBtn">اعمال کد</button>
+
+    <div id="message"></div>
+
+    <div class="coinBox">
+      سکه‌های شما: <span id="coinCount">0</span>
+    </div>
+  </div>
+
+<script>
+  // دکمه بازگشت
+  document.getElementById('backBtn').addEventListener('click', () => {
+    window.location.href = "task.html"; // لینک صفحه تسک
+  });
+
+  // لیست کدهای معتبر (قابل گسترش)
+  let validPromoCodes = ['8D3G9F2K', 'X7HJ9L3M', '4RPT8VQ2'];
+
+  // مقدار اولیه سکه‌ها از localStorage (کل پروژه اصلی شما نام کلید coins بود، اینجا هم برای سازگاری از coins استفاده می‌کنیم)
+  let coins = parseInt(localStorage.getItem('coins')) || 0;
+
+  // آرایه کدهای استفاده شده (از localStorage بارگذاری می‌شود)
+  let usedPromoCodes = JSON.parse(localStorage.getItem('usedPromoCodes')) || [];
+
+  const coinCountSpan = document.getElementById('coinCount');
+  const messageDiv = document.getElementById('message');
+  const promoCodeInput = document.getElementById('promoCodeInput');
+  const applyPromoCodeBtn = document.getElementById('applyPromoCodeBtn');
+
+  // نمایش مقدار اولیه سکه
+  coinCountSpan.textContent = coins.toLocaleString();
+
+  // تابع نمایش پیام
+  function showMessage(text, isError = false) {
+    messageDiv.textContent = text;
+    if (isError) {
+      messageDiv.classList.add('error');
+    } else {
+      messageDiv.classList.remove('error');
+    }
+  }
+
+  // رویداد کلیک روی دکمه اعمال کد
+  applyPromoCodeBtn.addEventListener('click', () => {
+    const code = promoCodeInput.value.trim().toUpperCase();
+
+    if (!code) {
+      showMessage('لطفا کد را وارد کنید.', true);
+      return;
+    }
+
+    if (!validPromoCodes.includes(code)) {
+      showMessage('کد معتبر نیست.', true);
+      return;
+    }
+
+    if (usedPromoCodes.includes(code)) {
+      showMessage('این کد قبلا استفاده شده است.', true);
+      return;
+    }
+
+    // افزودن سکه
+    coins += 45000;
+
+    // ذخیره کد استفاده شده
+    usedPromoCodes.push(code);
+
+    // حذف کد از لیست کدهای معتبر تا دیگر قابل استفاده نباشد
+    validPromoCodes = validPromoCodes.filter(c => c !== code);
+
+    // ذخیره مقادیر در localStorage
+    localStorage.setItem('coins', coins);
+    localStorage.setItem('usedPromoCodes', JSON.stringify(usedPromoCodes));
+
+    // به‌روزرسانی نمایش سکه‌ها
+    coinCountSpan.textContent = coins.toLocaleString();
+
+    // پیام موفقیت
+    showMessage('کد اعمال شد! ۴۵۰۰۰ سکه اضافه شد.');
+
+    // خالی کردن فیلد ورودی
+    promoCodeInput.value = '';
+  });
+
+</script>
+
+</body>
+</html>

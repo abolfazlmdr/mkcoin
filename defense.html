@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>بخش دفاع</title>
+  <style>
+    body {
+      font-family: Vazir, sans-serif;
+      direction: rtl;
+      background: #1b1b1b;
+      color: #f1f1f1;
+      padding: 20px;
+      text-align: center;
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #ffcc00;
+    }
+
+    .coin-box {
+      font-size: 24px;
+      background: #333;
+      padding: 12px;
+      border-radius: 10px;
+      display: inline-block;
+      margin: 15px 0;
+      border: 1px solid #555;
+    }
+
+    img.enemy {
+      width: 360px;
+      height: 200px;
+      border-radius: 16px;
+      margin: 20px 0 10px;
+      object-fit: cover;
+      border: 3px solid #444;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .info {
+      margin: 10px 0;
+      font-size: 18px;
+      line-height: 2;
+      background: #292929;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #444;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #444;
+      margin: 20px 0;
+    }
+
+    #attackMessage {
+      margin-top: 20px;
+      color: #ff5555;
+      font-size: 19px;
+      padding: 10px;
+      background: #2b2b2b;
+      border-radius: 8px;
+      display: inline-block;
+      border: 1px solid #ff3333;
+    }
+
+    #countdown {
+      margin-top: 15px;
+      font-size: 18px;
+      color: #ccc;
+    }
+
+    button {
+      padding: 10px 22px;
+      font-size: 16px;
+      margin: 12px 6px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #444;
+      color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #666;
+    }
+
+    button:active {
+      transform: scale(0.96);
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🏰 بخش دفاع</h2>
+
+  <div id="coinDisplay" class="coin-box">💰 سکه: 0</div>
+
+  <div>
+    <img src="images/def.png" alt="دشمن" class="enemy">
+  </div>
+
+  <div class="info">
+    <strong>نام دشمن:</strong> قبیله تاریکی<br>
+    <strong>هدف:</strong>نابودی امپراطوری شما <br>
+    <strong>رئیس دشمن:</strong> شبح سیاه
+  </div>
+
+  <hr>
+
+  <div id="attackMessage">در حال بررسی وضعیت دفاع...</div>
+  <div id="countdown">زمان باقی‌مانده تا حمله بعدی: ---</div>
+
+  <button onclick="goBack()">بازگشت</button>
+
+  <script>
+    let coins = parseInt(localStorage.getItem("coins")) || 50000;
+    document.getElementById("coinDisplay").innerText = "💰 سکه: " + coins;
+
+    function saveCoins() {
+      localStorage.setItem("coins", coins);
+      document.getElementById("coinDisplay").innerText = "💰 سکه: " + coins;
+    }
+
+    function attack() {
+      const resources = ["انبار گندم", "دیوار دفاعی", "سربازخانه", "برج دیده‌بانی"];
+      const attackedResource = resources[Math.floor(Math.random() * resources.length)];
+      const damage = Math.floor(Math.random() * (3000 - 1500 + 1)) + 1500;
+
+      coins -= damage;
+      saveCoins();
+
+      const message = `❗️ دشمن به ${attackedResource} حمله کرد و ${damage} سکه از شما کم شد.`;
+      document.getElementById("attackMessage").innerText = message;
+
+      localStorage.setItem("lastAttackTime", Date.now());
+    }
+
+    function checkAttackTimer() {
+      const lastAttackTime = parseInt(localStorage.getItem("lastAttackTime")) || 0;
+      const now = Date.now();
+      const twelveHours = 12 * 60 * 60 * 1000;
+      const timePassed = now - lastAttackTime;
+
+      if (timePassed >= twelveHours) {
+        attack();
+      }
+    }
+
+   function updateCountdown() {
+  const lastAttackTime = parseInt(localStorage.getItem("lastAttackTime")) || 0;
+  const now = Date.now();
+  const twelveHours = 12 * 60 * 60 * 1000;
+  const timeLeft = twelveHours - (now - lastAttackTime);
+
+  if (timeLeft <= 0) {
+    document.getElementById("countdown").innerText = "حمله انجام شد. در حال آماده‌سازی حمله بعدی...";
+    return;
+  }
+
+  const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+  const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+  // افزودن صفر پیشوند برای ساعت، دقیقه و ثانیه
+  const hStr = hours.toString().padStart(2, '0');
+  const mStr = minutes.toString().padStart(2, '0');
+  const sStr = seconds.toString().padStart(2, '0');
+
+  document.getElementById("countdown").innerText = 
+    `زمان باقی‌مانده تا حمله بعدی: ${hStr}:${mStr}:${sStr}`;
+}
+
+
+    function goBack() {
+      history.back();
+    }
+
+    // شروع کار
+    checkAttackTimer();
+    updateCountdown();
+    setInterval(updateCountdown, 1000); // هر ثانیه تایمر به‌روز شه
+  </script>
+
+</body>
+</html>
