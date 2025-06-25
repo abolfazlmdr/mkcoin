@@ -823,13 +823,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateTotalPower() {
-    let totalPower = 0;
-    cards.forEach((card, index) => {
-      const cardData = getCardData(index);
-      totalPower += Number(cardData.power);
-    });
-    totalPowerEl.textContent = `💪 قدرت کل: ${totalPower.toLocaleString()}`;
-  }
+  let totalPower = 0;
+  cards.forEach((card, index) => {
+    const cardData = getCardData(index);
+    totalPower += Number(cardData.power);
+  });
+  totalPowerEl.textContent = `💪 قدرت کل: ${totalPower.toLocaleString()}`;
+  localStorage.setItem('totalPower', totalPower); // <-- این خط جدید
+}
 
   function updateCardDisplay(card, index) {
     const levelSpan = card.querySelector('.level-price span:first-child');

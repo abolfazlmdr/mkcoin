@@ -200,6 +200,9 @@
     a:focus {
       outline: none;
     }
+    img:focus {
+  outline: none;
+}
   </style>
 </head>
 <body>
@@ -293,11 +296,11 @@
       }
     }
 
-    function updatePower() {
-      let totalPower = parseInt(localStorage.getItem("power")) || 0;
-      let multitapPower = parseInt(localStorage.getItem("multitapPower")) || 1;
-      document.getElementById("powerValue").innerText = (totalPower + multitapPower).toLocaleString();
-    }
+   function updatePower() {
+  let totalPower = parseInt(localStorage.getItem("totalPower")) || 0;
+  let multitapPower = parseInt(localStorage.getItem("multitapPower")) || 1;
+  document.getElementById("powerValue").innerText = (totalPower + multitapPower).toLocaleString();
+}
 
     document.getElementById("clickBtn").addEventListener("click", function () {
       if (energyValue >= multitapPower) {
