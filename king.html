@@ -311,14 +311,28 @@
 
 function defeatEnemy(requiredPower, id) {
   let power = parseInt(localStorage.getItem("totalPower")) || 0;
+  let defeatedKey = "defeated-" + id;
+
   if (power >= requiredPower) {
-    power -= requiredPower;
-    localStorage.setItem("totalPower", power);
-    document.getElementById("check-" + id).style.display = "inline";
-    alert("🎉 دشمن شکست خورد!");
-    updatePower();
+    if (!localStorage.getItem(defeatedKey)) { // فقط اگر قبلا شکست داده نشده باشه
+      power -= requiredPower;
+      localStorage.setItem("totalPower", power);
+      localStorage.setItem(defeatedKey, "true"); // ذخیره شکست دشمن
+      alert("🎉 دشمن شکست خورد!");
+      showDefeatCheck(id, true);
+      updatePower();
+    } else {
+      alert("این دشمن قبلا شکست خورده!");
+    }
   } else {
     alert("❌ قدرت کافی نداری!");
+  }
+}
+
+function showDefeatCheck(id, show) {
+  const el = document.getElementById("check-" + id);
+  if (el) {
+    el.style.display = show ? "inline" : "none";
   }
 }
 
@@ -374,9 +388,19 @@ function upgradeItem(item) {
   updatePower();
 }
 
+function loadDefeatedEnemies() {
+  let enemies = ['omar', 'jason', 'borders', 'shemr', 'hormala', 'kufa', 'moavieh', 'zobayri', 'mekka', 'sham', 'crown'];
+  enemies.forEach(id => {
+    let defeated = localStorage.getItem("defeated-" + id);
+    showDefeatCheck(id, defeated === "true");
+  });
+}
+
 // اجرای اولیه
 updatePower();
 loadLevels();
+loadDefeatedEnemies();
+
 
 </script>
 
