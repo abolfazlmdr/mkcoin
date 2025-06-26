@@ -124,7 +124,6 @@
       border-radius: 8px;
     }
 
-    /* Container for link and copy button */
     .ref-link-container {
       display: flex;
       justify-content: center;
@@ -132,19 +131,6 @@
       gap: 5px;
       max-width: 400px;
       margin: 0 auto 15px;
-    }
-
-    /* نکته پایین صفحه */
-    #noteBox {
-      background: #222;
-      color: #ffd700;
-      font-size: 16px;
-      padding: 15px 20px;
-      border-radius: 12px;
-      max-width: 500px;
-      margin: 30px auto 10px auto;
-      box-shadow: 0 0 10px #ffd700aa;
-      user-select: none;
     }
   </style>
 </head>
@@ -173,14 +159,6 @@
     </div>
 
     <div class="info">💰 سکه‌های شما: <span id="myCoins">0</span></div>
-    <div class="info">👥 تعداد دعوتی‌ها: <span id="myInvites">0</span></div>
-
-    <button onclick="claimReward()">📦 دریافت جایزه</button>
-  </div>
-
-  <!-- کادر نکته پایین صفحه -->
-  <div id="noteBox">
-    برای ساخت لینک دعوت و دریافت ۵۰۰ سکه به ازای هر دعوت، حتما باید ثبت‌نام کنید.
   </div>
 
   <script>
@@ -191,7 +169,6 @@
     }
 
     function generateUUID() {
-      // ساخت UUID نسخه 4 ساده
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
@@ -212,10 +189,6 @@
         localStorage.setItem('myUserID', newUUID);
       }
 
-      if (!localStorage.getItem('inviteCount_' + localStorage.getItem('myUserID'))) {
-        localStorage.setItem('inviteCount_' + localStorage.getItem('myUserID'), 0);
-      }
-
       showUserInfo();
     }
 
@@ -233,35 +206,6 @@
       document.getElementById('myCoins').innerText = coins;
       document.getElementById('headerCoins').innerText = coins;
       document.getElementById('coinHeader').style.display = 'block';
-
-      const invites = localStorage.getItem('inviteCount_' + userID) || 0;
-      document.getElementById('myInvites').innerText = invites;
-    }
-
-    function claimReward() {
-      const userID = localStorage.getItem('myUserID');
-      if (!userID) {
-        alert('اول ثبت نام کن!');
-        return;
-      }
-
-      const referralCode = localStorage.getItem('referralCode');
-      if (referralCode) {
-        let coins = parseInt(localStorage.getItem('coins') || 0);
-        coins += 500;
-        localStorage.setItem('coins', coins);
-
-        let inviteCount = parseInt(localStorage.getItem('inviteCount_' + referralCode) || 0);
-        inviteCount += 1;
-        localStorage.setItem('inviteCount_' + referralCode, inviteCount);
-
-        alert('به ' + referralCode + '، ۵۰۰ سکه و ۱ دعوتی اضافه شد!');
-        localStorage.removeItem('referralCode');
-      } else {
-        alert('رفرالی ثبت نشده یا قبلاً جایزه را گرفته‌ای.');
-      }
-
-      showUserInfo();
     }
 
     function goBackToIndex() {
@@ -277,7 +221,6 @@
       });
     }
 
-    // آپدیت لحظه‌ای سکه‌ها هر 1 ثانیه
     setInterval(() => {
       const coins = localStorage.getItem('coins') || 0;
       document.getElementById('myCoins').innerText = coins;
