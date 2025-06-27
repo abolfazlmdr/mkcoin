@@ -361,10 +361,17 @@ function showDefeatCheck(id, show) {
   }
 }
 
-function updatePower() {
-  let power = parseInt(localStorage.getItem("totalPower")) || 0;
-  document.getElementById("totalPower").innerText = power.toLocaleString();
+function showDefeatCheck(id, show) {
+  const el = document.getElementById("check-" + id);
+  if (el) {
+    el.style.display = show ? "inline" : "none";
+  }
+  const btn = el?.parentElement.querySelector(".fight-btn");
+  if (btn) {
+    btn.style.display = show ? "none" : "inline-block";
+  }
 }
+
 
 function loadLevels() {
   let items = ['wheat', 'wall', 'tower', 'soldier_house', 'kingdom_affairs', 'grain_supplies'];
