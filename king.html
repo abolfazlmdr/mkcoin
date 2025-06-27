@@ -118,8 +118,8 @@
 <div class="power-display">قدرت کل: <span id="totalPower">0</span></div>
 
 <div class="tabs">
-  <div class="tab-btn active" onclick="openTab('upgrades')">ارتقا آیتم‌ها</div>
-  <div class="tab-btn" onclick="openTab('battles')">نبرد و مراحل</div>
+ <div id="btn-upgrades" class="tab-btn active" onclick="openTab('upgrades')">ارتقا آیتم‌ها</div>
+<div id="btn-battles" class="tab-btn" onclick="openTab('battles')">نبرد و مراحل</div>
   <div class="tab-btn" onclick="window.location.href='defense.html'">بخش دفاع</div>
 </div>
 
@@ -340,7 +340,7 @@
  function openTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-  document.querySelector(`[onclick="openTab('${tab}')"]`).classList.add('active');
+  document.getElementById("btn-" + tab).classList.add('active');
   document.getElementById(tab).classList.add('active');
 }
 
@@ -349,10 +349,10 @@ function defeatEnemy(requiredPower, id) {
   let defeatedKey = "defeated-" + id;
 
   if (power >= requiredPower) {
-    if (!localStorage.getItem(defeatedKey)) { // فقط اگر قبلا شکست داده نشده باشه
+    if (!localStorage.getItem(defeatedKey)) {
       power -= requiredPower;
       localStorage.setItem("totalPower", power);
-      localStorage.setItem(defeatedKey, "true"); // ذخیره شکست دشمن
+      localStorage.setItem(defeatedKey, "true");
       alert("🎉 دشمن شکست خورد!");
       showDefeatCheck(id, true);
       updatePower();
@@ -366,13 +366,9 @@ function defeatEnemy(requiredPower, id) {
 
 function showDefeatCheck(id, show) {
   const el = document.getElementById("check-" + id);
-  if (el) {
-    el.style.display = show ? "inline" : "none";
-  }
+  if (el) el.style.display = show ? "inline" : "none";
   const btn = el?.parentElement.querySelector(".fight-btn");
-  if (btn) {
-    btn.style.display = show ? "none" : "inline-block";
-  }
+  if (btn) btn.style.display = show ? "none" : "inline-block";
 }
 
 function updatePower() {
@@ -380,10 +376,8 @@ function updatePower() {
   document.getElementById("totalPower").innerText = power.toLocaleString();
 }
 
-
 function loadLevels() {
   let items = ['wheat', 'wall', 'tower', 'soldier_house', 'kingdom_affairs', 'grain_supplies'];
-
   let costs = {
     wheat: 350,
     wall: 400,
@@ -394,15 +388,14 @@ function loadLevels() {
   };
 
   items.forEach(item => {
-    let level = parseInt(localStorage.getItem("level-" + item)) || 1;
-    document.getElementById("level-" + item).innerText = level;
-    document.getElementById("cost-" + item).innerText = "قدرت: " + (costs[item] + (level) * 300).toLocaleString();
+    let key = "level-" + item;
+    if (!localStorage.getItem(key)) {
+      localStorage.setItem(key, 1);
+    }
   });
-}
-
 
   items.forEach(item => {
-    let level = parseInt(localStorage.getItem("level-" + item)) || 1;
+    let level = parseInt(localStorage.getItem("level-" + item));
     document.getElementById("level-" + item).innerText = level;
     document.getElementById("cost-" + item).innerText = "قدرت: " + (costs[item] + (level) * 300).toLocaleString();
   });
@@ -411,7 +404,7 @@ function loadLevels() {
 function upgradeItem(item) {
   let power = parseInt(localStorage.getItem("totalPower")) || 0;
   let key = "level-" + item;
-  let level = parseInt(localStorage.getItem(key)) || 1;
+  let level = parseInt(localStorage.getItem(key));
 
   let costs = {
     wheat: 350,
@@ -445,13 +438,10 @@ function loadDefeatedEnemies() {
   });
 }
 
-
 // اجرای اولیه
 updatePower();
 loadLevels();
 loadDefeatedEnemies();
-
-
 </script>
 
 </body>
