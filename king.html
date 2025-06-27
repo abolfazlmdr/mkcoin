@@ -382,7 +382,7 @@ function updatePower() {
 
 
 function loadLevels() {
-  let enemies = ['aghaz', 'piman', 'biat', 'omar', 'jason', 'borders', 'shemr', 'hormala', 'kufa', 'moavieh', 'zobayri', 'mekka', 'sham', 'crown1', 'crown2'];
+  let items = ['wheat', 'wall', 'tower', 'soldier_house', 'kingdom_affairs', 'grain_supplies'];
 
   let costs = {
     wheat: 350,
@@ -392,6 +392,14 @@ function loadLevels() {
     kingdom_affairs: 1000,
     grain_supplies: 1200
   };
+
+  items.forEach(item => {
+    let level = parseInt(localStorage.getItem("level-" + item)) || 1;
+    document.getElementById("level-" + item).innerText = level;
+    document.getElementById("cost-" + item).innerText = "قدرت: " + (costs[item] + (level) * 300).toLocaleString();
+  });
+}
+
 
   items.forEach(item => {
     let level = parseInt(localStorage.getItem("level-" + item)) || 1;
@@ -430,12 +438,13 @@ function upgradeItem(item) {
 }
 
 function loadDefeatedEnemies() {
-  let enemies = ['omar', 'jason', 'borders', 'shemr', 'hormala', 'kufa', 'moavieh', 'zobayri', 'mekka', 'sham', 'crown'];
+  let enemies = ['aghaz', 'piman', 'biat', 'omar', 'jason', 'borders', 'shemr', 'hormala', 'kufa', 'moavieh', 'zobayri', 'mekka', 'sham', 'crown1', 'crown2'];
   enemies.forEach(id => {
     let defeated = localStorage.getItem("defeated-" + id);
     showDefeatCheck(id, defeated === "true");
   });
 }
+
 
 // اجرای اولیه
 updatePower();
