@@ -139,63 +139,84 @@
 <a href="index.html" class="back-btn">بازگشت به صفحه اصلی</a>
 
 <script>
-  let coins = parseInt(localStorage.getItem('coins') || 0);
-  let multitapLevel = parseInt(localStorage.getItem('multitapLevel') || 0);
-  let energyLevel = parseInt(localStorage.getItem('energyLevel') || 0);
+document.addEventListener('DOMContentLoaded', () => {
+  let coinCount = parseInt(localStorage.getItem('coins')) || 0;
 
-  function formatCoins(value) {
-    return value.toLocaleString('en-US');
+  const coinCountEl = document.getElementById('coins-count');
+  coinCountEl.textContent = coinCount;
+
+  // مقدار اولیه multitapPower و storage اگر نباشد
+  if (localStorage.getItem('multitapPower') === null) {
+    localStorage.setItem('multitapPower', 1);
+  }
+  if (localStorage.getItem('storage') === null) {
+    localStorage.setItem('storage', 1000);
   }
 
-  function updatePrices() {
-    document.getElementById('price-multitap').innerText = (multitapLevel + 1) * 1500;
-    document.getElementById('price-energy').innerText = (energyLevel + 1) * 1500;
+  function updateCoinCount() {
+    coinCountEl.textContent = coinCount;
   }
 
-  document.getElementById('coins-count').innerText = formatCoins(coins);
-  document.getElementById('level-multitap').innerText = multitapLevel;
-  document.getElementById('level-energy').innerText = energyLevel;
-  updatePrices();
-
-  function upgrade(item) {
-    if (item === 'multitap') {
+  function upgrade(type) {
+    if (type === 'multitap') {
+      let priceEl = document.getElementById('price-multitap');
       let levelEl = document.getElementById('level-multitap');
-      let level = parseInt(levelEl.innerText);
-      let price = (level + 1) * 1500;
-      if (coins >= price && level < 10) {
-        coins -= price;
-        level++;
-        localStorage.setItem('coins', coins);
-        document.getElementById('coins-count').innerText = formatCoins(coins);
-        levelEl.innerText = level;
-        localStorage.setItem('multitapLevel', level);
 
-        let multitapPower = parseInt(localStorage.getItem('multitapPower') || 1);
-        multitapPower++;
-        localStorage.setItem('multitapPower', multitapPower);
-        multitapLevel = level;
-        updatePrices();
+      let price = parseInt(priceEl.textContent);
+      let power = parseInt(localStorage.getItem('multitapPower'));
+
+      if (coinCount >= price) {
+        coinCount -= price;
+        power += 1;
+
+        localStorage.setItem('coins', coinCount);
+        localStorage.setItem('multitapPower', power);
+
+        price = Math.floor(price * 1.4);
+
+        priceEl.textContent = price;
+        levelEl.textContent = power;
+
+        updateCoinCount();
+      } else {
+        alert('سکه کافی نیست!');
       }
-    } else if (item === 'energy') {
-      let levelEl = document.getElementById('level-energy');
-      let level = parseInt(levelEl.innerText);
-      let price = (level + 1) * 1500;
-      if (coins >= price && level < 20) {
-        coins -= price;
-        level++;
-        localStorage.setItem('coins', coins);
-        document.getElementById('coins-count').innerText = formatCoins(coins);
-        levelEl.innerText = level;
-        localStorage.setItem('energyLevel', level);
+    }
 
-        let storage = parseInt(localStorage.getItem('storage') || 0);
+    if (type === 'energy') {
+      let priceEl = document.getElementById('price-energy');
+      let levelEl = document.getElementById('level-energy');
+
+      let price = parseInt(priceEl.textContent);
+      let storage = parseInt(localStorage.getItem('storage'));
+
+      if (coinCount >= price) {
+        coinCount -= price;
         storage += 500;
+
+        localStorage.setItem('coins', coinCount);
         localStorage.setItem('storage', storage);
-        energyLevel = level;
-        updatePrices();
+
+        let currentLevel = parseInt(levelEl.textContent);
+        currentLevel += 1;
+
+        price = Math.floor(price * 1.4);
+
+        priceEl.textContent = price;
+        levelEl.textContent = currentLevel;
+
+        updateCoinCount();
+      } else {
+        alert('سکه کافی نیست!');
       }
     }
   }
+
+  // در دسترس قرار دادن تابع در گلوبال
+  window.upgrade = upgrade;
+});
+</script>
+
 </script>
 
 </body>
