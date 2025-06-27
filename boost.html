@@ -814,56 +814,69 @@ document.addEventListener('DOMContentLoaded', () => {
   let coinCount = localStorage.getItem('coins');
   coinCount = coinCount !== null ? parseInt(coinCount) : 0;
 
+  let totalPower = localStorage.getItem('totalPower');
+  totalPower = totalPower !== null ? parseInt(totalPower) : 0;
+
   const coinCountEl = document.getElementById('coin-count');
   const cards = document.querySelectorAll('.card');
-
-  // اضافه کردن نمایش قدرت کل فقط یکبار
-  let totalPowerEl = document.getElementById('total-power');
-  if (!totalPowerEl) {
-    totalPowerEl = document.createElement('div');
-    totalPowerEl.id = 'total-power';
-    totalPowerEl.style.marginTop = '20px';
-    totalPowerEl.style.fontWeight = 'bold';
-    document.body.appendChild(totalPowerEl);
-  }
+  const totalPowerEl = document.getElementById('total-power');
 
   function updateCoinCount() {
     coinCountEl.textContent = `💰 سکه: ${coinCount.toLocaleString()}`;
   }
 
   function updateTotalPower() {
-    let totalPower = 0;
-    cards.forEach(card => {
-      totalPower += Number(card.dataset.power) || 0;
-    });
     totalPowerEl.textContent = `💪 قدرت کل: ${totalPower.toLocaleString()}`;
+    localStorage.setItem('totalPower', totalPower);
   }
 
-  function updateCardDisplay(card) {
+  function updateCardDisplay(card, index) {
     const levelSpan = card.querySelector('.level-price span:first-child');
     const priceSpan = card.querySelector('.level-price span:last-child');
     const earnP = card.querySelector('.earn');
 
-    const level = Number(card.dataset.level) || 1;
-    const power = Number(card.dataset.power) || 0;
-    const price = Number(card.dataset.price) || 0;
+    const cardData = getCardData(index);
 
-    if(levelSpan) levelSpan.textContent = `Lvl ${level}`;
-    if(priceSpan) priceSpan.textContent = `💰 ${price.toLocaleString()}`;
-    if(earnP) earnP.textContent = `💪 قدرت: ${power.toLocaleString()}`;
+    levelSpan.textContent = `Lvl ${cardData.level}`;
+    priceSpan.textContent = `💰 ${cardData.price.toLocaleString()}`;
+    earnP.textContent = `💪 قدرت: ${cardData.power.toLocaleString()}`;
   }
 
-  function upgradeCard(card) {
-    const price = Number(card.dataset.price) || 0;
-    if (coinCount >= price) {
-      coinCount -= price;
-      localStorage.setItem('coins', coinCount); // ذخیره سکه
+  function getCardData(index) {
+    const savedData = localStorage.getItem(`card_${index}`);
+    if (savedData) {
+      return JSON.parse(savedData);
+    } else {
+      const card = cards[index];
+      return {
+        level: Number(card.dataset.level),
+        power: Number(card.dataset.power),
+        price: Number(card.dataset.price)
+      };
+    }
+  }
 
-      card.dataset.level = (Number(card.dataset.level) || 1) + 1;
-      card.dataset.power = Math.floor((Number(card.dataset.power) || 0) * 1.2);
-      card.dataset.price = Math.floor(price * 1.3);
+  function saveCardData(index, data) {
+    localStorage.setItem(`card_${index}`, JSON.stringify(data));
+  }
 
-      updateCardDisplay(card);
+  function upgradeCard(card, index) {
+    let cardData = getCardData(index);
+
+    if (coinCount >= cardData.price) {
+      coinCount -= cardData.price;
+      localStorage.setItem('coins', coinCount);
+
+      cardData.level += 1;
+
+      // فقط در ارتقا، قدرت همون کارت رو به قدرت کل اضافه کن
+      totalPower += cardData.power;
+
+      cardData.power = Math.floor(cardData.power * 1.2);
+      cardData.price = Math.floor(cardData.price * 1.3);
+
+      saveCardData(index, cardData);
+      updateCardDisplay(card, index);
       updateCoinCount();
       updateTotalPower();
     } else {
@@ -871,18 +884,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // اتصال رویداد کلیک برای هر کارت
-  cards.forEach(card => {
+  cards.forEach((card, index) => {
     const btn = card.querySelector('.upgrade-btn');
-    if(btn){
-      btn.addEventListener('click', () => upgradeCard(card));
-      updateCardDisplay(card);
+    if (btn) {
+      btn.addEventListener('click', () => upgradeCard(card, index));
+      updateCardDisplay(card, index);
     }
   });
 
   updateCoinCount();
   updateTotalPower();
 });
+
 </script>
 
 

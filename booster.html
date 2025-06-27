@@ -139,64 +139,108 @@
 <a href="index.html" class="back-btn">بازگشت به صفحه اصلی</a>
 
 <script>
-  let coins = parseInt(localStorage.getItem('coins') || 0);
-  let multitapLevel = parseInt(localStorage.getItem('multitapLevel') || 0);
-  let energyLevel = parseInt(localStorage.getItem('energyLevel') || 0);
+document.addEventListener('DOMContentLoaded', () => {
+  let coinCount = parseInt(localStorage.getItem('coins')) || 0;
+  const coinCountEl = document.getElementById('coins-count');
+  coinCountEl.textContent = coinCount;
 
-  function formatCoins(value) {
-    return value.toLocaleString('en-US');
+  // مقدارهای اولیه اگر وجود نداشت
+  if (localStorage.getItem('multitapPower') === null) {
+    localStorage.setItem('multitapPower', 1);
+  }
+  if (localStorage.getItem('storage') === null) {
+    localStorage.setItem('storage', 1000);
+  }
+  if (localStorage.getItem('priceMultitap') === null) {
+    localStorage.setItem('priceMultitap', 1500);
+  }
+  if (localStorage.getItem('priceEnergy') === null) {
+    localStorage.setItem('priceEnergy', 1500);
   }
 
-  function updatePrices() {
-    document.getElementById('price-multitap').innerText = (multitapLevel + 1) * 1500;
-    document.getElementById('price-energy').innerText = (energyLevel + 1) * 1500;
+  // 👉 محاسبه و ذخیره لول‌ها بر اساس مقادیر فعلی
+  let multitapPower = parseInt(localStorage.getItem('multitapPower'));
+  let multitapLevel = multitapPower - 1;
+  localStorage.setItem('multitapLevel', multitapLevel);
+
+  let storage = parseInt(localStorage.getItem('storage'));
+  let energyLevel = Math.floor((storage - 1000) / 500);
+  localStorage.setItem('energyLevel', energyLevel);
+
+  // نمایش لول و قیمت در صفحه
+  document.getElementById('level-multitap').textContent = multitapLevel;
+  document.getElementById('level-energy').textContent = energyLevel;
+  document.getElementById('price-multitap').textContent = localStorage.getItem('priceMultitap');
+  document.getElementById('price-energy').textContent = localStorage.getItem('priceEnergy');
+
+  function updateCoinCount() {
+    coinCountEl.textContent = coinCount;
   }
 
-  document.getElementById('coins-count').innerText = formatCoins(coins);
-  document.getElementById('level-multitap').innerText = multitapLevel;
-  document.getElementById('level-energy').innerText = energyLevel;
-  updatePrices();
-
-  function upgrade(item) {
-    if (item === 'multitap') {
+  function upgrade(type) {
+    if (type === 'multitap') {
+      let priceEl = document.getElementById('price-multitap');
       let levelEl = document.getElementById('level-multitap');
-      let level = parseInt(levelEl.innerText);
-      let price = (level + 1) * 1500;
-      if (coins >= price && level < 10) {
-        coins -= price;
-        level++;
-        localStorage.setItem('coins', coins);
-        document.getElementById('coins-count').innerText = formatCoins(coins);
-        levelEl.innerText = level;
+
+      let price = parseInt(priceEl.textContent);
+      let power = parseInt(localStorage.getItem('multitapPower'));
+      let level = parseInt(localStorage.getItem('multitapLevel'));
+
+      if (coinCount >= price) {
+        coinCount -= price;
+        power += 1;
+        level += 1;
+
+        localStorage.setItem('coins', coinCount);
+        localStorage.setItem('multitapPower', power);
         localStorage.setItem('multitapLevel', level);
 
-        let multitapPower = parseInt(localStorage.getItem('multitapPower') || 1);
-        multitapPower++;
-        localStorage.setItem('multitapPower', multitapPower);
-        multitapLevel = level;
-        updatePrices();
+        price = Math.floor(price * 1.4);
+        localStorage.setItem('priceMultitap', price);
+
+        priceEl.textContent = price;
+        levelEl.textContent = level;
+
+        updateCoinCount();
+      } else {
+        alert('سکه کافی نیست!');
       }
-    } else if (item === 'energy') {
+    }
+
+    if (type === 'energy') {
+      let priceEl = document.getElementById('price-energy');
       let levelEl = document.getElementById('level-energy');
-      let level = parseInt(levelEl.innerText);
-      let price = (level + 1) * 1500;
-      if (coins >= price && level < 20) {
-        coins -= price;
-        level++;
-        localStorage.setItem('coins', coins);
-        document.getElementById('coins-count').innerText = formatCoins(coins);
-        levelEl.innerText = level;
+
+      let price = parseInt(priceEl.textContent);
+      let storage = parseInt(localStorage.getItem('storage'));
+      let level = parseInt(localStorage.getItem('energyLevel'));
+
+      if (coinCount >= price) {
+        coinCount -= price;
+        storage += 500;
+        level += 1;
+
+        localStorage.setItem('coins', coinCount);
+        localStorage.setItem('storage', storage);
         localStorage.setItem('energyLevel', level);
 
-        let storage = parseInt(localStorage.getItem('storage') || 0);
-        storage += 500;
-        localStorage.setItem('storage', storage);
-        energyLevel = level;
-        updatePrices();
+        price = Math.floor(price * 1.4);
+        localStorage.setItem('priceEnergy', price);
+
+        priceEl.textContent = price;
+        levelEl.textContent = level;
+
+        updateCoinCount();
+      } else {
+        alert('سکه کافی نیست!');
       }
     }
   }
+
+  window.upgrade = upgrade;
+});
 </script>
+
 
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex,nofollow">
-  <title>🎁 Airdrop Referral Dark Mode</title>
+  <title>📱 پروفایل مختار کوین</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
 
@@ -16,6 +16,13 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #ffd700;
+      margin: 10px 0 20px 0;
     }
 
     h2 {
@@ -33,22 +40,12 @@
       padding: 12px 0;
       cursor: pointer;
       border: none;
-      display: block;
       transition: all 0.3s;
     }
 
     #backBtn:hover {
       background: #666;
       color: #fff;
-    }
-
-    #coinHeader {
-      padding: 10px 0;
-      font-weight: bold;
-      font-size: 20px;
-      color: #ffd700;
-      margin-bottom: 20px;
-      display: none;
     }
 
     .card {
@@ -88,110 +85,29 @@
       background: #fff200;
     }
 
-    .info {
-      margin: 12px 0;
-      font-size: 18px;
-      color: #ccc;
-    }
-
-    .link-box {
-      background: #1e1e1e;
-      padding: 8px 10px;
-      border-radius: 8px;
-      color: #fff;
-      user-select: all;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 280px;
-      display: inline-block;
-      vertical-align: middle;
-      font-size: 14px;
-    }
-
     #currentUser {
       margin-top: 10px;
       color: #ccc;
       font-size: 16px;
     }
 
-    #copyBtn {
-      width: 60px;
-      font-size: 14px;
-      padding: 10px;
-      margin-left: 10px;
-      vertical-align: middle;
-      border-radius: 8px;
-    }
-
-    /* Container for link and copy button */
-    .ref-link-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 5px;
-      max-width: 400px;
-      margin: 0 auto 15px;
-    }
-
-    /* نکته پایین صفحه */
-    #noteBox {
-      background: #222;
-      color: #ffd700;
-      font-size: 16px;
-      padding: 15px 20px;
-      border-radius: 12px;
-      max-width: 500px;
-      margin: 30px auto 10px auto;
-      box-shadow: 0 0 10px #ffd700aa;
-      user-select: none;
-    }
   </style>
 </head>
 <body>
 
-  <h2>🎁 دعوت از متحدین🎁</h2>
+  <h1>📱 پروفایل مختار کوین</h1>
 
   <button id="backBtn" onclick="goBackToIndex()">⬅ بازگشت به بازی</button>
 
-  <div id="coinHeader">
-    💰 سکه‌ها: <span id="headerCoins">0</span>
-  </div>
-
   <div class="card">
-    <h3>👤 ثبت نام / ورود</h3>
-    <input type="text" id="usernameInput" placeholder="نام کاربری خود را وارد کنید" />
+    <h2>ثبت نام / ورود</h2>
+    <input type="text" id="usernameInput" placeholder="نام کاربری" />
     <button onclick="registerUser()">ثبت کن</button>
     <p id="currentUser"></p>
   </div>
 
-  <div class="card" id="refSection" style="display:none;">
-    <h3>👑 لینک دعوت شما:</h3>
-    <div class="ref-link-container">
-      <div class="link-box" id="myRefLink"></div>
-      <button id="copyBtn" onclick="copyReferralLink()">کپی</button>
-    </div>
-
-    <div class="info">💰 سکه‌های شما: <span id="myCoins">0</span></div>
-    <div class="info">👥 تعداد دعوتی‌ها: <span id="myInvites">0</span></div>
-
-    <button onclick="claimReward()">📦 دریافت جایزه</button>
-  </div>
-
-  <!-- کادر نکته پایین صفحه -->
-  <div id="noteBox">
-    برای ساخت لینک دعوت و دریافت ۵۰۰ سکه به ازای هر دعوت، حتما باید ثبت‌نام کنید.
-  </div>
-
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const ref = params.get('ref');
-    if (ref) {
-      localStorage.setItem('referralCode', ref);
-    }
-
     function generateUUID() {
-      // ساخت UUID نسخه 4 ساده
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
@@ -212,77 +128,19 @@
         localStorage.setItem('myUserID', newUUID);
       }
 
-      if (!localStorage.getItem('inviteCount_' + localStorage.getItem('myUserID'))) {
-        localStorage.setItem('inviteCount_' + localStorage.getItem('myUserID'), 0);
-      }
-
       showUserInfo();
     }
 
     function showUserInfo() {
       const username = localStorage.getItem('myUsername');
-      const userID = localStorage.getItem('myUserID');
-      if (!username || !userID) return;
+      if (!username) return;
 
-      document.getElementById('refSection').style.display = 'block';
       document.getElementById('currentUser').innerText = 'نام کاربری: ' + username;
-      document.getElementById('myRefLink').innerText =
-        window.location.origin + window.location.pathname + '?ref=' + userID;
-
-      const coins = localStorage.getItem('coins') || 0;
-      document.getElementById('myCoins').innerText = coins;
-      document.getElementById('headerCoins').innerText = coins;
-      document.getElementById('coinHeader').style.display = 'block';
-
-      const invites = localStorage.getItem('inviteCount_' + userID) || 0;
-      document.getElementById('myInvites').innerText = invites;
-    }
-
-    function claimReward() {
-      const userID = localStorage.getItem('myUserID');
-      if (!userID) {
-        alert('اول ثبت نام کن!');
-        return;
-      }
-
-      const referralCode = localStorage.getItem('referralCode');
-      if (referralCode) {
-        let coins = parseInt(localStorage.getItem('coins') || 0);
-        coins += 500;
-        localStorage.setItem('coins', coins);
-
-        let inviteCount = parseInt(localStorage.getItem('inviteCount_' + referralCode) || 0);
-        inviteCount += 1;
-        localStorage.setItem('inviteCount_' + referralCode, inviteCount);
-
-        alert('به ' + referralCode + '، ۵۰۰ سکه و ۱ دعوتی اضافه شد!');
-        localStorage.removeItem('referralCode');
-      } else {
-        alert('رفرالی ثبت نشده یا قبلاً جایزه را گرفته‌ای.');
-      }
-
-      showUserInfo();
     }
 
     function goBackToIndex() {
       window.location.href = 'index.html';
     }
-
-    function copyReferralLink() {
-      const link = document.getElementById('myRefLink').innerText;
-      navigator.clipboard.writeText(link).then(() => {
-        alert('لینک دعوت کپی شد!');
-      }).catch(() => {
-        alert('کپی کردن لینک موفقیت‌آمیز نبود. لطفا دستی کپی کنید.');
-      });
-    }
-
-    // آپدیت لحظه‌ای سکه‌ها هر 1 ثانیه
-    setInterval(() => {
-      const coins = localStorage.getItem('coins') || 0;
-      document.getElementById('myCoins').innerText = coins;
-      document.getElementById('headerCoins').innerText = coins;
-    }, 1000);
 
     showUserInfo();
   </script>

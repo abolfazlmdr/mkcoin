@@ -195,11 +195,15 @@
     .shake {
       animation: shake 0.5s;
     }
+img:focus,
+.profile-pic:focus {
+  outline: none;
+  box-shadow: none;
+}
 
-    button:focus,
-    a:focus {
-      outline: none;
-    }
+.profile-pic {
+  -webkit-tap-highlight-color: transparent;
+}
   </style>
 </head>
 <body>
@@ -233,101 +237,122 @@
       <a href="task.html">🟡 افزایش خزانه</a>
       <a href="boost.html">🔥 افزایش قدرت</a>
       <a href="king.html">👑 پادشاهی</a>
-      <a href="friends.html">👬 متحدین</a>
+      <a href="friends.html">📱پروفایل</a>
     </div>
   </div>
 
   <script>
-    let coinValue = parseInt(localStorage.getItem("coins")) || 0;
-    let energyValue = parseInt(localStorage.getItem("energy")) || 1000;
-    let storage = parseInt(localStorage.getItem("storage")) || 1000;
-    let multitapPower = parseInt(localStorage.getItem("multitapPower")) || 1;
+   let coinValue = parseInt(localStorage.getItem("coins")) || 0;
+let energyValue = parseInt(localStorage.getItem("energy")) || 1000;
+let storage = parseInt(localStorage.getItem("storage")) || 1000;
+let multitapPower = parseInt(localStorage.getItem("multitapPower")) || 1;
 
-    function formatNumber(number) {
-      return number.toLocaleString('en-US');
-    }
+// محاسبه انرژی بر اساس زمان آخرین فعالیت
+let lastActive = parseInt(localStorage.getItem("lastActive")) || Date.now();
+let now = Date.now();
+let diffSeconds = Math.floor((now - lastActive) / 1000);
 
+// هر ۲ ثانیه ۱ انرژی
+let earnedEnergy = Math.floor(diffSeconds / 1) * 1;
+
+// اضافه کن ولی بیشتر از storage نشه
+energyValue = Math.min(storage, energyValue + earnedEnergy);
+localStorage.setItem("energy", energyValue);
+
+// ذخیره زمان فعلی برای دفعات بعد
+localStorage.setItem("lastActive", now);
+
+function formatNumber(number) {
+  return number.toLocaleString('en-US');
+}
+
+document.getElementById("coinValue").innerText = formatNumber(coinValue);
+document.getElementById("energyValue").innerText = formatNumber(energyValue);
+document.getElementById("storageValue").innerText = formatNumber(storage);
+
+function updateRank() {
+  const rankThresholds = [
+    { threshold: 5000, rank: "سرباز" },
+    { threshold: 15000, rank: "سرباز با تجربه" },
+    { threshold: 50000, rank: "فرمانده" },
+    { threshold: 100000, rank: "فرمانده با تجربه" },
+    { threshold: 500000, rank: "فرمانده سوم" },
+    { threshold: 1000000, rank: "فرمانده دوم" },
+    { threshold: 5000000, rank: "فرمانده اول" },
+    { threshold: 10000000, rank: "رهبر" },
+    { threshold: 50000000, rank: "پادشاهی" }
+  ];
+  const rank = rankThresholds.reverse().find(item => coinValue >= item.threshold)?.rank || "سرباز";
+  document.getElementById("rankTitle").innerText = rank;
+}
+
+function updateProgressBar() {
+  const nextRankThreshold = [5000, 15000, 50000, 100000, 500000, 1000000, 5000000, 10000000, 50000000];
+  const currentRankThreshold = nextRankThreshold.find(t => coinValue < t);
+  const nextRank = currentRankThreshold || 50000000;
+  const progress = Math.min(100, (coinValue / nextRank) * 100);
+  document.getElementById("progressBar").style.width = progress + '%';
+  document.getElementById("coinsNeeded").innerText = formatNumber(nextRank);
+  document.getElementById("currentCoins").innerText = formatNumber(coinValue);
+}
+
+function updateEnergy() {
+  if (energyValue < storage) {
+    energyValue += 5;
+    document.getElementById("energyValue").innerText = formatNumber(energyValue);
+    localStorage.setItem("energy", energyValue);
+  }
+}
+
+function autoIncreaseEnergy() {
+  if (energyValue < storage) {
+    energyValue += 1;
+    document.getElementById("energyValue").innerText = formatNumber(energyValue);
+    localStorage.setItem("energy", energyValue);
+  }
+}
+
+function updatePower() {
+  let totalPower = parseInt(localStorage.getItem("totalPower")) || 0;
+  let multitapPower = parseInt(localStorage.getItem("multitapPower")) || 1;
+  document.getElementById("powerValue").innerText = (totalPower + multitapPower).toLocaleString();
+}
+
+document.getElementById("clickBtn").addEventListener("click", function () {
+  if (energyValue >= multitapPower) {
+    coinValue += multitapPower;
+    energyValue -= multitapPower;
     document.getElementById("coinValue").innerText = formatNumber(coinValue);
     document.getElementById("energyValue").innerText = formatNumber(energyValue);
-    document.getElementById("storageValue").innerText = formatNumber(storage);
-
-    function updateRank() {
-      const rankThresholds = [
-        { threshold: 5000, rank: "سرباز" },
-        { threshold: 15000, rank: "سرباز با تجربه" },
-        { threshold: 50000, rank: "فرمانده" },
-        { threshold: 100000, rank: "فرمانده با تجربه" },
-        { threshold: 500000, rank: "فرمانده سوم" },
-        { threshold: 1000000, rank: "فرمانده دوم" },
-        { threshold: 5000000, rank: "فرمانده اول" },
-        { threshold: 10000000, rank: "رهبر" },
-        { threshold: 50000000, rank: "پادشاهی" }
-      ];
-      const rank = rankThresholds.reverse().find(item => coinValue >= item.threshold)?.rank || "سرباز";
-      document.getElementById("rankTitle").innerText = rank;
-    }
-
-    function updateProgressBar() {
-      const nextRankThreshold = [5000, 15000, 50000, 100000, 500000, 1000000, 5000000, 10000000, 50000000];
-      const currentRankThreshold = nextRankThreshold.find(t => coinValue < t);
-      const nextRank = currentRankThreshold || 50000000;
-      const progress = Math.min(100, (coinValue / nextRank) * 100);
-      document.getElementById("progressBar").style.width = progress + '%';
-      document.getElementById("coinsNeeded").innerText = formatNumber(nextRank);
-      document.getElementById("currentCoins").innerText = formatNumber(coinValue);
-    }
-
-    function updateEnergy() {
-      if (energyValue < storage) {
-        energyValue += 5;
-        document.getElementById("energyValue").innerText = formatNumber(energyValue);
-        localStorage.setItem("energy", energyValue);
-      }
-    }
-
-    function autoIncreaseEnergy() {
-      if (energyValue < storage) {
-        energyValue += 1;
-        document.getElementById("energyValue").innerText = formatNumber(energyValue);
-        localStorage.setItem("energy", energyValue);
-      }
-    }
-
-    function updatePower() {
-      let totalPower = parseInt(localStorage.getItem("power")) || 0;
-      let multitapPower = parseInt(localStorage.getItem("multitapPower")) || 1;
-      document.getElementById("powerValue").innerText = (totalPower + multitapPower).toLocaleString();
-    }
-
-    document.getElementById("clickBtn").addEventListener("click", function () {
-      if (energyValue >= multitapPower) {
-        coinValue += multitapPower;
-        energyValue -= multitapPower;
-        document.getElementById("coinValue").innerText = formatNumber(coinValue);
-        document.getElementById("energyValue").innerText = formatNumber(energyValue);
-        localStorage.setItem("coins", coinValue);
-        localStorage.setItem("energy", energyValue);
-        updateRank();
-        updateProgressBar();
-
-        if (navigator.vibrate) {
-          navigator.vibrate(50);
-        }
-
-        this.classList.add("shake");
-        setTimeout(() => this.classList.remove("shake"), 500);
-      }
-    });
-
-    window.addEventListener('load', function () {
-      updateEnergy();
-      setInterval(autoIncreaseEnergy, 2000);
-      setInterval(updatePower, 2000);
-    });
-
+    localStorage.setItem("coins", coinValue);
+    localStorage.setItem("energy", energyValue);
     updateRank();
     updateProgressBar();
-    updatePower();
+
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
+
+    this.classList.add("shake");
+    setTimeout(() => this.classList.remove("shake"), 500);
+  }
+});
+
+window.addEventListener('load', function () {
+  updateEnergy();
+  setInterval(autoIncreaseEnergy, 2000);
+  setInterval(updatePower, 2000);
+});
+
+// ذخیره زمان هنگام بستن مینی‌اپ
+window.addEventListener("beforeunload", () => {
+  localStorage.setItem("lastActive", Date.now());
+});
+
+updateRank();
+updateProgressBar();
+updatePower();
+
   </script>
 </body>
 </html>
