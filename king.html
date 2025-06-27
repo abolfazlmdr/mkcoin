@@ -184,11 +184,11 @@
 
   <div class="item">
     <img src="images/enemy-15.webp" alt="قیام">
-    <p>اغاز قیام</p>
+    <p>آغاز قیام</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(5000, 'omar')">انجام</button>
+      <button class="fight-btn" onclick="defeatEnemy(5000, 'aghaz')">انجام</button>
       <span class="power-cost">5000 🗡️</span>
-      <span id="check-omar" class="check">✔</span>
+      <span id="check-aghaz" class="check">✔</span>
     </div>
   </div>
 
@@ -196,9 +196,9 @@
     <img src="images/enemy-13.webp" alt="پیمان">
     <p>پیمان با کیان</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(10000, 'omar')">انجام</button>
+      <button class="fight-btn" onclick="defeatEnemy(10000, 'piman')">انجام</button>
       <span class="power-cost">10000 🗡️</span>
-      <span id="check-omar" class="check">✔</span>
+      <span id="check-piman" class="check">✔</span>
     </div>
   </div>
 
@@ -206,9 +206,9 @@
     <img src="images/enemy-14.webp" alt="بیعت">
     <p>بیعت با محمدبن حنیفه</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(15000, 'omar')">انجام</button>
+      <button class="fight-btn" onclick="defeatEnemy(15000, 'biat')">انجام</button>
       <span class="power-cost">15000 🗡️</span>
-      <span id="check-omar" class="check">✔</span>
+      <span id="check-biat" class="check">✔</span>
     </div>
   </div>
 
@@ -316,9 +316,9 @@
     <img src="images/enemy-12.webp" alt="ارتش معاویه">
     <p>شکست ارتش معاویه</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(150000, 'crown')">حمله!</button>
+      <button class="fight-btn" onclick="defeatEnemy(150000, 'crown1')">حمله!</button>
       <span class="power-cost">150000 🗡️</span>
-      <span id="check-crown" class="check">✔</span>
+      <span id="check-crown1" class="check">✔</span>
     </div>
   </div>
 
@@ -326,9 +326,9 @@
     <img src="images/enemy-11.webp" alt="تاج و تخت">
     <p>بازپس‌گیری تاج و تخت</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(200000, 'crown')">حمله!</button>
+      <button class="fight-btn" onclick="defeatEnemy(200000, 'crown2')">حمله!</button>
       <span class="power-cost">200000 🗡️</span>
-      <span id="check-crown" class="check">✔</span>
+      <span id="check-crown2" class="check">✔</span>
     </div>
   </div>
 
@@ -382,7 +382,8 @@ function updatePower() {
 
 
 function loadLevels() {
-  let items = ['wheat', 'wall', 'tower', 'soldier_house', 'kingdom_affairs', 'grain_supplies'];
+  let enemies = ['aghaz', 'piman', 'biat', 'omar', 'jason', 'borders', 'shemr', 'hormala', 'kufa', 'moavieh', 'zobayri', 'mekka', 'sham', 'crown1', 'crown2'];
+
   let costs = {
     wheat: 350,
     wall: 400,
