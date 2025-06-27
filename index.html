@@ -314,9 +314,9 @@ function autoIncreaseEnergy() {
 
 function updatePower() {
   let totalPower = parseInt(localStorage.getItem("totalPower")) || 0;
-  let multitapPower = parseInt(localStorage.getItem("multitapPower")) || 1;
-  document.getElementById("powerValue").innerText = (totalPower + multitapPower).toLocaleString();
+  document.getElementById("powerValue").innerText = totalPower.toLocaleString();
 }
+
 
 document.getElementById("clickBtn").addEventListener("click", function () {
   if (energyValue >= multitapPower) {
