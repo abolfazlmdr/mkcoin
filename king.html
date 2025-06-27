@@ -359,17 +359,15 @@ function showDefeatCheck(id, show) {
   if (el) {
     el.style.display = show ? "inline" : "none";
   }
-}
-
-function showDefeatCheck(id, show) {
-  const el = document.getElementById("check-" + id);
-  if (el) {
-    el.style.display = show ? "inline" : "none";
-  }
   const btn = el?.parentElement.querySelector(".fight-btn");
   if (btn) {
     btn.style.display = show ? "none" : "inline-block";
   }
+}
+
+function updatePower() {
+  let power = parseInt(localStorage.getItem("totalPower")) || 0;
+  document.getElementById("totalPower").innerText = power.toLocaleString();
 }
 
 
