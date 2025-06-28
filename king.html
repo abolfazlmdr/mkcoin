@@ -118,8 +118,8 @@
 <div class="power-display">قدرت کل: <span id="totalPower">0</span></div>
 
 <div class="tabs">
-  <div class="tab-btn active" onclick="openTab('upgrades')">ارتقا آیتم‌ها</div>
-  <div class="tab-btn" onclick="openTab('battles')">نبرد و مراحل</div>
+ <div id="btn-upgrades" class="tab-btn active" onclick="openTab('upgrades')">ارتقا آیتم‌ها</div>
+<div id="btn-battles" class="tab-btn" onclick="openTab('battles')">نبرد و مراحل</div>
   <div class="tab-btn" onclick="window.location.href='defense.html'">بخش دفاع</div>
 </div>
 
@@ -178,17 +178,38 @@
       <span id="cost-grain_supplies" class="power-cost">قدرت: 1200</span>
     </div>
   </div>
+
+   <div class="item">
+    <img src="images/item-7.webp" alt="ساخت خانه">
+    <p>ساخت خانه مردم</p>
+    <div class="btn-group">
+      <button class="upgrade-btn" onclick="upgradeItem('house_construction')">ارتقا</button>
+      <span class="level-label">لول: <span id="level-house_construction">1</span></span>
+      <span id="cost-house_construction" class="power-cost">قدرت: 1000</span>
+    </div>
+  </div>
+
 </div>
 
 <div id="battles" class="tab-content">
 
+<div class="item">
+    <img src="images/enemy-16.webp" alt="فرماندار">
+    <p>فرماندراری شهر مدائن</p>
+    <div class="btn-group">
+      <button class="fight-btn" onclick="defeatEnemy(5000, 'madaen')">انجام</button>
+      <span class="power-cost">5000 🗡️</span>
+      <span id="check-madaen" class="check">✔</span>
+    </div>
+  </div>
+
   <div class="item">
     <img src="images/enemy-15.webp" alt="قیام">
-    <p>اغاز قیام</p>
+    <p>آغاز قیام</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(5000, 'omar')">انجام</button>
-      <span class="power-cost">5000 🗡️</span>
-      <span id="check-omar" class="check">✔</span>
+      <button class="fight-btn" onclick="defeatEnemy(10000, 'aghaz')">انجام</button>
+      <span class="power-cost">10000 🗡️</span>
+      <span id="check-aghaz" class="check">✔</span>
     </div>
   </div>
 
@@ -196,9 +217,9 @@
     <img src="images/enemy-13.webp" alt="پیمان">
     <p>پیمان با کیان</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(10000, 'omar')">انجام</button>
-      <span class="power-cost">10000 🗡️</span>
-      <span id="check-omar" class="check">✔</span>
+      <button class="fight-btn" onclick="defeatEnemy(15000, 'piman')">انجام</button>
+      <span class="power-cost">15000 🗡️</span>
+      <span id="check-piman" class="check">✔</span>
     </div>
   </div>
 
@@ -206,9 +227,9 @@
     <img src="images/enemy-14.webp" alt="بیعت">
     <p>بیعت با محمدبن حنیفه</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(15000, 'omar')">انجام</button>
-      <span class="power-cost">15000 🗡️</span>
-      <span id="check-omar" class="check">✔</span>
+      <button class="fight-btn" onclick="defeatEnemy(20000, 'biat')">انجام</button>
+      <span class="power-cost">20000 🗡️</span>
+      <span id="check-biat" class="check">✔</span>
     </div>
   </div>
 
@@ -216,8 +237,8 @@
     <img src="images/enemy-1.webp" alt="عمر">
     <p>شکست عمر</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(20000, 'omar')">حمله!</button>
-      <span class="power-cost">20000 🗡️</span>
+      <button class="fight-btn" onclick="defeatEnemy(25000, 'omar')">حمله!</button>
+      <span class="power-cost">25000 🗡️</span>
       <span id="check-omar" class="check">✔</span>
     </div>
   </div>
@@ -226,8 +247,8 @@
     <img src="images/enemy-2.webp" alt="جاسوس‌ها">
     <p>شکست جاسوس‌ها</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(25000, 'jason')">حمله!</button>
-      <span class="power-cost">25000 🗡️</span>
+      <button class="fight-btn" onclick="defeatEnemy(30000, 'jason')">حمله!</button>
+      <span class="power-cost">30000 🗡️</span>
       <span id="check-jason" class="check">✔</span>
     </div>
   </div>
@@ -236,8 +257,8 @@
     <img src="images/enemy-3.webp" alt="مرز">
     <p>فتح مناطق مرزی</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(27000, 'borders')">حمله!</button>
-      <span class="power-cost">27000 🗡️</span>
+      <button class="fight-btn" onclick="defeatEnemy(35000, 'borders')">حمله!</button>
+      <span class="power-cost">35000 🗡️</span>
       <span id="check-borders" class="check">✔</span>
     </div>
   </div>
@@ -246,8 +267,8 @@
     <img src="images/enemy-4.webp" alt="شمر">
     <p>شکست شمر</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(30000, 'shemr')">حمله!</button>
-      <span class="power-cost">30000 🗡️</span>
+      <button class="fight-btn" onclick="defeatEnemy(45000, 'shemr')">حمله!</button>
+      <span class="power-cost">45000 🗡️</span>
       <span id="check-shemr" class="check">✔</span>
     </div>
   </div>
@@ -256,8 +277,8 @@
     <img src="images/enemy-5.webp" alt="حرمله">
     <p>شکست حرمله</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(35000, 'hormala')">حمله!</button>
-      <span class="power-cost">35000 🗡️</span>
+      <button class="fight-btn" onclick="defeatEnemy(50000, 'hormala')">حمله!</button>
+      <span class="power-cost">50000 🗡️</span>
       <span id="check-hormala" class="check">✔</span>
     </div>
   </div>
@@ -266,8 +287,8 @@
     <img src="images/enemy-6.webp" alt="کوفه">
     <p>فتح کوفه</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(45000, 'kufa')">حمله!</button>
-      <span class="power-cost">45000 🗡️</span>
+      <button class="fight-btn" onclick="defeatEnemy(55000, 'kufa')">حمله!</button>
+      <span class="power-cost">55000 🗡️</span>
       <span id="check-kufa" class="check">✔</span>
     </div>
   </div>
@@ -276,8 +297,8 @@
     <img src="images/enemy-7.webp" alt="ابن زیاد">
     <p>شکست ابن زیاد</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(50000, 'moavieh')">حمله!</button>
-      <span class="power-cost">50000 🗡️</span>
+      <button class="fight-btn" onclick="defeatEnemy(65000, 'moavieh')">حمله!</button>
+      <span class="power-cost">65000 🗡️</span>
       <span id="check-moavieh" class="check">✔</span>
     </div>
   </div>
@@ -286,8 +307,8 @@
     <img src="images/enemy-8.webp" alt="زبیری‌ها">
     <p>شکست زبیری‌ها</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(65000, 'zobayri')">حمله!</button>
-      <span class="power-cost">65000 🗡️</span>
+      <button class="fight-btn" onclick="defeatEnemy(75000, 'zobayri')">حمله!</button>
+      <span class="power-cost">75000 🗡️</span>
       <span id="check-zobayri" class="check">✔</span>
     </div>
   </div>
@@ -296,8 +317,8 @@
     <img src="images/enemy-9.webp" alt="مکه">
     <p>بازپس‌گیری مکه</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(80000, 'mekka')">حمله!</button>
-      <span class="power-cost">80000 🗡️</span>
+      <button class="fight-btn" onclick="defeatEnemy(110000, 'mekka')">حمله!</button>
+      <span class="power-cost">110000 🗡️</span>
       <span id="check-mekka" class="check">✔</span>
     </div>
   </div>
@@ -306,8 +327,8 @@
     <img src="images/enemy-10.webp" alt="شام">
     <p>فتح شام</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(100000, 'sham')">حمله!</button>
-      <span class="power-cost">100000 🗡️</span>
+      <button class="fight-btn" onclick="defeatEnemy(150000, 'sham')">حمله!</button>
+      <span class="power-cost">150000 🗡️</span>
       <span id="check-sham" class="check">✔</span>
     </div>
   </div>
@@ -316,9 +337,9 @@
     <img src="images/enemy-12.webp" alt="ارتش معاویه">
     <p>شکست ارتش معاویه</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(150000, 'crown')">حمله!</button>
-      <span class="power-cost">150000 🗡️</span>
-      <span id="check-crown" class="check">✔</span>
+      <button class="fight-btn" onclick="defeatEnemy(200000, 'crown1')">حمله!</button>
+      <span class="power-cost">200000 🗡️</span>
+      <span id="check-crown1" class="check">✔</span>
     </div>
   </div>
 
@@ -326,9 +347,9 @@
     <img src="images/enemy-11.webp" alt="تاج و تخت">
     <p>بازپس‌گیری تاج و تخت</p>
     <div class="btn-group">
-      <button class="fight-btn" onclick="defeatEnemy(200000, 'crown')">حمله!</button>
-      <span class="power-cost">200000 🗡️</span>
-      <span id="check-crown" class="check">✔</span>
+      <button class="fight-btn" onclick="defeatEnemy(250000, 'crown2')">حمله!</button>
+      <span class="power-cost">250000 🗡️</span>
+      <span id="check-crown2" class="check">✔</span>
     </div>
   </div>
 
@@ -340,7 +361,7 @@
  function openTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-  document.querySelector(`[onclick="openTab('${tab}')"]`).classList.add('active');
+  document.getElementById("btn-" + tab).classList.add('active');
   document.getElementById(tab).classList.add('active');
 }
 
@@ -349,10 +370,10 @@ function defeatEnemy(requiredPower, id) {
   let defeatedKey = "defeated-" + id;
 
   if (power >= requiredPower) {
-    if (!localStorage.getItem(defeatedKey)) { // فقط اگر قبلا شکست داده نشده باشه
+    if (!localStorage.getItem(defeatedKey)) {
       power -= requiredPower;
       localStorage.setItem("totalPower", power);
-      localStorage.setItem(defeatedKey, "true"); // ذخیره شکست دشمن
+      localStorage.setItem(defeatedKey, "true");
       alert("🎉 دشمن شکست خورد!");
       showDefeatCheck(id, true);
       updatePower();
@@ -366,13 +387,9 @@ function defeatEnemy(requiredPower, id) {
 
 function showDefeatCheck(id, show) {
   const el = document.getElementById("check-" + id);
-  if (el) {
-    el.style.display = show ? "inline" : "none";
-  }
+  if (el) el.style.display = show ? "inline" : "none";
   const btn = el?.parentElement.querySelector(".fight-btn");
-  if (btn) {
-    btn.style.display = show ? "none" : "inline-block";
-  }
+  if (btn) btn.style.display = show ? "none" : "inline-block";
 }
 
 function updatePower() {
@@ -380,20 +397,27 @@ function updatePower() {
   document.getElementById("totalPower").innerText = power.toLocaleString();
 }
 
-
 function loadLevels() {
-  let items = ['wheat', 'wall', 'tower', 'soldier_house', 'kingdom_affairs', 'grain_supplies'];
+  let items = ['wheat', 'wall', 'tower', 'soldier_house', 'kingdom_affairs', 'grain_supplies','house_construction'];
   let costs = {
     wheat: 350,
     wall: 400,
     tower: 550,
     soldier_house: 600,
     kingdom_affairs: 1000,
-    grain_supplies: 1200
+    grain_supplies: 1200,
+   house_construction: 1000
   };
 
   items.forEach(item => {
-    let level = parseInt(localStorage.getItem("level-" + item)) || 1;
+    let key = "level-" + item;
+    if (!localStorage.getItem(key)) {
+      localStorage.setItem(key, 1);
+    }
+  });
+
+  items.forEach(item => {
+    let level = parseInt(localStorage.getItem("level-" + item));
     document.getElementById("level-" + item).innerText = level;
     document.getElementById("cost-" + item).innerText = "قدرت: " + (costs[item] + (level) * 300).toLocaleString();
   });
@@ -402,7 +426,7 @@ function loadLevels() {
 function upgradeItem(item) {
   let power = parseInt(localStorage.getItem("totalPower")) || 0;
   let key = "level-" + item;
-  let level = parseInt(localStorage.getItem(key)) || 1;
+  let level = parseInt(localStorage.getItem(key));
 
   let costs = {
     wheat: 350,
@@ -410,7 +434,8 @@ function upgradeItem(item) {
     tower: 550,
     soldier_house: 600,
     kingdom_affairs: 1000,
-    grain_supplies: 1200
+    grain_supplies: 1200,
+    house_construction: 1000
   };
 
   let upgradeCost = costs[item] + (level - 1) * 300;
@@ -429,7 +454,7 @@ function upgradeItem(item) {
 }
 
 function loadDefeatedEnemies() {
-  let enemies = ['omar', 'jason', 'borders', 'shemr', 'hormala', 'kufa', 'moavieh', 'zobayri', 'mekka', 'sham', 'crown'];
+  let enemies = [ 'madaen','aghaz', 'piman', 'biat', 'omar', 'jason', 'borders', 'shemr', 'hormala', 'kufa', 'moavieh', 'zobayri', 'mekka', 'sham', 'crown1', 'crown2'];
   enemies.forEach(id => {
     let defeated = localStorage.getItem("defeated-" + id);
     showDefeatCheck(id, defeated === "true");
@@ -440,8 +465,6 @@ function loadDefeatedEnemies() {
 updatePower();
 loadLevels();
 loadDefeatedEnemies();
-
-
 </script>
 
 </body>
