@@ -6,7 +6,6 @@
   <title>📱 پروفایل مختار کوین</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
-
     body {
       font-family: 'Vazirmatn', sans-serif;
       background: linear-gradient(135deg, #000000, #1c1c1c);
@@ -18,18 +17,15 @@
       flex-direction: column;
       justify-content: flex-start;
     }
-
     h1 {
       font-size: 28px;
       color: #ffd700;
       margin: 10px 0 20px 0;
     }
-
     h2 {
       color: #ffd700;
       margin-bottom: 20px;
     }
-
     #backBtn {
       background: #444;
       color: #ffd700;
@@ -41,13 +37,12 @@
       cursor: pointer;
       border: none;
       transition: all 0.3s;
+      display: none;
     }
-
     #backBtn:hover {
       background: #666;
       color: #fff;
     }
-
     .card {
       background: rgba(30,30,30,0.85);
       padding: 25px;
@@ -57,7 +52,6 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.6);
       backdrop-filter: blur(6px);
     }
-
     input, button {
       padding: 12px;
       border: none;
@@ -66,13 +60,11 @@
       font-size: 16px;
       outline: none;
     }
-
     input {
       background: #2e2e2e;
       color: #f5f5f5;
       width: 80%;
     }
-
     button {
       background: #ffd700;
       color: #333;
@@ -80,17 +72,14 @@
       cursor: pointer;
       transition: all 0.3s;
     }
-
     button:hover {
       background: #fff200;
     }
-
     #currentUser {
       margin-top: 10px;
       color: #ccc;
       font-size: 16px;
     }
-
   </style>
 </head>
 <body>
@@ -101,12 +90,20 @@
 
   <div class="card">
     <h2>ثبت نام / ورود</h2>
-    <input type="text" id="usernameInput" placeholder="نام کاربری" />
-    <button onclick="registerUser()">ثبت کن</button>
+    <div id="registerSection">
+      <input type="text" id="usernameInput" placeholder="نام پادشاهی شما" />
+      <button onclick="registerUser()">ثبت کن</button>
+    </div>
     <p id="currentUser"></p>
+    <button id="editNameBtn" style="display:none;" onclick="editName()">✏️ ویرایش نام (۲۰۰ سکه)</button>
   </div>
 
   <script>
+    // مقدار اولیه سکه
+    if (!localStorage.getItem('coins')) {
+      localStorage.setItem('coins', '0');
+    }
+
     function generateUUID() {
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
         const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
@@ -120,7 +117,6 @@
         alert('نام کاربری وارد کن!');
         return;
       }
-
       localStorage.setItem('myUsername', username);
 
       if (!localStorage.getItem('myUserID')) {
@@ -131,11 +127,35 @@
       showUserInfo();
     }
 
-    function showUserInfo() {
-      const username = localStorage.getItem('myUsername');
-      if (!username) return;
+   function showUserInfo() {
+  const username = localStorage.getItem('myUsername');
+  if (!username) return;
 
-      document.getElementById('currentUser').innerText = 'نام کاربری: ' + username;
+  document.getElementById('currentUser').innerText = '👑 نام پادشاهی: ' + username;
+
+  document.getElementById('registerSection').style.display = 'none';
+  document.getElementById('editNameBtn').style.display = 'block';
+  document.getElementById('backBtn').style.display = 'block';
+
+  // تغییر عنوان h2
+  document.querySelector('.card h2').innerText = 'مشخصات';
+}
+
+
+    function editName() {
+      let coins = parseInt(localStorage.getItem('coins'));
+      if (coins < 200) {
+        alert('سکه کافی نداری! (۲۰۰ سکه لازم)');
+        return;
+      }
+      const newName = prompt('نام جدید را وارد کن:');
+      if (newName && newName.trim() !== '') {
+        localStorage.setItem('myUsername', newName.trim());
+        coins -= 200;
+        localStorage.setItem('coins', coins);
+        alert('نام با موفقیت تغییر کرد! ۲۰۰ سکه کم شد.');
+        showUserInfo();
+      }
     }
 
     function goBackToIndex() {
