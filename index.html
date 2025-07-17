@@ -2,19 +2,77 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8" />
-  <meta name="robots" content="noindex,nofollow">
+  <meta name="robots" content="noindex,nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AirDrop Clicker</title>
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    #loading {
+    position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7); /* شفافیت کمتر و حالت شیشه‌ای */
+  backdrop-filter: blur(5px); /* محوکننده شیشه‌ای */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  z-index: 9999;
+  user-select: none;
+    }
+
+    #loading img {
+      width: 150px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    #loadingProgressBar {
+      width: 300px;
+      height: 20px;
+      background: #444;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    #loadingProgressBar span {
+      display: block;
+      height: 100%;
+      background: #f2b200;
+      width: 0;
+      border-radius: 10px;
+      transition: width 0.1s ease-out;
+    }
+
+    #main {
+      display: none;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      background: linear-gradient(to bottom, #2b1e17, #f2b200);
+    }
+
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
       font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to bottom, #2b1e17, #f2b200);
       color: white;
       text-align: center;
     }
@@ -50,24 +108,6 @@
       margin-bottom: 20px;
     }
 
-    .main-button {
-      position: relative;
-      width: 250px;
-      height: 250px;
-      border-radius: 50%;
-      overflow: hidden;
-      padding: 0;
-      border: none;
-      background: none;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-
-    .main-button:active {
-      transform: scale(0.95);
-      box-shadow: 0 0 15px rgba(255, 215, 0, 1);
-    }
-
     .profile-pic {
       width: 250px;
       height: 250px;
@@ -75,15 +115,11 @@
       border-radius: 50%;
       cursor: pointer;
       transition: transform 0.1s;
-    }
-
-    .profile-pic:active {
-      transform: scale(0.95);
-      box-shadow: 0 0 15px rgba(255, 215, 0, 1);
+      -webkit-tap-highlight-color: transparent;
+      margin-top: 20px;
     }
 
     .energy-container {
-      position: relative;
       margin-top: 30px;
       display: flex;
       align-items: center;
@@ -95,9 +131,7 @@
       background: rgba(0, 0, 0, 0.5);
       padding: 10px 20px;
       border-radius: 10px;
-      margin: 0;
       min-width: 150px;
-      text-align: center;
     }
 
     .energy-boost-btn {
@@ -117,45 +151,29 @@
       background: #ffca3a;
     }
 
-    .energy-boost-btn:active {
-      transform: scale(0.9);
-    }
-
-    /* منو مرتب شده */
     .menu {
       display: flex;
       justify-content: space-between;
       font-size: large;
       margin-top: 20px;
-      flex-wrap: nowrap;
       gap: 5px;
     }
 
-    .menu button,
     .menu a {
-     flex: 1 1 auto;
-  background: rgba(0, 0, 0, 0.8);
-  border: none;
-  padding: 8px 5px;
-  color: white;
-  font-size: 14px;
-  margin: 0;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
-  text-decoration: none;
-  text-align: center;
-  white-space: nowrap;
+      flex: 1 1 auto;
+      background: rgba(0, 0, 0, 0.8);
+      border: none;
+      padding: 8px 5px;
+      color: white;
+      font-size: 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
     }
 
-    .menu button:hover,
     .menu a:hover {
-       background: rgba(255, 255, 255, 0.3);
-    }
-
-    .menu button:active,
-    .menu a:active {
-      transform: scale(0.95);
+      background: rgba(255, 255, 255, 0.3);
     }
 
     .progress-bar {
@@ -164,7 +182,6 @@
       border-radius: 10px;
       height: 20px;
       margin-bottom: 10px;
-      position: relative;
     }
 
     .progress-bar span {
@@ -182,7 +199,6 @@
       font-size: 16px;
     }
 
-    /* انیمیشن لرزش */
     @keyframes shake {
       0% { transform: translate(0, 0) rotate(0); }
       20% { transform: translate(-5px, 5px) rotate(-2deg); }
@@ -195,164 +211,144 @@
     .shake {
       animation: shake 0.5s;
     }
-img:focus,
-.profile-pic:focus {
-  outline: none;
-  box-shadow: none;
-}
-
-.profile-pic {
-  -webkit-tap-highlight-color: transparent;
-}
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="progress-bar">
-      <span id="progressBar"></span>
-    </div>
-    <div class="progress-info">
-      <span id="currentCoins">0</span> <span id="coinsNeeded">0</span>
-    </div>
-    <div class="coin-count">
-      <img src="images/mokhtar.png" alt="Coin" oncontextmenu="return false;" />
-      <span id="coinValue">0</span>
-    </div>
-    <p class="rank">🏆 <span id="rankTitle">سرباز</span></p>
+  <div id="loading">
+    <img src="/images/loading.jpg" alt="در حال بارگذاری..." />
+    <p>در حال بارگذاری مختار کوین</p>
+    <div id="loadingProgressBar"><span></span></div>
+  </div>
 
-    <div style="margin: 20px 0; font-size: 20px;">
-      ⚡ قدرت کل: <span id="powerValue">0</span>
-    </div>
-
-    <img src="images/mokhtar.png" alt="Profile" id="clickBtn" class="profile-pic" oncontextmenu="return false;" />
-
-    <div class="energy-container">
-      <div class="energy-bar">
-        ⚡️ <span id="energyValue">1000</span> / <span id="storageValue">1000</span>
+  <div id="main">
+    <div class="container">
+      <div class="progress-bar"><span id="progressBar"></span></div>
+      <div class="progress-info"><span id="currentCoins">0</span> <span id="coinsNeeded">0</span></div>
+      <div class="coin-count"><img src="images/mokhtar.png" alt="Coin" /> <span id="coinValue">0</span></div>
+      <p class="rank">🏆 <span id="rankTitle">سرباز</span></p>
+      <div style="margin: 20px 0; font-size: 20px;">⚡ قدرت کل: <span id="powerValue">0</span></div>
+      <img src="images/mokhtar.png" alt="Profile" id="clickBtn" class="profile-pic" />
+      <div class="energy-container">
+        <div class="energy-bar">⚡️ <span id="energyValue">1000</span> / <span id="storageValue">1000</span></div>
+        <button class="energy-boost-btn" onclick="window.location.href='booster.html'">🚀</button>
       </div>
-      <button class="energy-boost-btn" onclick="window.location.href='booster.html'">🚀</button>
-    </div>
-
-    <div class="menu">
-      <a href="task.html">🟡 افزایش خزانه</a>
-      <a href="boost.html">🔥 افزایش قدرت</a>
-      <a href="king.html">👑 پادشاهی</a>
-      <a href="friends.html">📱پروفایل</a>
+      <div class="menu">
+        <a href="task.html">🟡 افزایش خزانه</a>
+        <a href="boost.html">🔥 افزایش قدرت</a>
+        <a href="king.html">👑 پادشاهی</a>
+        <a href="friends.html">📱پروفایل</a>
+      </div>
     </div>
   </div>
 
   <script>
-   let coinValue = parseInt(localStorage.getItem("coins")) || 0;
-let energyValue = parseInt(localStorage.getItem("energy")) || 1000;
-let storage = parseInt(localStorage.getItem("storage")) || 1000;
-let multitapPower = parseInt(localStorage.getItem("multitapPower")) || 1;
+    // همیشه لودینگ نمایش داده بشه هر بار صفحه رفرش میشه
+    let progress = 0;
+    const loadingBar = document.querySelector("#loadingProgressBar span");
 
-// محاسبه انرژی بر اساس زمان آخرین فعالیت
-let lastActive = parseInt(localStorage.getItem("lastActive")) || Date.now();
-let now = Date.now();
-let diffSeconds = Math.floor((now - lastActive) / 1000);
+    const loadingInterval = setInterval(() => {
+      progress += 2; // سرعت پیشرفت
+      if (progress > 100) progress = 100;
+      loadingBar.style.width = progress + "%";
 
-// هر ۲ ثانیه ۱ انرژی
-let earnedEnergy = Math.floor(diffSeconds / 1) * 1;
+      if (progress >= 100) {
+        clearInterval(loadingInterval);
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("main").style.display = "flex";
+        initializeGame();
+      }
+    }, 60);
 
-// اضافه کن ولی بیشتر از storage نشه
-energyValue = Math.min(storage, energyValue + earnedEnergy);
-localStorage.setItem("energy", energyValue);
+    function initializeGame() {
+      let coinValue = parseInt(localStorage.getItem("coins")) || 0;
+      let energyValue = parseInt(localStorage.getItem("energy")) || 1000;
+      let storage = parseInt(localStorage.getItem("storage")) || 1000;
+      let multitapPower = parseInt(localStorage.getItem("multitapPower")) || 1;
 
-// ذخیره زمان فعلی برای دفعات بعد
-localStorage.setItem("lastActive", now);
+      let lastActive = parseInt(localStorage.getItem("lastActive")) || Date.now();
+      let now = Date.now();
+      let diffSeconds = Math.floor((now - lastActive) / 1000);
+      let earnedEnergy = Math.floor(diffSeconds / 1) * 1;
+      energyValue = Math.min(storage, energyValue + earnedEnergy);
+      localStorage.setItem("energy", energyValue);
+      localStorage.setItem("lastActive", now);
 
-function formatNumber(number) {
-  return number.toLocaleString('en-US');
-}
+      function formatNumber(number) {
+        return number.toLocaleString('en-US');
+      }
 
-document.getElementById("coinValue").innerText = formatNumber(coinValue);
-document.getElementById("energyValue").innerText = formatNumber(energyValue);
-document.getElementById("storageValue").innerText = formatNumber(storage);
+      document.getElementById("coinValue").innerText = formatNumber(coinValue);
+      document.getElementById("energyValue").innerText = formatNumber(energyValue);
+      document.getElementById("storageValue").innerText = formatNumber(storage);
 
-function updateRank() {
-  const rankThresholds = [
-    { threshold: 5000, rank: "سرباز" },
-    { threshold: 15000, rank: "سرباز با تجربه" },
-    { threshold: 50000, rank: "فرمانده" },
-    { threshold: 100000, rank: "فرمانده با تجربه" },
-    { threshold: 500000, rank: "فرمانده سوم" },
-    { threshold: 1000000, rank: "فرمانده دوم" },
-    { threshold: 5000000, rank: "فرمانده اول" },
-    { threshold: 10000000, rank: "رهبر" },
-    { threshold: 50000000, rank: "پادشاهی" }
-  ];
-  const rank = rankThresholds.reverse().find(item => coinValue >= item.threshold)?.rank || "سرباز";
-  document.getElementById("rankTitle").innerText = rank;
-}
+      function updateRank() {
+        const rankThresholds = [
+          { threshold: 5000, rank: "سرباز" },
+          { threshold: 15000, rank: "سرباز با تجربه" },
+          { threshold: 50000, rank: "فرمانده" },
+          { threshold: 100000, rank: "فرمانده با تجربه" },
+          { threshold: 500000, rank: "فرمانده سوم" },
+          { threshold: 1000000, rank: "فرمانده دوم" },
+          { threshold: 5000000, rank: "فرمانده اول" },
+          { threshold: 10000000, rank: "رهبر" },
+          { threshold: 50000000, rank: "پادشاهی" }
+        ];
+        const rank = rankThresholds.reverse().find(item => coinValue >= item.threshold)?.rank || "سرباز";
+        document.getElementById("rankTitle").innerText = rank;
+      }
 
-function updateProgressBar() {
-  const nextRankThreshold = [5000, 15000, 50000, 100000, 500000, 1000000, 5000000, 10000000, 50000000];
-  const currentRankThreshold = nextRankThreshold.find(t => coinValue < t);
-  const nextRank = currentRankThreshold || 50000000;
-  const progress = Math.min(100, (coinValue / nextRank) * 100);
-  document.getElementById("progressBar").style.width = progress + '%';
-  document.getElementById("coinsNeeded").innerText = formatNumber(nextRank);
-  document.getElementById("currentCoins").innerText = formatNumber(coinValue);
-}
+      function updateProgressBar() {
+        const nextRankThreshold = [5000, 15000, 50000, 100000, 500000, 1000000, 5000000, 10000000, 50000000];
+        const currentRankThreshold = nextRankThreshold.find(t => coinValue < t);
+        const nextRank = currentRankThreshold || 50000000;
+        const progress = Math.min(100, (coinValue / nextRank) * 100);
+        document.getElementById("progressBar").style.width = progress + '%';
+        document.getElementById("coinsNeeded").innerText = formatNumber(nextRank);
+        document.getElementById("currentCoins").innerText = formatNumber(coinValue);
+      }
 
-function updateEnergy() {
-  if (energyValue < storage) {
-    energyValue += 5;
-    document.getElementById("energyValue").innerText = formatNumber(energyValue);
-    localStorage.setItem("energy", energyValue);
-  }
-}
+      function autoIncreaseEnergy() {
+        if (energyValue < storage) {
+          energyValue += 1;
+          document.getElementById("energyValue").innerText = formatNumber(energyValue);
+          localStorage.setItem("energy", energyValue);
+        }
+      }
 
-function autoIncreaseEnergy() {
-  if (energyValue < storage) {
-    energyValue += 1;
-    document.getElementById("energyValue").innerText = formatNumber(energyValue);
-    localStorage.setItem("energy", energyValue);
-  }
-}
+      function updatePower() {
+        let totalPower = parseInt(localStorage.getItem("totalPower")) || 0;
+        document.getElementById("powerValue").innerText = totalPower.toLocaleString();
+      }
 
-function updatePower() {
-  let totalPower = parseInt(localStorage.getItem("totalPower")) || 0;
-  document.getElementById("powerValue").innerText = totalPower.toLocaleString();
-}
+      document.getElementById("clickBtn").addEventListener("click", function () {
+        if (energyValue >= multitapPower) {
+          coinValue += multitapPower;
+          energyValue -= multitapPower;
+          document.getElementById("coinValue").innerText = formatNumber(coinValue);
+          document.getElementById("energyValue").innerText = formatNumber(energyValue);
+          localStorage.setItem("coins", coinValue);
+          localStorage.setItem("energy", energyValue);
+          updateRank();
+          updateProgressBar();
 
+          if (navigator.vibrate) navigator.vibrate(50);
 
-document.getElementById("clickBtn").addEventListener("click", function () {
-  if (energyValue >= multitapPower) {
-    coinValue += multitapPower;
-    energyValue -= multitapPower;
-    document.getElementById("coinValue").innerText = formatNumber(coinValue);
-    document.getElementById("energyValue").innerText = formatNumber(energyValue);
-    localStorage.setItem("coins", coinValue);
-    localStorage.setItem("energy", energyValue);
-    updateRank();
-    updateProgressBar();
+          this.classList.add("shake");
+          setTimeout(() => this.classList.remove("shake"), 500);
+        }
+      });
 
-    if (navigator.vibrate) {
-      navigator.vibrate(50);
+      setInterval(autoIncreaseEnergy, 2000);
+      setInterval(updatePower, 2000);
+
+      window.addEventListener("beforeunload", () => {
+        localStorage.setItem("lastActive", Date.now());
+      });
+
+      updateRank();
+      updateProgressBar();
+      updatePower();
     }
-
-    this.classList.add("shake");
-    setTimeout(() => this.classList.remove("shake"), 500);
-  }
-});
-
-window.addEventListener('load', function () {
-  updateEnergy();
-  setInterval(autoIncreaseEnergy, 2000);
-  setInterval(updatePower, 2000);
-});
-
-// ذخیره زمان هنگام بستن مینی‌اپ
-window.addEventListener("beforeunload", () => {
-  localStorage.setItem("lastActive", Date.now());
-});
-
-updateRank();
-updateProgressBar();
-updatePower();
-
   </script>
 </body>
 </html>
