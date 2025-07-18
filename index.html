@@ -175,45 +175,6 @@
     .menu a:hover {
       background: rgba(255, 255, 255, 0.3);
     }
-
-    .intro-box {
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(8px);
-  border-radius: 12px;
-  padding: 10px 15px;
-  margin: 10px auto;
-  width: fit-content;        /* عرض به اندازه محتوا */
-  max-width: 90%;            /* برای واکنش‌گرایی */
-  text-align: center;
-  color: white;
-  box-shadow: 0 0 8px rgba(0,0,0,0.4);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.intro-box img {
-  width: 50px;
-  height: 50px;
-  border-radius: 10px;
-  object-fit: cover;
-}
-
-.intro-box p {
-  margin: 0;
-  font-size: 16px;
-}
-
-    .progress-bar {
-      width: 100%;
-      background: #ccc;
-      border-radius: 10px;
-      height: 20px;
-      margin-bottom: 10px;
-    }
-
     .progress-bar span {
       display: block;
       height: 100%;
@@ -252,11 +213,6 @@
 
   <div id="main">
     <div class="container">
-      <!-- معرفی بلاک‌پین اسلام -->
-<div class="intro-box">
-  <img src="images/blockpin-logo.png" alt="Blockpin Logo">
-  <strong>بلاکچین اسلام</strong>
-</div>
       <div class="progress-bar"><span id="progressBar"></span></div>
       <div class="progress-info"><span id="currentCoins">0</span> <span id="coinsNeeded">0</span></div>
       <div class="coin-count"><img src="images/mokhtar.png" alt="Coin" /> <span id="coinValue">0</span></div>
