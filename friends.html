@@ -80,6 +80,32 @@
       color: #ccc;
       font-size: 16px;
     }
+
+    /* ✅ استایل مخصوص بخش صرافی */
+    #exchangeTypeSection {
+      margin-top: 30px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    #exchangeTypeSection h3 {
+      font-size: 20px;
+      color: #ffd700;
+      margin-bottom: 10px;
+    }
+    #exchangeTypeSection img {
+      width: 160px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      transition: transform 0.3s;
+    }
+    #exchangeTypeSection img:hover {
+      transform: scale(1.05);
+    }
+    #exchangeTypeSection p {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #ccc;
+    }
   </style>
 </head>
 <body>
@@ -96,10 +122,16 @@
     </div>
     <p id="currentUser"></p>
     <button id="editNameBtn" style="display:none;" onclick="editName()">✏️ ویرایش نام (۲۰۰ سکه)</button>
+
+    <!-- ✅ بخش جدید نوع صرافی -->
+    <div id="exchangeTypeSection">
+      <h3>: نوع صرافی شما</h3>
+      <img src="images/blockpin-logo.png" alt="Blockpin Islam Logo" />
+      <p>صرافی داخلی بازی</p>
+    </div>
   </div>
 
   <script>
-    // مقدار اولیه سکه
     if (!localStorage.getItem('coins')) {
       localStorage.setItem('coins', '0');
     }
@@ -127,20 +159,18 @@
       showUserInfo();
     }
 
-   function showUserInfo() {
-  const username = localStorage.getItem('myUsername');
-  if (!username) return;
+    function showUserInfo() {
+      const username = localStorage.getItem('myUsername');
+      if (!username) return;
 
-  document.getElementById('currentUser').innerText = '👑 نام پادشاهی: ' + username;
+      document.getElementById('currentUser').innerText = '👑 نام پادشاهی: ' + username;
 
-  document.getElementById('registerSection').style.display = 'none';
-  document.getElementById('editNameBtn').style.display = 'block';
-  document.getElementById('backBtn').style.display = 'block';
+      document.getElementById('registerSection').style.display = 'none';
+      document.getElementById('editNameBtn').style.display = 'block';
+      document.getElementById('backBtn').style.display = 'block';
 
-  // تغییر عنوان h2
-  document.querySelector('.card h2').innerText = 'مشخصات';
-}
-
+      document.querySelector('.card h2').innerText = 'مشخصات';
+    }
 
     function editName() {
       let coins = parseInt(localStorage.getItem('coins'));

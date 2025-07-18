@@ -175,22 +175,22 @@
     .menu a:hover {
       background: rgba(255, 255, 255, 0.3);
     }
-
     .progress-bar {
-      width: 100%;
-      background: #ccc;
-      border-radius: 10px;
-      height: 20px;
-      margin-bottom: 10px;
-    }
+  width: 100%;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
 
-    .progress-bar span {
-      display: block;
-      height: 100%;
-      background: #f2b200;
-      border-radius: 10px;
-      width: 0;
-    }
+.progress-bar span {
+  display: block;
+  height: 100%;
+  background: #f2b200;
+  border-radius: 10px;
+  width: 0;
+}
 
     .progress-info {
       display: flex;
@@ -215,7 +215,7 @@
 </head>
 <body>
   <div id="loading">
-    <img src="/images/loading.jpg" alt="در حال بارگذاری..." />
+    <img src="images/loading.jpg" alt="در حال بارگذاری..." />
     <p>در حال بارگذاری مختار کوین</p>
     <div id="loadingProgressBar"><span></span></div>
   </div>
@@ -241,8 +241,13 @@
     </div>
   </div>
 
+
   <script>
     // همیشه لودینگ نمایش داده بشه هر بار صفحه رفرش میشه
+  const hasLoadedBefore = sessionStorage.getItem("loaded");
+
+  if (!hasLoadedBefore) {
+    // نمایش لودینگ با پیشرفت
     let progress = 0;
     const loadingBar = document.querySelector("#loadingProgressBar span");
 
@@ -255,10 +260,16 @@
         clearInterval(loadingInterval);
         document.getElementById("loading").style.display = "none";
         document.getElementById("main").style.display = "flex";
+        sessionStorage.setItem("loaded", "true");
         initializeGame();
       }
     }, 60);
-
+  } else {
+    // اگر قبلاً در این جلسه لود شده مستقیم صفحه اصلی
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("main").style.display = "flex";
+    initializeGame();
+  }
     function initializeGame() {
       let coinValue = parseInt(localStorage.getItem("coins")) || 0;
       let energyValue = parseInt(localStorage.getItem("energy")) || 1000;
