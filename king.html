@@ -223,6 +223,16 @@
     </div>
   </div>
 
+   <div class="item">
+    <img src="images/boost-5.webp" alt="پیمان">
+    <p>پیمان با ابراهیم </p>
+    <div class="btn-group">
+      <button class="fight-btn" onclick="defeatEnemy(16000, 'piman')">انجام</button>
+      <span class="power-cost">16000 🗡️</span>
+      <span id="check-pimaneb" class="check">✔</span>
+    </div>
+  </div>
+
   <div class="item">
     <img src="images/enemy-14.webp" alt="بیعت">
     <p>بیعت با محمدبن حنیفه</p>
@@ -454,7 +464,7 @@ function upgradeItem(item) {
 }
 
 function loadDefeatedEnemies() {
-  let enemies = [ 'madaen','aghaz', 'piman', 'biat', 'omar', 'jason', 'borders', 'shemr', 'hormala', 'kufa', 'moavieh', 'zobayri', 'mekka', 'sham', 'crown1', 'crown2'];
+  let enemies = [ 'madaen','aghaz', 'piman', 'pimaneb' , 'biat', 'omar', 'jason', 'borders', 'shemr', 'hormala', 'kufa', 'moavieh', 'zobayri', 'mekka', 'sham', 'crown1', 'crown2'];
   enemies.forEach(id => {
     let defeated = localStorage.getItem("defeated-" + id);
     showDefeatCheck(id, defeated === "true");
