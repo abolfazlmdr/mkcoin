@@ -211,14 +211,22 @@
     .shake {
       animation: shake 0.5s;
     }
+
+    #loadingPercent {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #ffc107;
+}
+
   </style>
 </head>
 <body>
-  <div id="loading">
-    <img src="images/loading.jpg" alt="در حال بارگذاری..." />
-    <p>در حال بارگذاری مختار کوین</p>
-    <div id="loadingProgressBar"><span></span></div>
-  </div>
+ <div id="loading">
+  <img src="images/loading.jpg" alt="در حال بارگذاری..." />
+  <p>در حال بارگذاری مختار کوین</p>
+  <div id="loadingProgressBar"><span></span></div>
+  <div id="loadingPercent">۰٪</div>
+</div>
 
   <div id="main">
     <div class="container">
@@ -255,6 +263,7 @@
       progress += 2; // سرعت پیشرفت
       if (progress > 100) progress = 100;
       loadingBar.style.width = progress + "%";
+document.getElementById("loadingPercent").innerText = progress + "٪";
 
       if (progress >= 100) {
         clearInterval(loadingInterval);
@@ -309,9 +318,8 @@
       }
 
       function updateProgressBar() {
-        const nextRankThreshold = [5000, 15000, 50000, 100000, 500000, 1000000, 5000000, 10000000, 50000000];
-        const currentRankThreshold = nextRankThreshold.find(t => coinValue < t);
-        const nextRank = currentRankThreshold || 50000000;
+       const nextRankThreshold = [15000, 50000, 100000, 500000, 1000000, 5000000, 10000000, 50000000];
+const nextRank = nextRankThreshold.find(t => coinValue < t) || 50000000;
         const progress = Math.min(100, (coinValue / nextRank) * 100);
         document.getElementById("progressBar").style.width = progress + '%';
         document.getElementById("coinsNeeded").innerText = formatNumber(nextRank);
