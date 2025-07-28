@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AirDrop Clicker</title>
   <style>
-    * {
+* {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -75,6 +75,7 @@
       background: linear-gradient(to bottom, #2b1e17, #f2b200);
       color: white;
       text-align: center;
+  
     }
 
     .container {
@@ -218,15 +219,53 @@
   color: #ffc107;
 }
 
+    .menu {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 10px;
+      gap: 5px;
+    }
+
+    .menu a {
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      border-radius: 15px;
+      transition: background 0.3s ease;
+    }
+
+    .menu a:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .menu-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .menu-icon img {
+      width: 38px;
+      height: 38px;
+      margin-bottom: 5px;
+    }
+
+    .menu-icon span {
+      font-size: 13px;
+      color: white;
+    }
   </style>
 </head>
 <body>
- <div id="loading">
-  <img src="images/loading.jpg" alt="در حال بارگذاری..." />
-  <p>در حال بارگذاری مختار کوین</p>
-  <div id="loadingProgressBar"><span></span></div>
-  <div id="loadingPercent">۰٪</div>
-</div>
+  <div id="loading">
+    <img src="images/loading.jpg" alt="در حال بارگذاری..." />
+    <p>در حال بارگذاری مختار کوین</p>
+    <div id="loadingProgressBar"><span></span></div>
+    <div id="loadingPercent">۰٪</div>
+  </div>
 
   <div id="main">
     <div class="container">
@@ -241,14 +280,25 @@
         <button class="energy-boost-btn" onclick="window.location.href='booster.html'">🚀</button>
       </div>
       <div class="menu">
-        <a href="task.html">🟡 افزایش خزانه</a>
-        <a href="boost.html">🔥 افزایش قدرت</a>
-        <a href="king.html">👑 پادشاهی</a>
-        <a href="friends.html">📱پروفایل</a>
+        <a href="task.html" class="menu-icon">
+          <img src="images/task.webp" alt="خزانه">
+          <span>افزایش خزانه</span>
+        </a>
+        <a href="boost.html" class="menu-icon">
+          <img src="images/booster.webp" alt="قدرت">
+          <span>افزایش قدرت</span>
+        </a>
+        <a href="king.html" class="menu-icon">
+          <img src="images/king.webp" alt="پادشاهی">
+          <span>پادشاهی</span>
+        </a>
+        <a href="friends.html" class="menu-icon">
+          <img src="images/profile.webp" alt="پروفایل">
+          <span>پروفایل</span>
+        </a>
       </div>
     </div>
   </div>
-
 
   <script>
     // همیشه لودینگ نمایش داده بشه هر بار صفحه رفرش میشه
@@ -368,6 +418,7 @@ const nextRank = nextRankThreshold.find(t => coinValue < t) || 50000000;
       updateProgressBar();
       updatePower();
     }
+
   </script>
 </body>
 </html>
