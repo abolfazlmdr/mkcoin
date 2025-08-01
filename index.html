@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AirDrop Clicker</title>
   <style>
-* {
+    * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -14,22 +14,22 @@
     }
 
     #loading {
-    position: fixed;
-  top: 0; 
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7); /* شفافیت کمتر و حالت شیشه‌ای */
-  backdrop-filter: blur(5px); /* محوکننده شیشه‌ای */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-  z-index: 9999;
-  user-select: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      z-index: 9999;
+      user-select: none;
     }
 
     #loading img {
@@ -56,6 +56,12 @@
       transition: width 0.1s ease-out;
     }
 
+    #loadingPercent {
+      margin-top: 10px;
+      font-size: 18px;
+      color: #ffc107;
+    }
+
     #main {
       display: none;
       height: 100vh;
@@ -68,14 +74,9 @@
       height: 100%;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       background: linear-gradient(to bottom, #2b1e17, #f2b200);
       color: white;
       text-align: center;
-  
     }
 
     .container {
@@ -86,6 +87,7 @@
       border-radius: 20px;
       padding: 20px;
       box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      padding-bottom: 100px;
     }
 
     .coin-count {
@@ -152,46 +154,22 @@
       background: #ffca3a;
     }
 
-    .menu {
-      display: flex;
-      justify-content: space-between;
-      font-size: large;
-      margin-top: 20px;
-      gap: 5px;
-    }
-
-    .menu a {
-      flex: 1 1 auto;
-      background: rgba(0, 0, 0, 0.8);
-      border: none;
-      padding: 8px 5px;
-      color: white;
-      font-size: 14px;
-      border-radius: 10px;
-      cursor: pointer;
-      text-decoration: none;
-      text-align: center;
-    }
-
-    .menu a:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
     .progress-bar {
-  width: 100%;
-  height: 18px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 10px;
-}
+      width: 100%;
+      height: 18px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
 
-.progress-bar span {
-  display: block;
-  height: 100%;
-  background: #f2b200;
-  border-radius: 10px;
-  width: 0;
-}
+    .progress-bar span {
+      display: block;
+      height: 100%;
+      background: #f2b200;
+      border-radius: 10px;
+      width: 0;
+    }
 
     .progress-info {
       display: flex;
@@ -213,32 +191,33 @@
       animation: shake 0.5s;
     }
 
-    #loadingPercent {
-  margin-top: 10px;
-  font-size: 18px;
-  color: #ffc107;
-}
-
+    /* منوی پایین جدید با گرادیان رنگی و طراحی حرفه‌ای */
     .menu {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
       display: flex;
       justify-content: space-around;
-      margin-top: 10px;
-      gap: 5px;
+      padding: 10px 0;
+      z-index: 999;
+      backdrop-filter: blur(5px);
     }
 
     .menu a {
-      flex: 1;
-      text-align: center;
       text-decoration: none;
-      color: white;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 10px;
+      color: black;
+      text-align: center;
+      font-size: 12px;
+      flex: 1;
+      padding: 6px;
       border-radius: 15px;
-      transition: background 0.3s ease;
+      transition: transform 0.2s ease;
     }
 
     .menu a:hover {
-      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.07);
     }
 
     .menu-icon {
@@ -248,15 +227,25 @@
     }
 
     .menu-icon img {
-      width: 38px;
-      height: 38px;
-      margin-bottom: 5px;
+      width: 36px;
+      height: 36px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 8px;
+      border-radius: 50%;
+      margin-bottom: 4px;
     }
 
     .menu-icon span {
       font-size: 13px;
-      color: white;
+      font-weight: 900; /* بسیار ضخیم */
+      color: black;
     }
+
+    /* رنگ‌های گرادیان خاص برای هر دکمه */
+    .task-btn   { background: linear-gradient(135deg, #f7971e, #ffd200); }
+    .boost-btn  { background: linear-gradient(135deg, #f7971e, #ffd200); }
+    .king-btn   { background: linear-gradient(135deg, #f7971e, #ffd200); }
+    .profile-btn{ background: linear-gradient(135deg, #f7971e, #ffd200); }
   </style>
 </head>
 <body>
@@ -279,62 +268,58 @@
         <div class="energy-bar">⚡️ <span id="energyValue">1000</span> / <span id="storageValue">1000</span></div>
         <button class="energy-boost-btn" onclick="window.location.href='booster.html'">🚀</button>
       </div>
-      <div class="menu">
-        <a href="task.html" class="menu-icon">
-          <img src="images/task.webp" alt="خزانه">
-          <span>افزایش خزانه</span>
-        </a>
-        <a href="boost.html" class="menu-icon">
-          <img src="images/booster.webp" alt="قدرت">
-          <span>افزایش قدرت</span>
-        </a>
-        <a href="king.html" class="menu-icon">
-          <img src="images/king.webp" alt="پادشاهی">
-          <span>پادشاهی</span>
-        </a>
-        <a href="friends.html" class="menu-icon">
-          <img src="images/profile.webp" alt="پروفایل">
-          <span>پروفایل</span>
-        </a>
-      </div>
+    </div>
+
+    <!-- منوی پایین -->
+    <div class="menu">
+      <a href="task.html" class="menu-icon task-btn">
+        <img src="images/task.webp" alt="خزانه">
+        <span>افزایش خزانه</span>
+      </a>
+      <a href="boost.html" class="menu-icon boost-btn">
+        <img src="images/booster.webp" alt="قدرت">
+        <span>افزایش قدرت</span>
+      </a>
+      <a href="king.html" class="menu-icon king-btn">
+        <img src="images/king.webp" alt="پادشاهی">
+        <span>پادشاهی</span>
+      </a>
+      <a href="friends.html" class="menu-icon profile-btn">
+        <img src="images/profile.webp" alt="پروفایل">
+        <span>پروفایل</span>
+      </a>
     </div>
   </div>
 
   <script>
-    // همیشه لودینگ نمایش داده بشه هر بار صفحه رفرش میشه
-  const hasLoadedBefore = sessionStorage.getItem("loaded");
+    const hasLoadedBefore = sessionStorage.getItem("loaded");
+    if (!hasLoadedBefore) {
+      let progress = 0;
+      const loadingBar = document.querySelector("#loadingProgressBar span");
+      const loadingInterval = setInterval(() => {
+        progress += 2;
+        if (progress > 100) progress = 100;
+        loadingBar.style.width = progress + "%";
+        document.getElementById("loadingPercent").innerText = progress + "٪";
+        if (progress >= 100) {
+          clearInterval(loadingInterval);
+          document.getElementById("loading").style.display = "none";
+          document.getElementById("main").style.display = "flex";
+          sessionStorage.setItem("loaded", "true");
+          initializeGame();
+        }
+      }, 60);
+    } else {
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("main").style.display = "flex";
+      initializeGame();
+    }
 
-  if (!hasLoadedBefore) {
-    // نمایش لودینگ با پیشرفت
-    let progress = 0;
-    const loadingBar = document.querySelector("#loadingProgressBar span");
-
-    const loadingInterval = setInterval(() => {
-      progress += 2; // سرعت پیشرفت
-      if (progress > 100) progress = 100;
-      loadingBar.style.width = progress + "%";
-document.getElementById("loadingPercent").innerText = progress + "٪";
-
-      if (progress >= 100) {
-        clearInterval(loadingInterval);
-        document.getElementById("loading").style.display = "none";
-        document.getElementById("main").style.display = "flex";
-        sessionStorage.setItem("loaded", "true");
-        initializeGame();
-      }
-    }, 60);
-  } else {
-    // اگر قبلاً در این جلسه لود شده مستقیم صفحه اصلی
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("main").style.display = "flex";
-    initializeGame();
-  }
     function initializeGame() {
       let coinValue = parseInt(localStorage.getItem("coins")) || 0;
       let energyValue = parseInt(localStorage.getItem("energy")) || 1000;
       let storage = parseInt(localStorage.getItem("storage")) || 1000;
       let multitapPower = parseInt(localStorage.getItem("multitapPower")) || 1;
-
       let lastActive = parseInt(localStorage.getItem("lastActive")) || Date.now();
       let now = Date.now();
       let diffSeconds = Math.floor((now - lastActive) / 1000);
@@ -368,8 +353,8 @@ document.getElementById("loadingPercent").innerText = progress + "٪";
       }
 
       function updateProgressBar() {
-       const nextRankThreshold = [15000, 50000, 100000, 500000, 1000000, 5000000, 10000000, 50000000];
-const nextRank = nextRankThreshold.find(t => coinValue < t) || 50000000;
+        const nextRankThreshold = [15000, 50000, 100000, 500000, 1000000, 5000000, 10000000, 50000000];
+        const nextRank = nextRankThreshold.find(t => coinValue < t) || 50000000;
         const progress = Math.min(100, (coinValue / nextRank) * 100);
         document.getElementById("progressBar").style.width = progress + '%';
         document.getElementById("coinsNeeded").innerText = formatNumber(nextRank);
@@ -399,9 +384,7 @@ const nextRank = nextRankThreshold.find(t => coinValue < t) || 50000000;
           localStorage.setItem("energy", energyValue);
           updateRank();
           updateProgressBar();
-
           if (navigator.vibrate) navigator.vibrate(50);
-
           this.classList.add("shake");
           setTimeout(() => this.classList.remove("shake"), 500);
         }
@@ -418,7 +401,6 @@ const nextRank = nextRankThreshold.find(t => coinValue < t) || 50000000;
       updateProgressBar();
       updatePower();
     }
-
   </script>
 </body>
 </html>
