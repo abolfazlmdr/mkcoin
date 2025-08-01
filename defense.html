@@ -118,40 +118,43 @@
   <button onclick="goBack()">بازگشت</button>
 
   <script>
-    let coins = parseInt(localStorage.getItem("coins")) || 50000;
-    document.getElementById("coinDisplay").innerText = "💰 سکه: " + coins;
+   let coins = parseInt(localStorage.getItem("coins")) || 50000;
+document.getElementById("coinDisplay").innerText = "💰 سکه: " + coins;
 
-    function saveCoins() {
-      localStorage.setItem("coins", coins);
-      document.getElementById("coinDisplay").innerText = "💰 سکه: " + coins;
-    }
+function saveCoins() {
+  localStorage.setItem("coins", coins);
+  document.getElementById("coinDisplay").innerText = "💰 سکه: " + coins;
+}
 
-    function attack() {
-      const resources = ["انبار گندم", "دیوار دفاعی", "سربازخانه", "برج دیده‌بانی"];
-      const attackedResource = resources[Math.floor(Math.random() * resources.length)];
-      const damage = Math.floor(Math.random() * (3000 - 1500 + 1)) + 1500;
+function attack() {
+  const resources = ["انبار گندم", "دیوار دفاعی", "سربازخانه", "برج دیده‌بانی"];
+  const attackedResource = resources[Math.floor(Math.random() * resources.length)];
+  const damage = Math.floor(Math.random() * (3000 - 1500 + 1)) + 1500;
 
-      coins = Math.max(0, coins - damage);
-      saveCoins();
+  coins = Math.max(0, coins - damage);
+  saveCoins();
 
-      const message = `❗️ دشمن به ${attackedResource} حمله کرد و ${damage} سکه از شما کم شد.`;
-      document.getElementById("attackMessage").innerText = message;
+  const message = `❗️ دشمن به ${attackedResource} حمله کرد و ${damage.toLocaleString()} سکه از شما کم شد.`;
+  document.getElementById("attackMessage").innerText = message;
 
-      localStorage.setItem("lastAttackTime", Date.now());
-    }
+  localStorage.setItem("lastAttackTime", Date.now());
+}
 
-    function checkAttackTimer() {
-      const lastAttackTime = parseInt(localStorage.getItem("lastAttackTime")) || 0;
-      const now = Date.now();
-      const twelveHours = 12 * 60 * 60 * 1000;
-      const timePassed = now - lastAttackTime;
+function checkAttackTimer() {
+  const lastAttackTime = parseInt(localStorage.getItem("lastAttackTime")) || 0;
+  const now = Date.now();
+  const twelveHours = 12 * 60 * 60 * 1000;
+  const timePassed = now - lastAttackTime;
 
-      if (timePassed >= twelveHours) {
-        attack();
-      }
-    }
+  if (lastAttackTime === 0 || timePassed >= twelveHours) {
+    attack();
+  } else {
+    // هنوز حمله بعدی نرسیده، پیام مناسب بفرست
+    document.getElementById("attackMessage").innerText = "❗️ دشمن هنوز حمله نکرده است.";
+  }
+}
 
-   function updateCountdown() {
+function updateCountdown() {
   const lastAttackTime = parseInt(localStorage.getItem("lastAttackTime")) || 0;
   const now = Date.now();
   const twelveHours = 12 * 60 * 60 * 1000;
@@ -166,7 +169,6 @@
   const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-  // افزودن صفر پیشوند برای ساعت، دقیقه و ثانیه
   const hStr = hours.toString().padStart(2, '0');
   const mStr = minutes.toString().padStart(2, '0');
   const sStr = seconds.toString().padStart(2, '0');
@@ -175,15 +177,15 @@
     `زمان باقی‌مانده تا حمله بعدی: ${hStr}:${mStr}:${sStr}`;
 }
 
+function goBack() {
+  history.back();
+}
 
-    function goBack() {
-      history.back();
-    }
+// شروع کار
+checkAttackTimer();
+updateCountdown();
+setInterval(updateCountdown, 1000); // هر ثانیه تایمر به‌روز شه
 
-    // شروع کار
-    checkAttackTimer();
-    updateCountdown();
-    setInterval(updateCountdown, 1000); // هر ثانیه تایمر به‌روز شه
   </script>
 
 </body>
