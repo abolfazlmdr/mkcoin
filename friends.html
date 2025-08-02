@@ -7,11 +7,13 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
     body {
+       position: relative;
+       padding-top: 70px; /* به اندازه کافی بزرگ باشه که دکمه جا داشته باشه */
       font-family: 'Vazirmatn', sans-serif;
       background: linear-gradient(135deg, #000000, #1c1c1c);
       color: #f5f5f5;
       text-align: center;
-      padding: 20px;
+      padding: 60px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -27,17 +29,21 @@
       margin-bottom: 20px;
     }
     #backBtn {
-      background: #444;
-      color: #ffd700;
-      width: 40%;
-      font-weight: normal;
-      margin: 10px auto 30px auto;
-      border-radius: 8px;
-      padding: 12px 0;
-      cursor: pointer;
-      border: none;
-      transition: all 0.3s;
-      display: none;
+     position: absolute;
+  top: 20px;
+  right: 20px;
+  width: auto;
+  padding: 8px 16px;
+  margin: 0;
+  border-radius: 8px;
+  background: #444;
+  color: #ffd700;
+  font-weight: normal;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s;
+  display: none;
+  z-index: 1000;
     }
     #backBtn:hover {
       background: #666;
@@ -80,8 +86,6 @@
       color: #ccc;
       font-size: 16px;
     }
-
-    /* ✅ استایل مخصوص بخش صرافی */
     #exchangeTypeSection {
       margin-top: 30px;
       padding-top: 15px;
@@ -106,6 +110,53 @@
       font-size: 14px;
       color: #ccc;
     }
+
+    .ticker {
+     display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 340px;
+    }
+    .symbol {
+      width: 50px;
+      font-weight: bold;
+      font-size: 16px;
+      color: #ffd700;
+      text-align: right;
+    }
+    .arrow {
+      width: 0;
+      height: 0;
+      margin: 0 10px;
+      border-style: solid;
+    }
+    .arrow-up {
+      border-width: 8px 6px 0 6px;
+      border-color: #4caf50 transparent transparent transparent;
+    }
+    .arrow-down {
+      border-width: 0 6px 8px 6px;
+      border-color: transparent transparent #f44336 transparent;
+    }
+    .bar {
+      flex: 1;
+      height: 8px;
+      background-color: #444;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 0 10px;
+    }
+    .bar-fill {
+      height: 100%;
+      transition: width 0.4s ease;
+    }
+    .percent {
+      width: 60px;
+      text-align: left;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -123,13 +174,39 @@
     <p id="currentUser"></p>
     <button id="editNameBtn" style="display:none;" onclick="editName()">✏️ ویرایش نام (۲۰۰ سکه)</button>
 
-    <!-- ✅ بخش جدید نوع صرافی -->
     <div id="exchangeTypeSection">
       <h3>: نوع صرافی شما</h3>
       <img src="images/blockpin-logo.png" alt="Blockpin Islam Logo" />
       <p>صرافی داخلی بازی</p>
     </div>
   </div>
+
+<!-- 👇 همینجای فایل HTML قبلیت، بخش قیمت زنده رو کامل جایگزین کن با این 👇 -->
+<div class="card" style="margin-top: 10px;">
+  <h2>💱 قیمت زنده مختار کوین</h2>
+
+  <div class="ticker" style="flex-direction: column; align-items: stretch; gap: 8px;">
+    <div style="display: flex; justify-content: space-between; font-size: 14px; color: #ccc;">
+      <span id="minPrice">🔻 کمترین: ۰ تومان</span>
+      <span id="maxPrice">🔺 بیشترین: ۰ تومان</span>
+    </div>
+
+    <div class="bar" style="height: 12px;">
+      <div id="priceBar" class="bar-fill" style="height: 100%; width: 0%; background-color: #4caf50;"></div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; font-size: 12px; color: #999;">
+      <span id="minLabel">۰ تومان</span>
+      <span id="maxLabel">۰ تومان</span>
+    </div>
+
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px;">
+      <div id="priceArrow" class="arrow arrow-up"></div>
+      <div id="pricePercent" class="percent">+0.0%</div>
+      <div id="currentPriceText" style="color:#ffd700; font-weight: bold;">💰 قیمت فعلی: ۰ تومان</div>
+    </div>
+  </div>
+</div>
 
   <script>
     if (!localStorage.getItem('coins')) {
@@ -150,25 +227,20 @@
         return;
       }
       localStorage.setItem('myUsername', username);
-
       if (!localStorage.getItem('myUserID')) {
         const newUUID = generateUUID();
         localStorage.setItem('myUserID', newUUID);
       }
-
       showUserInfo();
     }
 
     function showUserInfo() {
       const username = localStorage.getItem('myUsername');
       if (!username) return;
-
       document.getElementById('currentUser').innerText = '👑 نام پادشاهی: ' + username;
-
       document.getElementById('registerSection').style.display = 'none';
       document.getElementById('editNameBtn').style.display = 'block';
       document.getElementById('backBtn').style.display = 'block';
-
       document.querySelector('.card h2').innerText = 'مشخصات';
     }
 
@@ -193,6 +265,45 @@
     }
 
     showUserInfo();
+
+      // قبلی‌ها رو نگه دار، این بخش فقط مربوط به قیمت مختار کوین هست
+  let currentPrice = 100;
+  let lastPrice = 100;
+  let maxPrice24h = 100;
+  let minPrice24h = 100;
+
+  function updateMokhtarCoinPrice() {
+    const change = (Math.random() * 4 - 2).toFixed(2); // بین -2% تا +2%
+    lastPrice = currentPrice;
+    currentPrice += currentPrice * (change / 100);
+    currentPrice = Math.max(1, currentPrice);
+
+    maxPrice24h = Math.max(maxPrice24h, currentPrice);
+    minPrice24h = Math.min(minPrice24h, currentPrice);
+
+    const percent = ((currentPrice - minPrice24h) / (maxPrice24h - minPrice24h)) * 100;
+    const widthPercent = Math.min(100, Math.max(0, percent));
+
+    const percentChange = ((currentPrice - lastPrice) / lastPrice * 100).toFixed(2);
+    const isUp = percentChange >= 0;
+
+    document.getElementById("priceBar").style.width = widthPercent + "%";
+    document.getElementById("priceBar").style.backgroundColor = isUp ? "#4caf50" : "#f44336";
+
+    document.getElementById("priceArrow").className = "arrow " + (isUp ? "arrow-up" : "arrow-down");
+    document.getElementById("pricePercent").textContent = (isUp ? "+" : "") + percentChange + "%";
+
+    document.getElementById("currentPriceText").textContent = "💰 قیمت فعلی: " + Math.round(currentPrice) + " تومان";
+    document.getElementById("minLabel").textContent = Math.round(minPrice24h) + " تومان";
+    document.getElementById("maxLabel").textContent = Math.round(maxPrice24h) + " تومان";
+    document.getElementById("minPrice").textContent = "🔻 کمترین: " + Math.round(minPrice24h) + " تومان";
+    document.getElementById("maxPrice").textContent = "🔺 بیشترین: " + Math.round(maxPrice24h) + " تومان";
+  }
+
+  setInterval(updateMokhtarCoinPrice, 5000);
+  updateMokhtarCoinPrice();
+
+
   </script>
 
 </body>
