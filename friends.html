@@ -3,52 +3,55 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>📱 پروفایل مختار کوین</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
+
     body {
       position: relative;
-      padding-top: 70px;
+      padding: 60px 20px;
       font-family: 'Vazirmatn', sans-serif;
       background: linear-gradient(135deg, #000000, #1c1c1c);
       color: #f5f5f5;
       text-align: center;
-      padding: 60px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
     }
+
     h1 {
       font-size: 28px;
       color: #ffd700;
       margin: 10px 0 20px 0;
     }
+
     h2 {
       color: #ffd700;
       margin-bottom: 20px;
     }
+
     #backBtn {
       position: absolute;
       top: 20px;
       right: 20px;
-      width: auto;
       padding: 8px 16px;
-      margin: 0;
       border-radius: 8px;
       background: #444;
       color: #ffd700;
-      font-weight: normal;
       cursor: pointer;
       border: none;
       transition: all 0.3s;
       display: none;
       z-index: 1000;
     }
+
     #backBtn:hover {
       background: #666;
       color: #fff;
     }
+
     .card {
       background: rgba(30,30,30,0.85);
       padding: 25px;
@@ -58,6 +61,7 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.6);
       backdrop-filter: blur(6px);
     }
+
     input, button {
       padding: 12px;
       border: none;
@@ -66,11 +70,13 @@
       font-size: 16px;
       outline: none;
     }
+
     input {
       background: #2e2e2e;
       color: #f5f5f5;
       width: 80%;
     }
+
     button {
       background: #ffd700;
       color: #333;
@@ -78,33 +84,40 @@
       cursor: pointer;
       transition: all 0.3s;
     }
+
     button:hover {
       background: #fff200;
     }
+
     #currentUser {
       margin-top: 10px;
       color: #ccc;
       font-size: 16px;
     }
+
     #exchangeTypeSection {
       margin-top: 30px;
       padding-top: 15px;
       border-top: 1px solid rgba(255,255,255,0.1);
     }
+
     #exchangeTypeSection h3 {
       font-size: 20px;
       color: #ffd700;
       margin-bottom: 10px;
     }
+
     #exchangeTypeSection img {
       width: 160px;
       border-radius: 12px;
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
       transition: transform 0.3s;
     }
+
     #exchangeTypeSection img:hover {
       transform: scale(1.05);
     }
+
     #exchangeTypeSection p {
       margin-top: 10px;
       font-size: 14px;
@@ -117,6 +130,20 @@
       font-weight: bold;
       line-height: 1.7;
       white-space: nowrap;
+    }
+
+    canvas {
+      max-width: 100%;
+      height: auto;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 40px 10px;
+      }
+      .card {
+        max-width: 95%;
+      }
     }
   </style>
 </head>
@@ -142,26 +169,27 @@
     </div>
   </div>
 
- <div class="card">
-  <h2>📈 چارت قیمت</h2>
-  <canvas id="priceChart" width="300" height="150"></canvas>
-  <p id="currentPriceText">
-     : قیمت آنلاین مختار کوین<br>
-    <span id="priceValue"></span>
-  </p>
-</div>
+  <div class="card">
+    <h2>📈 چارت قیمت</h2>
+    <canvas id="priceChart" width="300" height="150"></canvas>
+    <p id="currentPriceText">
+      : قیمت آنلاین مختار کوین<br>
+      <span id="priceValue"></span>
+    </p>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    let currentPrice = 100;
-    let lastPrice = 100;
-    const priceHistory = [100];
+    // بارگذاری مقادیر از localStorage یا تنظیم مقدار اولیه
+    let currentPrice = parseFloat(localStorage.getItem('currentPrice')) || 100;
+    let lastPrice = parseFloat(localStorage.getItem('lastPrice')) || currentPrice;
+    let priceHistory = JSON.parse(localStorage.getItem('priceHistory')) || [currentPrice];
 
     const ctx = document.getElementById('priceChart').getContext('2d');
     const priceChart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: ['شروع'],
+        labels: Array(priceHistory.length).fill(''),
         datasets: [{
           label: 'مختار کوین',
           data: priceHistory,
@@ -184,7 +212,7 @@
     });
 
     function updateChart() {
-      const change = (Math.random() * 4 - 2);
+      const change = (Math.random() * 4 - 2); // بین -2% تا +2%
       lastPrice = currentPrice;
       currentPrice += currentPrice * (change / 100);
       currentPrice = Math.max(1, currentPrice);
@@ -198,6 +226,11 @@
       priceHistory.push(currentPrice.toFixed(2));
       if (priceHistory.length > 20) priceHistory.shift();
 
+      // ذخیره در localStorage
+      localStorage.setItem('currentPrice', currentPrice.toFixed(2));
+      localStorage.setItem('lastPrice', lastPrice.toFixed(2));
+      localStorage.setItem('priceHistory', JSON.stringify(priceHistory));
+
       priceChart.data.datasets[0].data = priceHistory;
       priceChart.data.datasets[0].borderColor = color;
       priceChart.data.datasets[0].backgroundColor = directionUp
@@ -207,7 +240,6 @@
       if (priceChart.data.labels.length > 20) priceChart.data.labels.shift();
       priceChart.update();
 
-      // 👇 متن دو خطی و مرتب
       document.getElementById('priceValue').innerHTML =
         `<span style="color:${priceColor}; font-weight:bold;">${arrow} %${Math.abs(percentChange)}</span> _ ${currentPrice.toFixed(2)}&nbsp;تومان`;
     }
