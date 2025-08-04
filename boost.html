@@ -881,8 +881,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // تابع ارتقای کارت
-  function upgradeCard(card) {
+ // تابع ارتقای کارت (نسخه نهایی)
+function upgradeCard(card) {
+    // دریافت اطلاعات کارت از دیتاست
     let cardData = {
         id: parseInt(card.dataset.id),
         price: parseInt(card.dataset.price),
@@ -890,42 +891,42 @@ document.addEventListener('DOMContentLoaded', () => {
         level: parseInt(card.dataset.level)
     };
 
+    // بررسی وجود سکه کافی
     if (coinCount >= cardData.price) {
+        // کسر هزینه ارتقا
         coinCount -= cardData.price;
         localStorage.setItem('coins', coinCount);
 
-        // محاسبه قدرت جدید
-        const newPower = Math.floor(cardData.power * 1.2);
+        // محاسبه مقادیر جدید
+        const newPower = Math.floor(cardData.power * 1.2); // افزایش 20% قدرت
+        const powerIncrease = newPower - cardData.power; // مقدار افزایش قدرت
         
-        // فقط مقدار افزایش قدرت را به قدرت کل اضافه می‌کنیم
-        const powerIncrease = newPower - cardData.power;
+        // افزایش قدرت کل فقط به اندازه قدرت اضافه شده
         totalPower += powerIncrease;
         
-        // ذخیره اطلاعات جدید
+        // آپدیت اطلاعات کارت
         cardData.level += 1;
         cardData.power = newPower;
-        cardData.price = Math.floor(cardData.price * 1.3);
+        cardData.price = Math.floor(cardData.price * 1.3); // افزایش 30% قیمت
 
-        // ذخیره اطلاعات کارت
+        // ذخیره اطلاعات کارت در آرایه و localStorage
         const cardIndex = allCards.findIndex(c => c.id === cardData.id);
         if (cardIndex !== -1) {
             allCards[cardIndex] = cardData;
             localStorage.setItem(`card_${cardData.id}`, JSON.stringify(cardData));
         }
 
-        // آپدیت اطلاعات کارت در DOM
+        // آپدیت نمایش کارت در صفحه
         card.dataset.price = cardData.price;
         card.dataset.power = cardData.power;
         card.dataset.level = cardData.level;
 
-        const levelSpan = card.querySelector('.level-price span:first-child');
-        const priceSpan = card.querySelector('.level-price span:last-child');
-        const earnP = card.querySelector('.earn');
+        // آپدیت عناصر DOM
+        card.querySelector('.level-price span:first-child').textContent = `Lvl ${cardData.level}`;
+        card.querySelector('.level-price span:last-child').textContent = `💰 ${cardData.price.toLocaleString()}`;
+        card.querySelector('.earn').textContent = `💪 قدرت: ${cardData.power.toLocaleString()}`;
 
-        levelSpan.textContent = `Lvl ${cardData.level}`;
-        priceSpan.textContent = `💰 ${cardData.price.toLocaleString()}`;
-        earnP.textContent = `💪 قدرت: ${cardData.power.toLocaleString()}`;
-
+        // آپدیت نمایش سکه ها و قدرت کل
         updateCoinCount();
         updateTotalPower();
     } else {
@@ -933,15 +934,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 }
 
-  // تابع آپدیت تعداد سکه ها
-  function updateCoinCount() {
-    coinCountEl.textContent = `💰 سکه: ${coinCount.toLocaleString()}`;
-  }
-
-  // تابع آپدیت قدرت کل
-  function updateTotalPower() {
+// تابع آپدیت قدرت کل (فقط نمایش مقدار فعلی)
+function updateTotalPower() {
     totalPowerEl.textContent = `قدرت کل: ${totalPower.toLocaleString()}`;
     localStorage.setItem('totalPower', totalPower);
+}
+
+// تابع آپدیت نمایش سکه ها
+function updateCoinCount() {
+    coinCountEl.textContent = `💰 سکه: ${coinCount.toLocaleString()}`;
 }
 
   // تابع تغییر تب
