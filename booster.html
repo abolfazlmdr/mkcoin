@@ -156,6 +156,25 @@
   <div class="upgrade-btn" onclick="useDailyBoost()">⛽</div>
 </div>
 
+
+<div class="booster">
+  <div class="booster-info">
+    <div class="emoji-box">🚀</div>
+    <div>
+      <p>بازی موشک</p>
+      <div class="level" id="rocket-play-count">6 بار باقی‌مانده</div>
+    </div>
+  </div>
+  <button 
+    class="upgrade-btn" 
+    id="rocket-play-btn" 
+    onclick="playRocketGame()"
+    style="background-color: #000; color: #fff; border: none; padding: 8px 16px; border-radius: 10px; cursor: pointer;"
+  >🎮</button>
+</div>
+
+
+
 <a href="index.html" class="back-btn">
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M4 11.9997L20 11.9998M4 11.9997L8.99996 16.9998M4 11.9997L9 6.99976" stroke="#fff" stroke-width="1.5"/>
@@ -316,6 +335,48 @@ document.addEventListener('DOMContentLoaded', () => {
   window.upgrade = upgrade;
   window.useDailyBoost = useDailyBoost; // ⬅️ این رو فراموش نکن!
 });
+
+function playRocketGame() {
+  const today = new Date().toLocaleDateString('fa-IR');
+  const storedDate = localStorage.getItem('rocketPlayDate');
+  let playCount = parseInt(localStorage.getItem('rocketPlayCount')) || 0;
+
+  if (storedDate !== today) {
+    playCount = 0;
+    localStorage.setItem('rocketPlayDate', today);
+    localStorage.setItem('rocketPlayCount', playCount);
+  }
+
+  if (playCount >= 6) {
+    alert('شما امروز ۶ بار بازی موشک را انجام داده‌اید.');
+    return;
+  }
+
+  playCount += 1;
+  localStorage.setItem('rocketPlayCount', playCount);
+  document.getElementById('rocket-play-count').textContent = (6 - playCount) + ' بار باقی‌مانده';
+
+  // باز کردن صفحه rocket.html تو تب جدید
+  window.open('rocket.html', '_blank');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const today = new Date().toLocaleDateString('fa-IR');
+  const rocketDate = localStorage.getItem('rocketPlayDate');
+  let rocketCount = parseInt(localStorage.getItem('rocketPlayCount')) || 0;
+
+  if (rocketDate !== today) {
+    rocketCount = 0;
+    localStorage.setItem('rocketPlayDate', today);
+    localStorage.setItem('rocketPlayCount', rocketCount);
+  }
+
+  if (document.getElementById('rocket-play-count')) {
+    document.getElementById('rocket-play-count').textContent = (6 - rocketCount) + ' بار باقی‌مانده';
+  }
+});
+
+
 </script>
 
 

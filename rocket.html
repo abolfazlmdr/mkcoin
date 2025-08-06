@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8" />
+  <title>بازی موشک دو بعدی با کنترل لمسی</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+  <style>
+    body, html {
+      margin: 0; padding: 0; overflow: hidden; /* حذف اسکرول و حاشیه */
+      background: black;
+      touch-action: none; /* جلوگیری از رفتارهای پیش‌فرض لمس */
+      direction: rtl;
+    }
+    canvas {
+      display: block;
+      margin: 0 auto;
+      touch-action: none;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    let rocketX, rocketY;
+    let rocketWidth, rocketHeight;
+    let speedX;
+    let obstacles = [];
+    let coins = [];
+    let score;
+    let gameOver;
+    let backButton; // دکمه بازگشت
+
+    function setup() {
+      createCanvas(windowWidth, windowHeight);
+      resetGame();
+    }
+
+    function resetGame() {
+      rocketWidth = width * 0.075;  // عرض موشک 7.5% عرض صفحه
+      rocketHeight = rocketWidth * (40/30); // حفظ نسبت ارتفاع
+      rocketX = width / 2 - rocketWidth / 2;
+      rocketY = height - rocketHeight - 50;
+      speedX = width * 0.012;  // سرعت متناسب با عرض صفحه
+      score = 0;
+      gameOver = false;
+      obstacles = [];
+      coins = [];
+
+      // اگر دکمه بازگشت وجود داشت، حذفش کن
+      if (backButton) {
+        backButton.remove();
+        backButton = null;
+      }
+    }
+
+    function windowResized() {
+      resizeCanvas(windowWidth, windowHeight);
+      resetGame();
+    }
+
+    function draw() {
+      background(0);
+
+      if (!gameOver) {
+        if (touches.length > 0) {
+          let targetX = touches[0].x - rocketWidth / 2;
+          rocketX = lerp(rocketX, targetX, 0.1);
+        }
+        rocketX = constrain(rocketX, 0, width - rocketWidth);
+
+        // ایجاد مانع هر 60 فریم
+        if (frameCount % 60 === 0) {
+          obstacles.push({
+            x: random(width - width * 0.125),
+            y: 0,
+            w: width * 0.125,
+            h: height * 0.033,
+            speed: height * 0.005
+          });
+        }
+
+        // ایجاد سکه هر 90 فریم
+        if (frameCount % 90 === 0) {
+          coins.push({
+            x: random(width - width * 0.05),
+            y: 0,
+            r: width * 0.025,
+            speed: height * 0.003
+          });
+        }
+
+        // رسم و به‌روزرسانی موانع
+        for (let i = obstacles.length - 1; i >= 0; i--) {
+          let obs = obstacles[i];
+          obs.y += obs.speed;
+          fill(255, 0, 0);
+          rect(obs.x, obs.y, obs.w, obs.h);
+
+          if (rocketX + rocketWidth > obs.x && rocketX < obs.x + obs.w &&
+              rocketY < obs.y + obs.h && rocketY + rocketHeight > obs.y) {
+            gameOver = true;
+          }
+
+          if (obs.y > height) {
+            obstacles.splice(i, 1);
+          }
+        }
+
+        // رسم و به‌روزرسانی سکه‌ها
+        for (let i = coins.length - 1; i >= 0; i--) {
+          let coin = coins[i];
+          coin.y += coin.speed;
+          fill(255, 255, 0);
+          ellipse(coin.x, coin.y, coin.r * 2);
+
+          if (dist(rocketX + rocketWidth/2, rocketY + rocketHeight/2, coin.x, coin.y) < coin.r + max(rocketWidth, rocketHeight)/2) {
+            score += 1;
+            coins.splice(i, 1);
+          }
+
+          if (coin.y > height) {
+            coins.splice(i, 1);
+          }
+        }
+
+        // دنباله آتش موشک
+        fill(255, 165, 0);
+        rect(rocketX + rocketWidth * 0.17, rocketY + rocketHeight * 0.75, rocketWidth * 0.66, rocketHeight * 0.5);
+        fill(255, 255, 0);
+        rect(rocketX + rocketWidth * 0.17, rocketY + rocketHeight * 0.9, rocketWidth * 0.66, rocketHeight * 0.33);
+
+        // بدنه موشک
+        fill(150);
+        rect(rocketX, rocketY, rocketWidth, rocketHeight);
+        fill(255, 0, 0);
+        triangle(rocketX, rocketY, rocketX + rocketWidth/2, rocketY - rocketHeight * 0.5, rocketX + rocketWidth, rocketY);
+
+        // نمایش امتیاز
+        fill(255);
+        textSize(width * 0.04);
+        textAlign(LEFT, TOP);
+        text("امتیاز: " + score, 10, 10);
+
+      } else {
+        fill(255);
+        textSize(width * 0.08);
+        textAlign(CENTER, CENTER);
+        text("بازی تموم شد!", width / 2, height / 2 - 20);
+        textSize(width * 0.06);
+        text("امتیاز: " + score, width / 2, height / 2 + 40);
+
+        // ذخیره امتیاز در localStorage
+        let totalCoins = parseInt(localStorage.getItem("coins") || "0");
+        localStorage.setItem("coins", totalCoins + score);
+
+        // نمایش دکمه بازگشت به صفحه تسک
+        if (!backButton) {
+          backButton = createButton("بازگشت");
+          backButton.style('position', 'absolute');
+          backButton.style('left', '50%');
+          backButton.style('top', (height / 2 + 100) + 'px');
+          backButton.style('transform', 'translateX(-50%)');
+          backButton.style('padding', '12px 24px');
+          backButton.style('font-size', '18px');
+          backButton.style('background-color', '#333');
+          backButton.style('color', '#fff');
+          backButton.style('border', 'none');
+          backButton.style('border-radius', '10px');
+          backButton.style('cursor', 'pointer');
+          backButton.mousePressed(() => {
+            window.location.href = 'task.html';  // آدرس صفحه تسک را اینجا بگذارید
+          });
+        }
+      }
+    }
+  </script>
+</body>
+</html>

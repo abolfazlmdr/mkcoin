@@ -447,6 +447,18 @@
   }
 });
 
+// وقتی سکه‌ها در localStorage تغییر کنن (مثلاً از rocket.html)، این اجرا میشه
+window.addEventListener("storage", function (event) {
+  if (event.key === "coins") {
+    const updatedCoins = parseInt(event.newValue || "0");
+    document.getElementById("coinValue").innerText = updatedCoins.toLocaleString('en-US');
+
+    // آپدیت درجه و نوار پیشرفت هم انجام بده اگه داری
+    updateRank?.();
+    updateProgressBar?.();
+  }
+});
+
   </script>
 </body>
 </html>
