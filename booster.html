@@ -356,8 +356,7 @@ function playRocketGame() {
   localStorage.setItem('rocketPlayCount', playCount);
   document.getElementById('rocket-play-count').textContent = (6 - playCount) + ' بار باقی‌مانده';
 
-  // باز کردن صفحه rocket.html تو تب جدید
-  window.open('rocket.html', '_blank');
+  window.location.href = 'rocket.html';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
