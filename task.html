@@ -125,6 +125,18 @@
     .shop-btn:hover {
       background: #e6b800;
     }
+    .back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-icon svg {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
   </style>
 </head>
 <body>
@@ -175,7 +187,15 @@
   <p class="daily-code-note">🎁 با وارد کردن کد روزانه، به صورت تصادفی بین 1000 تا 3000 سکه دریافت می‌کنی!</p>
 </div>
 
-<a href="index.html" class="back-btn">بازگشت به بازی</a>
+<a href="index.html" class="back-btn">
+  <span class="back-icon">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 11.9997L20 11.9998M4 11.9997L8.99996 16.9998M4 11.9997L9 6.99976" stroke="#fff" stroke-width="1.5"/>
+    </svg>
+  </span>
+  <span>بازگشت</span>
+</a>
+
 
 <script>
   function completeTask(task) {
