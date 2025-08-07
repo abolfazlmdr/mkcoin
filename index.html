@@ -392,9 +392,11 @@
 
   let coins = parseInt(localStorage.getItem("coins")) || 50000;
   const lastAttackTime = parseInt(localStorage.getItem("lastAttackTime")) || 0;
-  const now = Date.now();
-  const twelveHours = 12 * 60 * 60 * 1000;
-  const timePassed = now - lastAttackTime;
+ // فعال کردن سپر به مدت 12 ساعت
+const now = Date.now();
+const twelveHours = 12 * 60 * 60 * 1000;
+localStorage.setItem('shieldExpireTime', now + twelveHours);
+
 
   if (lastAttackTime === 0 || timePassed >= twelveHours) {
     const resources = ["انبار گندم", "دیوار دفاعی", "سربازخانه", "برج دیده‌بانی"];

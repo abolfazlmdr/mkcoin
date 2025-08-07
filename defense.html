@@ -137,6 +137,7 @@
   <h2>🏰 بخش دفاع</h2>
 
   <div id="coinDisplay" class="coin-box">💰 سکه: 0</div>
+  <div id="powerDisplay" class="coin-box">⚡ قدرت: 0</div>
 
   <div>
     <img src="images/def.png" alt="دشمن" class="enemy" draggable="false" />
@@ -152,9 +153,9 @@
 
   <div class="shield-store">
     <h3>🛡 خرید سپر دفاعی:</h3>
-    <button id="shield12" onclick="buyShield(12, 500)">سپر 12 ساعته - 500 قدرت</button>
-    <button id="shield24" onclick="buyShield(24, 1500)">سپر 24 ساعته - 1500 قدرت</button>
-    <button id="shield72" onclick="buyShield(72, 3000)">سپر 72 ساعته - 3000 قدرت</button>
+    <button id="shield12" onclick="buyShield(12, 1500)">سپر 12 ساعته - 1500 قدرت</button>
+    <button id="shield24" onclick="buyShield(24, 2500)">سپر 24 ساعته - 2500 قدرت</button>
+    <button id="shield72" onclick="buyShield(72, 4000)">سپر 72 ساعته - 4000 قدرت</button>
     <div id="shieldStatus"></div>
   </div>
 
@@ -170,10 +171,11 @@
     let coins = parseInt(localStorage.getItem("coins")) || 50000;
     let totalPower = parseInt(localStorage.getItem("totalPower")) || 10000;
 
-    function updateDisplay() {
-      document.getElementById("coinDisplay").innerText = "💰 سکه: " + coins.toLocaleString();
-      updateShieldButtons();
-    }
+   function updateDisplay() {
+  document.getElementById("coinDisplay").innerText = "💰 سکه: " + coins.toLocaleString();
+  document.getElementById("powerDisplay").innerText = "⚡ قدرت: " + totalPower.toLocaleString(); // 👈 این خط اضافه بشه
+  updateShieldButtons();
+}
 
     function saveState() {
       localStorage.setItem("coins", coins);
