@@ -383,26 +383,32 @@
       }
 
       // اضافه شده: چک حمله دشمن و کاهش سکه در صورت نیاز
-      function attackIfNeeded() {
-        let coins = parseInt(localStorage.getItem("coins")) || 50000;
-        const lastAttackTime = parseInt(localStorage.getItem("lastAttackTime")) || 0;
-        const now = Date.now();
-        const twelveHours = 12 * 60 * 60 * 1000;
-        const timePassed = now - lastAttackTime;
+    function attackIfNeeded() {
+  let shieldExpire = parseInt(localStorage.getItem("shieldExpireTime")) || 0;
+  if (Date.now() < shieldExpire) {
+    console.log("🛡 سپر فعاله، حمله لغو شد.");
+    return;
+  }
 
-        if (lastAttackTime === 0 || timePassed >= twelveHours) {
-          const resources = ["انبار گندم", "دیوار دفاعی", "سربازخانه", "برج دیده‌بانی"];
-          const attackedResource = resources[Math.floor(Math.random() * resources.length)];
-          const damage = Math.floor(Math.random() * (3000 - 1500 + 1)) + 1500;
+  let coins = parseInt(localStorage.getItem("coins")) || 50000;
+  const lastAttackTime = parseInt(localStorage.getItem("lastAttackTime")) || 0;
+  const now = Date.now();
+  const twelveHours = 12 * 60 * 60 * 1000;
+  const timePassed = now - lastAttackTime;
 
-          coins = Math.max(0, coins - damage);
-          localStorage.setItem("coins", coins);
-          localStorage.setItem("lastAttackTime", now);
+  if (lastAttackTime === 0 || timePassed >= twelveHours) {
+    const resources = ["انبار گندم", "دیوار دفاعی", "سربازخانه", "برج دیده‌بانی"];
+    const attackedResource = resources[Math.floor(Math.random() * resources.length)];
+    const damage = Math.floor(Math.random() * (3000 - 1500 + 1)) + 1500;
 
-          alert(`❗️ دشمن به ${attackedResource} حمله کرد و ${damage.toLocaleString()} سکه از شما کم شد.`);
-          document.getElementById("coinValue").innerText = formatNumber(coins);
-        }
-      }
+    coins = Math.max(0, coins - damage);
+    localStorage.setItem("coins", coins);
+    localStorage.setItem("lastAttackTime", now);
+
+    alert(`❗️ دشمن به ${attackedResource} حمله کرد و ${damage.toLocaleString()} سکه از شما کم شد.`);
+    document.getElementById("coinValue").innerText = coins.toLocaleString();
+  }
+}
 
       document.getElementById("clickBtn").addEventListener("click", function () {
         if (energyValue >= multitapPower) {
