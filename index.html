@@ -299,106 +299,104 @@
     </div>
   </div>
 
-  <script>
-    const hasLoadedBefore = sessionStorage.getItem("loaded");
-    if (!hasLoadedBefore) {
-      let progress = 0;
-      const loadingBar = document.querySelector("#loadingProgressBar span");
-      const loadingInterval = setInterval(() => {
-        progress += 2;
-        if (progress > 100) progress = 100;
-        loadingBar.style.width = progress + "%";
-        document.getElementById("loadingPercent").innerText = progress + "٪";
-        if (progress >= 100) {
-          clearInterval(loadingInterval);
-          document.getElementById("loading").style.display = "none";
-          document.getElementById("main").style.display = "flex";
-          sessionStorage.setItem("loaded", "true");
-          initializeGame();
-        }
-      }, 60);
-    } else {
-      document.getElementById("loading").style.display = "none";
-      document.getElementById("main").style.display = "flex";
-      initializeGame();
-    }
-
-    function initializeGame() {
-      let coinValue = parseInt(localStorage.getItem("coins")) || 0;
-      let energyValue = parseInt(localStorage.getItem("energy")) || 1000;
-      let storage = parseInt(localStorage.getItem("storage")) || 1000;
-      let multitapPower = parseInt(localStorage.getItem("multitapPower")) || 1;
-      let lastActive = parseInt(localStorage.getItem("lastActive")) || Date.now();
-      let now = Date.now();
-      let diffSeconds = Math.floor((now - lastActive) / 1000);
-      let earnedEnergy = Math.floor(diffSeconds / 1) * 1;
-      energyValue = Math.min(storage, energyValue + earnedEnergy);
-      localStorage.setItem("energy", energyValue);
-      localStorage.setItem("lastActive", now);
-
-      function formatNumber(number) {
-        return number.toLocaleString('en-US');
+  <!-- فقط بخش اسکریپت تغییر داده شده -->
+<script>
+  const hasLoadedBefore = sessionStorage.getItem("loaded");
+  if (!hasLoadedBefore) {
+    let progress = 0;
+    const loadingBar = document.querySelector("#loadingProgressBar span");
+    const loadingInterval = setInterval(() => {
+      progress += 2;
+      if (progress > 100) progress = 100;
+      loadingBar.style.width = progress + "%";
+      document.getElementById("loadingPercent").innerText = progress + "٪";
+      if (progress >= 100) {
+        clearInterval(loadingInterval);
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("main").style.display = "flex";
+        sessionStorage.setItem("loaded", "true");
+        initializeGame();
       }
-
-      document.getElementById("coinValue").innerText = formatNumber(coinValue);
-      document.getElementById("energyValue").innerText = formatNumber(energyValue);
-      document.getElementById("storageValue").innerText = formatNumber(storage);
-
-      function updateRank() {
-        const rankThresholds = [
-          { threshold: 5000, rank: "سرباز" },
-          { threshold: 15000, rank: "سرباز با تجربه" },
-          { threshold: 50000, rank: "فرمانده" },
-          { threshold: 100000, rank: "فرمانده با تجربه" },
-          { threshold: 500000, rank: "فرمانده سوم" },
-          { threshold: 1000000, rank: "فرمانده دوم" },
-          { threshold: 5000000, rank: "فرمانده اول" },
-          { threshold: 10000000, rank: "رهبر" },
-          { threshold: 50000000, rank: "پادشاهی" }
-        ];
-        const rank = rankThresholds.reverse().find(item => coinValue >= item.threshold)?.rank || "سرباز";
-        document.getElementById("rankTitle").innerText = rank;
-      }
-
-      function updateProgressBar() {
-        const nextRankThreshold = [15000, 50000, 100000, 500000, 1000000, 5000000, 10000000, 50000000];
-        const nextRank = nextRankThreshold.find(t => coinValue < t) || 50000000;
-        const progress = Math.min(100, (coinValue / nextRank) * 100);
-        document.getElementById("progressBar").style.width = progress + '%';
-        document.getElementById("coinsNeeded").innerText = formatNumber(nextRank);
-        document.getElementById("currentCoins").innerText = formatNumber(coinValue);
-      }
-
-      function autoIncreaseEnergy() {
-        if (energyValue < storage) {
-          energyValue += 1;
-          document.getElementById("energyValue").innerText = formatNumber(energyValue);
-          localStorage.setItem("energy", energyValue);
-        }
-      }
-
-      function updatePower() {
-        let totalPower = parseInt(localStorage.getItem("totalPower")) || 0;
-        document.getElementById("powerValue").innerText = totalPower.toLocaleString();
-      }
-
-      // اضافه شده: چک حمله دشمن و کاهش سکه در صورت نیاز
-    function attackIfNeeded() {
-  let shieldExpire = parseInt(localStorage.getItem("shieldExpireTime")) || 0;
-  if (Date.now() < shieldExpire) {
-    console.log("🛡 سپر فعاله، حمله لغو شد.");
-    return;
+    }, 60);
+  } else {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("main").style.display = "flex";
+    initializeGame();
   }
 
-  let coins = parseInt(localStorage.getItem("coins")) || 50000;
-  const lastAttackTime = parseInt(localStorage.getItem("lastAttackTime")) || 0;
- // فعال کردن سپر به مدت 12 ساعت
-const now = Date.now();
-const twelveHours = 12 * 60 * 60 * 1000;
-localStorage.setItem('shieldExpireTime', now + twelveHours);
+  function initializeGame() {
+    let coinValue = parseInt(localStorage.getItem("coins")) || 0;
+    let energyValue = parseInt(localStorage.getItem("energy")) || 1000;
+    let storage = parseInt(localStorage.getItem("storage")) || 1000;
+    let multitapPower = parseInt(localStorage.getItem("multitapPower")) || 1;
+    let lastActive = parseInt(localStorage.getItem("lastActive")) || Date.now();
+    let now = Date.now();
+    let diffSeconds = Math.floor((now - lastActive) / 1000);
+    let earnedEnergy = Math.floor(diffSeconds / 1) * 1;
+    energyValue = Math.min(storage, energyValue + earnedEnergy);
+    localStorage.setItem("energy", energyValue);
+    localStorage.setItem("lastActive", now);
 
+    function formatNumber(number) {
+      return number.toLocaleString('en-US');
+    }
 
-  if (lastAttackTime === 0 || timePassed >= twelveHours) {
+    document.getElementById("coinValue").innerText = formatNumber(coinValue);
+    document.getElementById("energyValue").innerText = formatNumber(energyValue);
+    document.getElementById("storageValue").innerText = formatNumber(storage);
+
+    function updateRank() {
+      const rankThresholds = [
+        { threshold: 5000, rank: "سرباز" },
+        { threshold: 15000, rank: "سرباز با تجربه" },
+        { threshold: 50000, rank: "فرمانده" },
+        { threshold: 100000, rank: "فرمانده با تجربه" },
+        { threshold: 500000, rank: "فرمانده سوم" },
+        { threshold: 1000000, rank: "فرمانده دوم" },
+        { threshold: 5000000, rank: "فرمانده اول" },
+        { threshold: 10000000, rank: "رهبر" },
+        { threshold: 50000000, rank: "پادشاهی" }
+      ];
+      const rank = rankThresholds.reverse().find(item => coinValue >= item.threshold)?.rank || "سرباز";
+      document.getElementById("rankTitle").innerText = rank;
+    }
+
+    function updateProgressBar() {
+      const nextRankThreshold = [15000, 50000, 100000, 500000, 1000000, 5000000, 10000000, 50000000];
+      const nextRank = nextRankThreshold.find(t => coinValue < t) || 50000000;
+      const progress = Math.min(100, (coinValue / nextRank) * 100);
+      document.getElementById("progressBar").style.width = progress + '%';
+      document.getElementById("coinsNeeded").innerText = formatNumber(nextRank);
+      document.getElementById("currentCoins").innerText = formatNumber(coinValue);
+    }
+
+    function autoIncreaseEnergy() {
+      if (energyValue < storage) {
+        energyValue += 1;
+        document.getElementById("energyValue").innerText = formatNumber(energyValue);
+        localStorage.setItem("energy", energyValue);
+      }
+    }
+
+    function updatePower() {
+      let totalPower = parseInt(localStorage.getItem("totalPower")) || 0;
+      document.getElementById("powerValue").innerText = totalPower.toLocaleString();
+    }
+
+    // تابع حمله دشمن که وسط بازی هم چک می‌شود
+   function attackIfNeeded() {
+  let now = Date.now();
+  let shieldExpire = parseInt(localStorage.getItem("shieldExpireTime")) || 0;
+
+  // اگه هنوز سپر فعاله، حمله انجام نشه
+  if (now < shieldExpire) return;
+
+  let lastAttackTime = parseInt(localStorage.getItem("lastAttackTime")) || 0;
+  let minGap = 12 * 60 * 60 * 1000; // حداقل فاصله بین دو حمله (۱۲ ساعت)
+  let timePassed = now - lastAttackTime;
+
+  if (lastAttackTime === 0 || timePassed >= minGap) {
+    let coins = parseInt(localStorage.getItem("coins")) || 0;
     const resources = ["انبار گندم", "دیوار دفاعی", "سربازخانه", "برج دیده‌بانی"];
     const attackedResource = resources[Math.floor(Math.random() * resources.length)];
     const damage = Math.floor(Math.random() * (3000 - 1500 + 1)) + 1500;
@@ -409,64 +407,92 @@ localStorage.setItem('shieldExpireTime', now + twelveHours);
 
     alert(`❗️ دشمن به ${attackedResource} حمله کرد و ${damage.toLocaleString()} سکه از شما کم شد.`);
     document.getElementById("coinValue").innerText = coins.toLocaleString();
+
+    // اگه بازیکن سپر داشته باشه، همون مدت رو دوباره فعال می‌کنیم
+    let shieldDuration = parseInt(localStorage.getItem("shieldDuration")) || 0; // ساعت
+    if (shieldDuration > 0) {
+      localStorage.setItem("shieldExpireTime", now + shieldDuration * 60 * 60 * 1000);
+    }
   }
 }
 
-      document.getElementById("clickBtn").addEventListener("click", function () {
-        if (energyValue >= multitapPower) {
-          coinValue += multitapPower;
-          energyValue -= multitapPower;
-          document.getElementById("coinValue").innerText = formatNumber(coinValue);
-          document.getElementById("energyValue").innerText = formatNumber(energyValue);
-          localStorage.setItem("coins", coinValue);
-          localStorage.setItem("energy", energyValue);
-          updateRank();
-          updateProgressBar();
-          if (navigator.vibrate) navigator.vibrate(50);
-          this.classList.add("shake");
-          setTimeout(() => this.classList.remove("shake"), 500);
-        }
-      });
+      // اگر سپر فعال است، حمله انجام نمی‌شود
+      if (now < shieldExpire) return;
 
-      setInterval(autoIncreaseEnergy, 2000);
-      setInterval(updatePower, 2000);
+      let lastAttackTime = parseInt(localStorage.getItem("lastAttackTime")) || 0;
+      let twelveHours = 12 * 60 * 60 * 1000;
+      let timePassed = now - lastAttackTime;
 
-      window.addEventListener("beforeunload", () => {
-        localStorage.setItem("lastActive", Date.now());
-      });
+      if (lastAttackTime === 0 || timePassed >= twelveHours) {
+        let coins = parseInt(localStorage.getItem("coins")) || 0;
+        const resources = ["انبار گندم", "دیوار دفاعی", "سربازخانه", "برج دیده‌بانی"];
+        const attackedResource = resources[Math.floor(Math.random() * resources.length)];
+        const damage = Math.floor(Math.random() * (3000 - 1500 + 1)) + 1500;
 
-      updateRank();
-      updateProgressBar();
-      updatePower();
+        coins = Math.max(0, coins - damage);
+        localStorage.setItem("coins", coins);
+        localStorage.setItem("lastAttackTime", now);
 
-      // فراخوانی حمله دشمن در زمان ورود به صفحه
-      attackIfNeeded();
+        alert(`❗️ دشمن به ${attackedResource} حمله کرد و ${damage.toLocaleString()} سکه از شما کم شد.`);
+        document.getElementById("coinValue").innerText = coins.toLocaleString();
+
+        // فعال‌کردن سپر بعد از حمله
+        localStorage.setItem("shieldExpireTime", now + twelveHours);
+      }
     }
 
-    window.addEventListener('message', (event) => {
-  if (event.data?.type === 'BOOST_USED') {
-    const newEnergy = event.data.energy;
-    localStorage.setItem('energy', newEnergy);
+    document.getElementById("clickBtn").addEventListener("click", function () {
+      if (energyValue >= multitapPower) {
+        coinValue += multitapPower;
+        energyValue -= multitapPower;
+        document.getElementById("coinValue").innerText = formatNumber(coinValue);
+        document.getElementById("energyValue").innerText = formatNumber(energyValue);
+        localStorage.setItem("coins", coinValue);
+        localStorage.setItem("energy", energyValue);
+        updateRank();
+        updateProgressBar();
+        if (navigator.vibrate) navigator.vibrate(50);
+        this.classList.add("shake");
+        setTimeout(() => this.classList.remove("shake"), 500);
+      }
+    });
 
-    const energyElement = document.getElementById('energyValue');
-    if (energyElement) {
-      energyElement.innerText = newEnergy.toLocaleString('en-US');
+    setInterval(autoIncreaseEnergy, 2000);
+    setInterval(updatePower, 2000);
+
+    window.addEventListener("beforeunload", () => {
+      localStorage.setItem("lastActive", Date.now());
+    });
+
+    updateRank();
+    updateProgressBar();
+    updatePower();
+
+    // اجرای اولیه حمله و چک هر 1 دقیقه
+    attackIfNeeded();
+    setInterval(attackIfNeeded, 60000);
+
+  window.addEventListener('message', (event) => {
+    if (event.data?.type === 'BOOST_USED') {
+      const newEnergy = event.data.energy;
+      localStorage.setItem('energy', newEnergy);
+
+      const energyElement = document.getElementById('energyValue');
+      if (energyElement) {
+        energyElement.innerText = newEnergy.toLocaleString('en-US');
+      }
     }
-  }
-});
+  });
 
-// وقتی سکه‌ها در localStorage تغییر کنن (مثلاً از rocket.html)، این اجرا میشه
-window.addEventListener("storage", function (event) {
-  if (event.key === "coins") {
-    const updatedCoins = parseInt(event.newValue || "0");
-    document.getElementById("coinValue").innerText = updatedCoins.toLocaleString('en-US');
+  window.addEventListener("storage", function (event) {
+    if (event.key === "coins") {
+      const updatedCoins = parseInt(event.newValue || "0");
+      document.getElementById("coinValue").innerText = updatedCoins.toLocaleString('en-US');
+      updateRank?.();
+      updateProgressBar?.();
+    }
+  });
+</script>
 
-    // آپدیت درجه و نوار پیشرفت هم انجام بده اگه داری
-    updateRank?.();
-    updateProgressBar?.();
-  }
-});
-
-  </script>
 </body>
 </html>
